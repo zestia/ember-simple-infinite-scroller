@@ -73,3 +73,18 @@ Set `use-document=true` if your component is not scrollable.
   {{! action will fire when the document is scrolled to the bottom }}
 {{/infinite-scroller}}
 ```
+
+### Yielded API
+
+The component will yield a hash that provides:
+
+<table>
+  <tr>
+    <td>isLoading</td>
+    <td>true when the promise for more data has not resolved yet</td>
+  </tr>
+  <tr>
+    <td>error</td>
+    <td>the caught error from the last attempt to load more</td>
+  </tr>
+</table>
