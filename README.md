@@ -21,7 +21,7 @@ ember install ember-infinite-scroller
 {{/infinite-scroller}}
 ```
 
-### With Ember-Data
+#### With Ember-Data
 
 ```javascript
 actions: {
@@ -36,7 +36,7 @@ actions: {
 }
 ```
 
-### Without Ember-Data
+#### Without Ember-Data
 
 ```javascript
 actions: {
