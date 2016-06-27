@@ -1,15 +1,16 @@
 import Component from 'ember-component';
+import layout from '../templates/components/infinite-scroller';
 import { guidFor } from 'ember-metal/utils';
 import { bind, debounce } from 'ember-runloop';
 import RSVP from 'rsvp';
-import jQuery from 'jquery';
+import inject from 'ember-service/inject';
 
 export default Component.extend({
+  layout,
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
-  $document: jQuery(document),
-  $window:   jQuery(window),
+  _infiniteScroller: inject('-infinite-scroller'),
 
   init() {
     this._super(...arguments);
@@ -18,31 +19,35 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-
-    let useDoc = this.getAttr('use-document');
-    this.$scroller = useDoc ? this.$document : this.$();
-
-    this.$scroller.on(this.get('scrollEventName'), args => {
+    this.$scroller().on(this.get('scrollEventName'), args => {
       debounce(this, '_scrollingElement', args, 250);
     });
   },
 
   willDestroyElement() {
     this._super(...arguments);
-    this.$scroller.off(this.get('scrollEventName'));
+    this.$scroller().off(this.get('scrollEventName'));
+  },
+
+  $scroller() {
+    if (this.getAttr('use-document')) {
+      return this.get('_infiniteScroller').$document();
+    } else {
+      return this.$();
+    }
   },
 
   _scrollerHeight() {
     if (this.getAttr('use-document')) {
-      return this.$window.height();
+      return this.get('_infiniteScroller').$window().height();
     } else {
-      return this.$scroller.height();
+      return this.$scroller().height();
     }
   },
 
   _scrollableHeight() {
     if (this.getAttr('use-document')) {
-      return this.$document.height();
+      return this.get('_infiniteScroller').$document().height();
     } else {
       return this.get('element').scrollHeight;
     }
@@ -50,7 +55,7 @@ export default Component.extend({
 
   _scrollTop() {
     if (this.getAttr('use-document')) {
-      return this.$document.scrollTop();
+      return this.get('_infiniteScroller').$document().scrollTop();
     } else {
       return this.$().scrollTop();
     }
@@ -94,5 +99,11 @@ export default Component.extend({
       return;
     }
     this.set('isLoading', false);
+  },
+
+  actions: {
+    loadMore() {
+      this._loadMore();
+    }
   }
 });
