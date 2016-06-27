@@ -5,6 +5,7 @@ moduleForComponent('infinite-scroller', 'Integration | Component | infinite scro
   integration: true
 });
 
+
 test('it renders', function(assert) {
   assert.expect(1);
 
@@ -13,3 +14,5 @@ test('it renders', function(assert) {
   assert.equal(this.$('.infinite-scroller').length, 1,
     'infinite scroller component has an appropriate class name');
 });
+
+
