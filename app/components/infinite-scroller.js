@@ -1,0 +1,1 @@
+export { default } from 'ember-infinite-scroller/components/infinite-scroller';

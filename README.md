@@ -1,26 +1,54 @@
-# Ember-infinite-scroller
+# ember-infinite-scroller
 
-This README outlines the details of collaborating on this Ember addon.
+<a href="http://emberobserver.com/addons/ember-infinite-scroller"><img src="http://emberobserver.com/badges/ember-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-infinite-scroller#badge-embed"><img src="https://david-dm.org/amk221/ember-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/amk221/ember-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://codeclimate.com/github/amk221/ember-infinite-scroller"><img src="https://codeclimate.com/github/amk221/ember-infinite-scroller/badges/gpa.svg" /></a> &nbsp; <a href="http://travis-ci.org/amk221/ember-infinite-scroller"><img src="https://travis-ci.org/amk221/ember-infinite-scroller.svg?branch=master"></a>
 
-## Installation
+This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
+Allow you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+### Installation
+```
+ember install ember-infinite-scroller
+```
 
-## Running
+### Example usage
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+```handlebars
+{{#infinite-scroller on-load-more=(action 'loadMore') as |scroller|}}
+  {{#each things as |thing|}}
+    ...
+  {{/each}}
+  {{#if scroller.isLoading 'Please wait...'}}
+{{/infinite-scroller}}
+```
 
-## Running Tests
+### With Ember-Data
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+```javascript
+actions: {
+  loadMore() {
+    this.incrementProperty('page');
+    this.get('store').query('things', {
+      page: this.get('page')
+    }).then(things => {
+      this.set('things', this.get('store').peekAll('thing'));
+    });
+  }
+}
+```
 
-## Building
+### Without Ember-Data
 
-* `ember build`
-
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+```javascript
+actions: {
+  loadMore() {
+    this.incrementProperty('page');
+    jQuery.ajax('/things', {
+      data: {
+        page: this.get('page')
+      }
+    }).then(things => {
+      this.get('things').pushObjects(things);
+    });
+  }
+}
+```
