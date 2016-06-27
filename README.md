@@ -69,7 +69,7 @@ Either make your component scrollable:
 Set `use-document=true` if your component is not scrollable.
 
 ```handlebars
-{{#infinite-scroller use-document-true}}
+{{#infinite-scroller use-document=true}}
   {{! action will fire when the document is scrolled to the bottom }}
 {{/infinite-scroller
 ```
