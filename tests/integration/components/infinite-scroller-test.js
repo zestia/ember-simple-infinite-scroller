@@ -3,7 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 import jQuery from 'jquery';
 import { A as emberA } from 'ember-array/utils';
-import { later, next } from 'ember-runloop';
+import { later } from 'ember-runloop';
 import wait from 'ember-test-helpers/wait';
 
 
@@ -163,11 +163,9 @@ test('loading class name', function(assert) {
 
   willLoad.resolve();
 
-  return willLoad.promise.then(() => {
-    next(() => {
-      assert.equal(this.$('.infinite-scroller.is-loading').length, 0,
-        'loading class name is removed after the action resolves');
-    });
+  return wait().then(() => {
+    assert.equal(this.$('.infinite-scroller.is-loading').length, 0,
+      'loading class name is removed after the action resolves');
   });
 });
 
@@ -200,11 +198,9 @@ test('yielded loading state', function(assert) {
 
   willLoad.resolve();
 
-  return willLoad.promise.then(() => {
-    next(() => {
-      assert.ok(!this.$().html().match('Please wait..'),
-        'loading state is updated');
-    });
+  return wait().then(() => {
+    assert.ok(!this.$().html().match('Please wait..'),
+      'loading state is updated');
   });
 });
 
