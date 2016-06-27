@@ -3,7 +3,7 @@
 <a href="http://emberobserver.com/addons/ember-infinite-scroller"><img src="http://emberobserver.com/badges/ember-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-infinite-scroller#badge-embed"><img src="https://david-dm.org/amk221/ember-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/amk221/ember-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://codeclimate.com/github/amk221/ember-infinite-scroller"><img src="https://codeclimate.com/github/amk221/ember-infinite-scroller/badges/gpa.svg" /></a> &nbsp; <a href="http://travis-ci.org/amk221/ember-infinite-scroller"><img src="https://travis-ci.org/amk221/ember-infinite-scroller.svg?branch=master"></a>
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
-Allow you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
+Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
 
 ### Installation
 ```
@@ -27,7 +27,7 @@ ember install ember-infinite-scroller
 actions: {
   loadMore() {
     this.incrementProperty('page');
-    this.get('store').query('things', {
+    return this.get('store').query('things', {
       page: this.get('page')
     }).then(things => {
       this.set('things', this.get('store').peekAll('thing'));
@@ -42,7 +42,7 @@ actions: {
 actions: {
   loadMore() {
     this.incrementProperty('page');
-    jQuery.ajax('/things', {
+    return jQuery.ajax('/things', {
       data: {
         page: this.get('page')
       }
@@ -51,4 +51,25 @@ actions: {
     });
   }
 }
+```
+
+## Configuration
+
+Either make your component scrollable:
+
+```css
+.my-element {
+  max-height: 300px;
+  overflow: auto;
+}
+```
+
+**OR**
+
+Set `use-document=true` if your component is not scrollable.
+
+```handlebars
+{{#infinite-scroller use-document-true}}
+  {{! action will fire when the document is scrolled to the bottom }}
+{{/infinite-scroller
 ```
