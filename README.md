@@ -17,7 +17,7 @@ ember install ember-infinite-scroller
   {{#each things as |thing|}}
     ...
   {{/each}}
-  {{#if scroller.isLoading 'Please wait...'}}
+  {{if scroller.isLoading 'Please wait...'}}
 {{/infinite-scroller}}
 ```
 
