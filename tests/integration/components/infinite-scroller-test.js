@@ -2,8 +2,8 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 import jQuery from 'jquery';
-import { A as emberA } from 'ember-array/utils';
 import { later } from 'ember-runloop';
+import generateThings from 'dummy/utils/generate-things';
 import wait from 'ember-test-helpers/wait';
 
 
@@ -13,18 +13,6 @@ moduleForComponent('infinite-scroller', 'Integration | Component | infinite scro
     this.inject.service('-infinite-scroller', { as: 'infiniteScroller' });
   }
 });
-
-
-let generateThings = function(start, stop) {
-  let array = emberA();
-  for (let i = start; i <= stop; i += 1) {
-    array.push({
-      id: i,
-      name: `Thing ${i}`
-    });
-  }
-  return array;
-};
 
 
 test('it renders', function(assert) {
@@ -281,6 +269,25 @@ test('destroying (does not blow up)', function(assert) {
   this.$('button').trigger('click');
 
   willLoad.resolve();
+
+  return wait();
+});
+
+
+test('no promise (does not blow up)', function(assert) {
+  assert.expect(0);
+
+  this.on('loadMore', () => {
+    return null;
+  });
+
+  this.render(hbs`
+    {{#infinite-scroller on-load-more=(action 'loadMore') as |scroller|}}
+      <button onclick={{action scroller.loadMore}}>Load more</button>
+    {{/infinite-scroller}}
+  `);
+
+  this.$('button').trigger('click');
 
   return wait();
 });
