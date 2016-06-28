@@ -1,5 +1,5 @@
 {
-  "name": "ember-infinite-scroller",
+  "name": "ember-simple-infinite-scroller",
   "version": "0.0.1",
   "description": "Simple infinite scroller component for Ember apps",
   "directories": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/amk221/ember-infinite-scroller.git"
+    "url": "https://github.com/amk221/ember-simple-infinite-scroller.git"
   },
   "engines": {
     "node": ">= 0.10.0"
@@ -55,7 +55,7 @@
     "configPath": "tests/dummy/config"
   },
   "bugs": {
-    "url": "https://github.com/amk221/ember-infinite-scroller/issues"
+    "url": "https://github.com/amk221/ember-simple-infinite-scroller/issues"
   },
-  "homepage": "https://github.com/amk221/ember-infinite-scroller"
+  "homepage": "https://github.com/amk221/ember-simple-infinite-scroller"
 }

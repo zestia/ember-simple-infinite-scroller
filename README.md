@@ -1,13 +1,13 @@
-# ember-infinite-scroller
+# ember-simple-infinite-scroller
 
-<a href="http://emberobserver.com/addons/ember-infinite-scroller"><img src="http://emberobserver.com/badges/ember-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-infinite-scroller#badge-embed"><img src="https://david-dm.org/amk221/ember-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/amk221/ember-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://codeclimate.com/github/amk221/ember-infinite-scroller"><img src="https://codeclimate.com/github/amk221/ember-infinite-scroller/badges/gpa.svg" /></a> &nbsp; <a href="http://travis-ci.org/amk221/ember-infinite-scroller"><img src="https://travis-ci.org/amk221/ember-infinite-scroller.svg?branch=master"></a>
+<a href="http://emberobserver.com/addons/ember-simple-infinite-scroller"><img src="http://emberobserver.com/badges/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-simple-infinite-scroller#badge-embed"><img src="https://david-dm.org/amk221/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-simple-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/amk221/ember-simple-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://codeclimate.com/github/amk221/ember-simple-infinite-scroller"><img src="https://codeclimate.com/github/amk221/ember-simple-infinite-scroller/badges/gpa.svg" /></a> &nbsp; <a href="http://travis-ci.org/amk221/ember-simple-infinite-scroller"><img src="https://travis-ci.org/amk221/ember-simple-infinite-scroller.svg?branch=master"></a>
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
 Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
 
 ### Installation
 ```
-ember install ember-infinite-scroller
+ember install ember-simple-infinite-scroller
 ```
 
 ### Example usage
