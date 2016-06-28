@@ -24,7 +24,7 @@ export default Mixin.create({
           this.incrementProperty('page');
           this.get('things').pushObjects(this._generateThings());
           resolve();
-        }, 1500);
+        }, 1000);
       });
     }
   }

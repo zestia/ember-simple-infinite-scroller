@@ -74,6 +74,26 @@ Set `use-document=true` if your component is not scrollable.
 {{/infinite-scroller}}
 ```
 
+<table>
+  <tr>
+    <td>on-load-more</td>
+    <td>Action to perform when the bottom is scrolled to</td>
+  </tr>
+  <tr>
+    <td>use-document</td>
+    <td>Goes off document scroll rather than the element's scroll position</td>
+  </tr>
+  <tr>
+    <td>trigger-at</td>
+    <td>A percentage of the scrollable height to consider as the 'bottom'</td>
+  </tr>
+  <tr>
+    <td>scroll-debounce</td>
+    <td>Milliseconds delay used to check if the bottom has been scrolled to</td>
+  </tr>
+</table>
+
+
 ### Yielded API
 
 The component will yield a hash that provides:
@@ -81,14 +101,14 @@ The component will yield a hash that provides:
 <table>
   <tr>
     <td>isLoading</td>
-    <td>true when the promise for more data has not resolved yet</td>
+    <td>True when the promise for more data has not resolved yet</td>
   </tr>
   <tr>
     <td>error</td>
-    <td>the caught error from the last attempt to load more</td>
+    <td>The caught error from the last attempt to load more</td>
   </tr>
   <tr>
     <td>loadMore</td>
-    <td>action for manually loading more</td>
+    <td>Action for manually loading more</td>
   </tr>
 </table>

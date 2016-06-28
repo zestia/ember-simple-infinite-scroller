@@ -1,6 +1,6 @@
-<p>Action is fired when the bottom of the div is scrolled to</p>
+<p>Action is fired when the div is scrolled to 50%</p>
 
-{{#infinite-scroller class="example-1" on-load-more=(action 'loadMore') as |scroller|}}
+{{#infinite-scroller class="example-3" on-load-more=(action 'loadMore') trigger-at='50%' scroll-debounce=20 as |scroller|}}
   {{#each things as |thing|}}
     <div class="thing">{{thing.name}}</div>
   {{/each}}

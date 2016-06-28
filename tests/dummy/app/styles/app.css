@@ -1,2 +1,21 @@
-@import 'example-1.css';
-@import 'example-2.css';
+.infinite-scroller {
+  margin: 20px;
+  border: 1px solid red;
+}
+
+.thing {
+  border: 1px solid blue;
+  height: 20px;
+  margin: 10px;
+}
+
+.status {
+  border: 1px solid green;
+  margin: 10px;
+}
+
+.example-1,
+.example-3 {
+  overflow: auto;
+  max-height: 200px;
+}

@@ -20,13 +20,17 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this.$scroller().on(this.get('scrollEventName'), args => {
-      debounce(this, '_scrollingElement', args, 250);
+      debounce(this, '_scrollingElement', args, this._scrollDebounce());
     });
   },
 
   willDestroyElement() {
     this._super(...arguments);
     this.$scroller().off(this.get('scrollEventName'));
+  },
+
+  _scrollDebounce() {
+    return this.getAttr('scroll-debounce') || 100;
   },
 
   $scroller() {
@@ -66,7 +70,16 @@ export default Component.extend({
   },
 
   _reachedBottom() {
-    return this._scrollTop() === this._scrollerBottom();
+    return this._scrollPercentage() >= this._triggerAt();
+  },
+
+  _scrollPercentage() {
+    return this._scrollTop() / this._scrollerBottom() * 100;
+  },
+
+  _triggerAt() {
+    let percentage = this.getAttr('trigger-at') || '100%';
+    return parseInt(percentage, 10);
   },
 
   _scrollingElement() {
