@@ -25,50 +25,95 @@ test('it renders', function(assert) {
 });
 
 
-test('load more action (at end of element)', function(assert) {
+test('load more action', function(assert) {
   assert.expect(2);
 
-  this.set('things', generateThings(1, 10));
+  this.set('things', generateThings(1, 20));
 
   this.on('loadMore', () => {
-    this.get('things').pushObjects(generateThings(11, 20));
+    this.get('things').pushObjects(generateThings(21, 40));
   });
 
   this.render(hbs`
-    <style>
-      .infinite-scroller {
-        overflow: scroll;
-        max-height: 100px;
-        border: 1px solid red;
-      }
-      .thing {
-        height: 20px;
-        border: 1px solid blue;
-      }
-    </style>
-
-    {{#infinite-scroller on-load-more=(action 'loadMore') as |scroller|}}
+    {{#infinite-scroller class="example-1" on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}
     {{/infinite-scroller}}
   `);
 
-  this.$('.infinite-scroller').scrollTop(120);
+  this.$('.infinite-scroller').scrollTop(450);
 
   later(() => {
-    assert.equal(this.$('.thing').length, 10,
+    assert.equal(this.$('.thing').length, 20,
       'has not fired load more action due to debouncing of scroll event');
-  }, 250);
+  }, 100);
 
   return wait().then(() => {
-    assert.equal(this.$('.thing').length, 20,
+    assert.equal(this.$('.thing').length, 40,
       'fires load more action at the element scroll boundary');
   });
 });
 
 
-test('load more action (at end of document)', function(assert) {
+test('load more action (trigger-at)', function(assert) {
+  assert.expect(1);
+
+  this.set('things', generateThings(1, 20));
+
+  this.on('loadMore', () => {
+    this.get('things').pushObjects(generateThings(21, 40));
+  });
+
+  this.render(hbs`
+    {{#infinite-scroller class="example-1" trigger-at='50%' on-load-more=(action 'loadMore') as |scroller|}}
+      {{#each things as |thing|}}
+        <div class="thing">{{thing.name}}</div>
+      {{/each}}
+    {{/infinite-scroller}}
+  `);
+
+  this.$('.infinite-scroller').scrollTop(225);
+
+  return wait().then(() => {
+    assert.equal(this.$('.thing').length, 40,
+      'fires load more action at the custom element scroll boundary');
+  });
+});
+
+
+test('load more action (scroll-debounce)', function(assert) {
+  assert.expect(2);
+
+  this.set('things', generateThings(1, 20));
+
+  this.on('loadMore', () => {
+    this.get('things').pushObjects(generateThings(21, 40));
+  });
+
+  this.render(hbs`
+    {{#infinite-scroller class="example-1" scroll-debounce=50 on-load-more=(action 'loadMore') as |scroller|}}
+      {{#each things as |thing|}}
+        <div class="thing">{{thing.name}}</div>
+      {{/each}}
+    {{/infinite-scroller}}
+  `);
+
+  this.$('.infinite-scroller').scrollTop(450);
+
+  later(() => {
+    assert.equal(this.$('.thing').length, 20,
+      'has not fired load more action due to custom debouncing of scroll event');
+  }, 50);
+
+  return wait().then(() => {
+    assert.equal(this.$('.thing').length, 40,
+      'fires load more action after being debounced');
+  });
+});
+
+
+test('load more action (use-document)', function(assert) {
   assert.expect(1);
 
   let $window = {
@@ -103,13 +148,6 @@ test('load more action (at end of document)', function(assert) {
   });
 
   this.render(hbs`
-    <style>
-      .thing {
-        height: 20px;
-        border: 1px solid blue;
-      }
-    </style>
-
     {{#infinite-scroller use-document=true on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
