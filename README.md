@@ -21,38 +21,6 @@ ember install ember-simple-infinite-scroller
 {{/infinite-scroller}}
 ```
 
-#### With Ember-Data
-
-```javascript
-actions: {
-  loadMore() {
-    this.incrementProperty('page');
-    return this.get('store').query('things', {
-      page: this.get('page')
-    }).then(things => {
-      this.set('things', this.get('store').peekAll('thing'));
-    });
-  }
-}
-```
-
-#### Without Ember-Data
-
-```javascript
-actions: {
-  loadMore() {
-    this.incrementProperty('page');
-    return jQuery.ajax('/things', {
-      data: {
-        page: this.get('page')
-      }
-    }).then(things => {
-      this.get('things').pushObjects(things);
-    });
-  }
-}
-```
-
 ## Configuration
 
 <table>
