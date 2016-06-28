@@ -69,16 +69,16 @@ export default Component.extend({
     return this._scrollableHeight() - this._scrollerHeight();
   },
 
-  _reachedBottom() {
-    return this._scrollPercentage() >= this._triggerAt();
-  },
-
   _scrollPercentage() {
     return this._scrollTop() / this._scrollerBottom() * 100;
   },
 
   _triggerAt() {
     return parseInt(this.getAttr('trigger-at') || '100%', 10);
+  },
+
+  _reachedBottom() {
+    return this._scrollPercentage() >= this._triggerAt();
   },
 
   _shouldLoadMore() {
