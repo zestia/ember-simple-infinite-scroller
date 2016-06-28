@@ -87,4 +87,8 @@ The component will yield a hash that provides:
     <td>error</td>
     <td>the caught error from the last attempt to load more</td>
   </tr>
+  <tr>
+    <td>loadMore</td>
+    <td>action for manually loading more</td>
+  </tr>
 </table>
