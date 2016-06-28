@@ -78,18 +78,17 @@ export default Component.extend({
   },
 
   _triggerAt() {
-    let percentage = this.getAttr('trigger-at') || '100%';
-    return parseInt(percentage, 10);
+    return parseInt(this.getAttr('trigger-at') || '100%', 10);
+  },
+
+  _shouldLoadMore() {
+    return this._reachedBottom() && !this.get('isLoading');
   },
 
   _scrollingElement() {
     if (this._shouldLoadMore()) {
       this._loadMore();
     }
-  },
-
-  _shouldLoadMore() {
-    return this._reachedBottom() && !this.get('isLoading');
   },
 
   _loadMore() {
