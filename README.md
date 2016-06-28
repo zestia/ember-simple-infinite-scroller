@@ -37,17 +37,17 @@ ember install ember-simple-infinite-scroller
   <tr>
     <td>use-document</td>
     <td>Goes off document scroll rather than the element's scroll position</td>
-    <td>false</td>
+    <td><code>false</code></td>
   </tr>
   <tr>
     <td>trigger-at</td>
     <td>A percentage of the scrollable height to consider as the 'bottom'</td>
-    <td>'100%'</td>
+    <td><code>"100%"</code></td>
   </tr>
   <tr>
     <td>scroll-debounce</td>
     <td>Milliseconds delay used to check if the bottom has been scrolled to</td>
-    <td>`100` ms</td>
+    <td><code>100</code> ms</td>
   </tr>
 </table>
 
