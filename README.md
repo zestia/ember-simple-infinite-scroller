@@ -55,25 +55,6 @@ actions: {
 
 ## Configuration
 
-Either make your component scrollable:
-
-```css
-.my-element {
-  max-height: 300px;
-  overflow: auto;
-}
-```
-
-**OR**
-
-Set `use-document=true` if your component is not scrollable.
-
-```handlebars
-{{#infinite-scroller use-document=true}}
-  {{! action will fire when the document is scrolled to the bottom }}
-{{/infinite-scroller}}
-```
-
 <table>
   <tr>
     <td>on-load-more</td>
@@ -92,6 +73,28 @@ Set `use-document=true` if your component is not scrollable.
     <td>Milliseconds delay used to check if the bottom has been scrolled to</td>
   </tr>
 </table>
+
+
+##### Element vs Document scroll
+
+Either make your component scrollable:
+
+```css
+.my-element {
+  max-height: 300px;
+  overflow: auto;
+}
+```
+
+**OR**
+
+Set `use-document=true` if your component is not scrollable.
+
+```handlebars
+{{#infinite-scroller use-document=true}}
+  {{! action will fire when the document is scrolled to the bottom }}
+{{/infinite-scroller}}
+```
 
 
 ### Yielded API
