@@ -25,20 +25,29 @@ ember install ember-simple-infinite-scroller
 
 <table>
   <tr>
+    <th>Attribute</th>
+    <th>Description</th>
+    <th>Default</th>
+  </tr>
+  <tr>
     <td>on-load-more</td>
     <td>Action to perform when the bottom is scrolled to</td>
+    <td></td>
   </tr>
   <tr>
     <td>use-document</td>
     <td>Goes off document scroll rather than the element's scroll position</td>
+    <td>false</td>
   </tr>
   <tr>
     <td>trigger-at</td>
     <td>A percentage of the scrollable height to consider as the 'bottom'</td>
+    <td>'100%'</td>
   </tr>
   <tr>
     <td>scroll-debounce</td>
     <td>Milliseconds delay used to check if the bottom has been scrolled to</td>
+    <td>`100` ms</td>
   </tr>
 </table>
 
@@ -70,6 +79,10 @@ Set `use-document=true` if your component is not scrollable.
 The component will yield a hash that provides:
 
 <table>
+  <tr>
+    <th>Property</th>
+    <th>Description</th>
+  </tr>
   <tr>
     <td>isLoading</td>
     <td>True when the promise for more data has not resolved yet</td>
