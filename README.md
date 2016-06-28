@@ -1,4 +1,4 @@
-# :scroll: ember-simple-infinite-scroller
+# ember-simple-infinite-scroller
 
 <a href="http://emberobserver.com/addons/ember-simple-infinite-scroller"><img src="http://emberobserver.com/badges/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-simple-infinite-scroller#badge-embed"><img src="https://david-dm.org/amk221/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-simple-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/amk221/ember-simple-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://codeclimate.com/github/amk221/ember-simple-infinite-scroller"><img src="https://codeclimate.com/github/amk221/ember-simple-infinite-scroller/badges/gpa.svg" /></a> &nbsp; <a href="http://travis-ci.org/amk221/ember-simple-infinite-scroller"><img src="https://travis-ci.org/amk221/ember-simple-infinite-scroller.svg?branch=master"></a>
 
