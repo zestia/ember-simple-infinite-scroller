@@ -1,9 +1,12 @@
 import Mixin from 'ember-metal/mixin';
 import { later } from 'ember-runloop';
 import RSVP from 'rsvp';
+import injectController from 'ember-controller/inject';
 import generateThings from '../utils/generate-things';
 
 export default Mixin.create({
+  appController: injectController('application'),
+
   init() {
     this._super(...arguments);
     this.set('page', 1);
@@ -24,7 +27,7 @@ export default Mixin.create({
           this.incrementProperty('page');
           this.get('things').pushObjects(this._generateThings());
           resolve();
-        }, 1000);
+        }, this.get('appController.loadDelay'));
       });
     }
   }

@@ -2,4 +2,12 @@
 {{link-to 'Example 2' 'example-2'}} |
 {{link-to 'Example 3' 'example-3'}}
 
+<p>
+  Load delay:<br>
+  <input
+    oninput={{action (mut loadDelay) value="target.value"}}
+    value={{loadDelay}}
+    type="number">
+</p>
+
 {{outlet}}

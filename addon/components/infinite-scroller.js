@@ -4,6 +4,7 @@ import { guidFor } from 'ember-metal/utils';
 import { bind, debounce } from 'ember-runloop';
 import RSVP from 'rsvp';
 import inject from 'ember-service/inject';
+const { round } = Math;
 
 export default Component.extend({
   layout,
@@ -70,7 +71,7 @@ export default Component.extend({
   },
 
   _scrollPercentage() {
-    return this._scrollTop() / this._scrollerBottom() * 100;
+    return round(this._scrollTop() / this._scrollerBottom() * 100);
   },
 
   _triggerAt() {
