@@ -1,6 +1,6 @@
 {
   "name": "ember-simple-infinite-scroller",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple infinite scroller component for Ember apps",
   "directories": {
     "doc": "doc",
@@ -22,8 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
-    "ember-ajax": "^2.4.1",
-    "ember-cli": "2.6.2",
+    "ember-ajax": "2.4.1",
+    "ember-cli": "^2.7.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-htmlbars": "^1.0.3",
@@ -33,14 +33,15 @@
     "ember-cli-qunit": "^2.0.0",
     "ember-cli-release": "^0.2.9",
     "ember-cli-sri": "^2.1.0",
+    "ember-cli-test-loader": "^1.1.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-data": "^2.6.0",
-    "ember-disable-prototype-extensions": "^1.1.0",
-    "ember-disable-proxy-controllers": "^1.0.1",
+    "ember-data": "^2.7.0",
+    "ember-disable-prototype-extensions": "1.1.0",
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
-    "loader.js": "^4.0.10"
+    "ember-welcome-page": "^1.0.1",
+    "loader.js": "^4.0.1"
   },
   "keywords": [
     "ember-addon",
@@ -57,5 +58,6 @@
   "bugs": {
     "url": "https://github.com/amk221/ember-simple-infinite-scroller/issues"
   },
-  "homepage": "https://github.com/amk221/ember-simple-infinite-scroller"
+  "homepage": "https://github.com/amk221/ember-simple-infinite-scroller",
+  "configPath": "tests/dummy/config"
 }

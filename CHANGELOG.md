@@ -1,5 +1,9 @@
 # Changelog
 
+0.0.4
+
+* Upgrade ember-cli
+
 0.0.3
 
 * Improve dummy app demo
