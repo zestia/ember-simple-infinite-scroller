@@ -46,13 +46,13 @@ export default Component.extend({
     if (this.getAttr('use-document')) {
       return this.get('_infiniteScroller').$window().height();
     } else {
-      return this.$scroller().height();
+      return this.$scroller().outerHeight();
     }
   },
 
   _scrollableHeight() {
     if (this.getAttr('use-document')) {
-      return this.get('_infiniteScroller').$document().height();
+      return this.get('_infiniteScroller').$document().outerHeight();
     } else {
       return this.get('element').scrollHeight;
     }
