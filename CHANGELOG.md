@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.0
+
+* Make sure padding is included in scroll calculations
+
 0.0.4
 
 * Upgrade ember-cli
