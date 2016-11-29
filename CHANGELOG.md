@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.1
+
+* Update for Glimmer 2 compat
+
 1.0.0
 
 * Make sure padding is included in scroll calculations
