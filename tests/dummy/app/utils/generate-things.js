@@ -1,7 +1,7 @@
 import { A as emberA } from 'ember-array/utils';
 
 export default function(start, end) {
-  let array = emberA();
+  const array = emberA();
   for (let i = start; i <= end; i += 1) {
     array.push({
       id: i,

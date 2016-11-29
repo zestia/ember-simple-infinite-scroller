@@ -7,7 +7,9 @@ import generateThings from 'dummy/utils/generate-things';
 import wait from 'ember-test-helpers/wait';
 
 
-moduleForComponent('infinite-scroller', 'Integration | Component | infinite scroller', {
+moduleForComponent(
+  'infinite-scroller',
+  'Integration | Component | infinite scroller', {
   integration: true,
   beforeEach() {
     this.inject.service('-infinite-scroller', { as: 'infiniteScroller' });
@@ -35,7 +37,9 @@ test('load more action', function(assert) {
   });
 
   this.render(hbs`
-    {{#infinite-scroller class="example-1" on-load-more=(action 'loadMore') as |scroller|}}
+    {{#infinite-scroller
+      class="example-1"
+      on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}
@@ -66,7 +70,10 @@ test('load more action (trigger-at)', function(assert) {
   });
 
   this.render(hbs`
-    {{#infinite-scroller class="example-1" trigger-at='50%' on-load-more=(action 'loadMore') as |scroller|}}
+    {{#infinite-scroller
+      class="example-1"
+      trigger-at='50%'
+      on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}
@@ -92,7 +99,10 @@ test('load more action (scroll-debounce)', function(assert) {
   });
 
   this.render(hbs`
-    {{#infinite-scroller class="example-1" scroll-debounce=50 on-load-more=(action 'loadMore') as |scroller|}}
+    {{#infinite-scroller
+      class="example-1"
+      scroll-debounce=50
+      on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}
@@ -103,7 +113,7 @@ test('load more action (scroll-debounce)', function(assert) {
 
   later(() => {
     assert.equal(this.$('.thing').length, 20,
-      'has not fired load more action due to custom debouncing of scroll event');
+      'has not fired action due to custom debouncing of scroll event');
   }, 50);
 
   return wait().then(() => {
@@ -116,20 +126,20 @@ test('load more action (scroll-debounce)', function(assert) {
 test('load more action (use-document)', function(assert) {
   assert.expect(1);
 
-  let $window = {
+  const $window = {
     height() {
       return 500;
     }
   };
 
-  let $document = jQuery('<div/>', {
+  const $document = jQuery('<div/>', {
     css: {
       maxHeight: 1000,
       overflow: 'scroll'
     }
   });
 
-  let $spacer = jQuery('<div/>', {
+  const $spacer = jQuery('<div/>', {
     css: {
       height: 2000,
     }
@@ -148,7 +158,9 @@ test('load more action (use-document)', function(assert) {
   });
 
   this.render(hbs`
-    {{#infinite-scroller use-document=true on-load-more=(action 'loadMore') as |scroller|}}
+    {{#infinite-scroller
+      use-document=true
+      on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}
@@ -167,7 +179,7 @@ test('load more action (use-document)', function(assert) {
 test('loading class name', function(assert) {
   assert.expect(3);
 
-  let willLoad = RSVP.defer();
+  const willLoad = RSVP.defer();
 
   this.on('loadMore', () => {
     return willLoad.promise;
@@ -199,7 +211,7 @@ test('loading class name', function(assert) {
 test('yielded loading state', function(assert) {
   assert.expect(3);
 
-  let willLoad = RSVP.defer();
+  const willLoad = RSVP.defer();
 
   this.on('loadMore', () => {
     return willLoad.promise;
@@ -289,7 +301,7 @@ test('destroying (does not blow up)', function(assert) {
 
   this.set('showScroller', true);
 
-  let willLoad = RSVP.defer();
+  const willLoad = RSVP.defer();
 
   this.on('loadMore', () => {
     this.set('showScroller', false);

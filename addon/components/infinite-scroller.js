@@ -15,7 +15,8 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('scrollEventName', 'scroll.' + guidFor(this));
+    const guid = guidFor(this);
+    this.set('scrollEventName', `scroll.${guid}`);
   },
 
   didInsertElement() {
