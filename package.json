@@ -1,6 +1,6 @@
 {
   "name": "ember-simple-infinite-scroller",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple infinite scroller component for Ember apps",
   "directories": {
     "doc": "doc",
