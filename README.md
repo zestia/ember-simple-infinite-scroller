@@ -96,3 +96,7 @@ The component will yield a hash that provides:
     <td>Action for manually loading more</td>
   </tr>
 </table>
+
+### Performance
+
+Please read: https://github.com/TryGhost/Ghost/issues/7934
