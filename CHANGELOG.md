@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.5
+
+* Update dependancies (babel 6 etc..)
+
 1.0.1
 
 * Update for Glimmer 2 compat
