@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.6
+
+* Remove use of `getAttr`
+
 1.0.5
 
 * Update dependancies (babel 6 etc..)
