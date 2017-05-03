@@ -32,11 +32,11 @@ export default Component.extend({
   },
 
   _scrollDebounce() {
-    return this.getAttr('scroll-debounce') || 100;
+    return this.get('scroll-debounce') || 100;
   },
 
   $scroller() {
-    if (this.getAttr('use-document')) {
+    if (this.get('use-document')) {
       return this.get('_infiniteScroller').$document();
     } else {
       return this.$();
@@ -44,7 +44,7 @@ export default Component.extend({
   },
 
   _scrollerHeight() {
-    if (this.getAttr('use-document')) {
+    if (this.get('use-document')) {
       return this.get('_infiniteScroller').$window().height();
     } else {
       return this.$scroller().outerHeight();
@@ -52,7 +52,7 @@ export default Component.extend({
   },
 
   _scrollableHeight() {
-    if (this.getAttr('use-document')) {
+    if (this.get('use-document')) {
       return this.get('_infiniteScroller').$document().outerHeight();
     } else {
       return this.get('element').scrollHeight;
@@ -60,7 +60,7 @@ export default Component.extend({
   },
 
   _scrollTop() {
-    if (this.getAttr('use-document')) {
+    if (this.get('use-document')) {
       return this.get('_infiniteScroller').$document().scrollTop();
     } else {
       return this.$().scrollTop();
@@ -76,7 +76,7 @@ export default Component.extend({
   },
 
   _triggerAt() {
-    return parseInt(this.getAttr('trigger-at') || '100%', 10);
+    return parseInt(this.get('trigger-at') || '100%', 10);
   },
 
   _reachedBottom() {
@@ -96,7 +96,7 @@ export default Component.extend({
   _loadMore() {
     this.set('error', null);
     this.set('isLoading', true);
-    RSVP.resolve(this.getAttr('on-load-more')())
+    RSVP.resolve(this.get('on-load-more')())
       .catch(bind(this, '_loadError'))
       .finally(bind(this, '_loadFinished'));
   },
