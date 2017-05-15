@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.7
+
+* Cancel debounce when destroyed
+
 1.0.6
 
 * Remove use of `getAttr`
