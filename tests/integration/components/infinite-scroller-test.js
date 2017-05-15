@@ -341,3 +341,35 @@ test('no promise (does not blow up)', function(assert) {
 
   return wait();
 });
+
+test('destroying during debounce (does not blow up)', function(assert) {
+  assert.expect(0);
+
+  this.set('show', true);
+  this.set('things', generateThings(1, 20));
+
+  this.on('loadMore', () => {
+    return null;
+  });
+
+  this.render(hbs`
+    {{#if show}}
+      {{#infinite-scroller
+        class="example-1"
+        scroll-debounce=50
+        on-load-more=(action 'loadMore') as |scroller|}}
+        {{#each things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      {{/infinite-scroller}}
+    {{/if}}
+  `);
+
+  this.$('.infinite-scroller').scrollTop(450);
+
+  later(() => {
+    this.set('show', false);
+  }, 25);
+
+  return wait();
+});

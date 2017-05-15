@@ -1,7 +1,7 @@
 import Component from 'ember-component';
 import layout from '../templates/components/infinite-scroller';
 import { guidFor } from 'ember-metal/utils';
-import { bind, debounce } from 'ember-runloop';
+import { bind, debounce, cancel } from 'ember-runloop';
 import RSVP from 'rsvp';
 import inject from 'ember-service/inject';
 const { round } = Math;
@@ -22,13 +22,15 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this.$scroller().on(this.get('scrollEventName'), args => {
-      debounce(this, '_scrollingElement', args, this._scrollDebounce());
+      this.set('_scrollDebounceCancelId',
+        debounce(this, '_scrollingElement', args, this._scrollDebounce()));
     });
   },
 
   willDestroyElement() {
     this._super(...arguments);
     this.$scroller().off(this.get('scrollEventName'));
+    cancel(this.get('_scrollDebounceCancelId'));
   },
 
   _scrollDebounce() {
