@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.8
+
+* Eslint
+
 1.0.7
 
 * Cancel debounce when destroyed
