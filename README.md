@@ -21,6 +21,8 @@ ember install ember-simple-infinite-scroller
 {{/infinite-scroller}}
 ```
 
+<a href="https://amk221.github.io/ember-simple-infinite-scroller">Demo</a>
+
 ## Configuration
 
 <table>
