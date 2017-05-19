@@ -11,6 +11,8 @@ export default Component.extend({
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
+  debug: false,
+
   _infiniteScroller: inject('-infinite-scroller'),
 
   init() {
@@ -21,9 +23,10 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    this.$scroller().on(this.get('scrollEventName'), args => {
+    this.$scroller().on(this.get('scrollEventName'), e => {
       this.set('_scrollDebounceCancelId',
-        debounce(this, '_scrollingElement', args, this._scrollDebounce()));
+        debounce(this, '_scrollingElement', e, this._scrollDebounce())
+      );
     });
   },
 
@@ -90,9 +93,22 @@ export default Component.extend({
   },
 
   _scrollingElement() {
+    if (this.get('debug')) {
+      this._debug();
+    }
     if (this._shouldLoadMore()) {
       this._loadMore();
     }
+  },
+
+  _debug() {
+    /* eslint-disable no-console */
+    console.log();
+    console.log('scroll debounce', this._scrollDebounce());
+    console.log('trigger at', this._triggerAt());
+    console.log('scroll percentage', this._scrollPercentage());
+    console.log('reached bottom', this._reachedBottom());
+    console.log('should load more', this._shouldLoadMore());
   },
 
   _loadMore() {

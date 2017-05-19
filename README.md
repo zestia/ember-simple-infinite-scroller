@@ -100,3 +100,14 @@ The component will yield a hash that provides:
 ### Performance
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
+
+You may need to add this to `app/app.js`
+
+```javascript
+customEvents: {
+  touchstart: null,
+  touchmove: null,
+  touchend: null,
+  touchcancel: null
+}
+```
