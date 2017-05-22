@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.8
+
+* move ember-improved-cp to dependencies
+
 1.0.7
 
 * Cancel debounce when destroyed
