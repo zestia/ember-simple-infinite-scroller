@@ -21,6 +21,8 @@ ember install ember-simple-infinite-scroller
 {{/infinite-scroller}}
 ```
 
+<a href="https://amk221.github.io/ember-simple-infinite-scroller">Demo</a>
+
 ## Configuration
 
 <table>
@@ -59,7 +61,7 @@ Either make your component scrollable:
 ```css
 .my-element {
   max-height: 300px;
-  overflow: auto;
+  overflow-y: auto;
 }
 ```
 
@@ -100,3 +102,14 @@ The component will yield a hash that provides:
 ### Performance
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
+
+You may need to add this to `app/app.js`
+
+```javascript
+customEvents: {
+  touchstart: null,
+  touchmove: null,
+  touchend: null,
+  touchcancel: null
+}
+```
