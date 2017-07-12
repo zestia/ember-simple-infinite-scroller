@@ -2,7 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 import jQuery from 'jquery';
-import { later } from 'ember-runloop';
+import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
 import wait from 'ember-test-helpers/wait';
 

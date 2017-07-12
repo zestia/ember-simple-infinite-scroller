@@ -1,4 +1,4 @@
-import { A as emberA } from 'ember-array/utils';
+import { A as emberA } from '@ember/array';
 
 export default function(start, end) {
   const array = emberA();

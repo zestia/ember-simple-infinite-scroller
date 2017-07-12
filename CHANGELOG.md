@@ -1,10 +1,9 @@
 # Changelog
 
-<<<<<<< HEAD
-1.0.8
+1.0.10
 
-* Eslint
-=======
+* upgrade deps & fix build
+
 1.0.9
 
 * move ember-improved-cp to dependencies
@@ -12,7 +11,6 @@
 1.0.8
 
 * eslint
->>>>>>> 9c3004303b838cd8586ca3dd0a6c327a3283a638
 
 1.0.7
 

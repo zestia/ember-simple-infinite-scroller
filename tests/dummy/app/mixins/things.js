@@ -1,7 +1,7 @@
-import Mixin from 'ember-metal/mixin';
-import { later } from 'ember-runloop';
+import Mixin from '@ember/object/mixin';
+import { later } from '@ember/runloop';
 import RSVP from 'rsvp';
-import injectController from 'ember-controller/inject';
+import { inject as injectController } from '@ember/controller';
 import generateThings from '../utils/generate-things';
 
 export default Mixin.create({
