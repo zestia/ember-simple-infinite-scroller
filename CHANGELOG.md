@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.11
+
+* Upgrade dependencies
+
 1.0.10
 
 * upgrade deps & fix build
