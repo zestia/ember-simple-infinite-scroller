@@ -7,9 +7,7 @@ import generateThings from 'dummy/utils/generate-things';
 import wait from 'ember-test-helpers/wait';
 
 
-moduleForComponent(
-  'infinite-scroller',
-  'Integration | Component | infinite scroller', {
+moduleForComponent('infinite-scroller', {
   integration: true,
   beforeEach() {
     this.inject.service('-infinite-scroller', { as: 'infiniteScroller' });

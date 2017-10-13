@@ -1,1 +1,3 @@
-export { default } from 'ember-simple-infinite-scroller/components/infinite-scroller';
+export {
+  default
+} from 'ember-simple-infinite-scroller/components/infinite-scroller';
