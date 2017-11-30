@@ -18,10 +18,9 @@ module.exports = {
     // Ember specific
 
     'ember/alias-model-in-controller': 'off',
-    'ember/avoid-leaking-state-in-components': 'error',
     'ember/closure-actions': 'error',
     'ember/jquery-ember-run': 'error',
-    'ember/local-modules': 'error',
+    'ember/new-module-imports': 'error',
     'ember/named-functions-in-promises': 'off',
     'ember/new-module-imports': 'error',
     'ember/no-attrs-in-components': 'error',
@@ -39,6 +38,7 @@ module.exports = {
     'ember/routes-segments-snake-case': 'off',
     'ember/use-brace-expansion': 'error',
     'ember/use-ember-get-and-set': 'off',
+    'ember/avoid-leaking-state-in-ember-objects': 'error',
     'ember/order-in-components': ['error', {
       order: [
         'property',
@@ -322,7 +322,9 @@ module.exports = {
     'no-whitespace-before-property': 'error',
     'object-curly-newline': 'off',
     'object-curly-spacing': ['error', 'always'],
-    'object-property-newline': 'off',
+    'object-property-newline': ['error', {
+      allowMultiplePropertiesPerLine: true
+    }],
     'one-var-declaration-per-line': 'off',
     'one-var': 'off',
     'operator-assignment': 'error',
