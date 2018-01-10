@@ -18,7 +18,7 @@
   "engines": {
     "node": ">= 4"
   },
-  "author": "Andrew Kirwin",
+  "author": "Zestia",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "2.6.0",
