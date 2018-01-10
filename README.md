@@ -1,4 +1,4 @@
-# ember-simple-infinite-scroller
+# @zestia/ember-simple-infinite-scroller
 
 <a href="http://emberobserver.com/addons/ember-simple-infinite-scroller"><img src="http://emberobserver.com/badges/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#badge-embed"><img src="https://david-dm.org/zestia/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/zestia/ember-simple-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="http://travis-ci.org/zestia/ember-simple-infinite-scroller"><img src="https://travis-ci.org/zestia/ember-simple-infinite-scroller.svg?branch=master"></a>
 
@@ -7,7 +7,7 @@ Allowing you to load more data. It is not coupled to Ember-Data like some other 
 
 ### Installation
 ```
-ember install ember-simple-infinite-scroller
+ember install @zestia/ember-simple-infinite-scroller
 ```
 
 ### Example usage

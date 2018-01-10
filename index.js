@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-simple-infinite-scroller'
+  name: '@zestia/ember-simple-infinite-scroller'
 };

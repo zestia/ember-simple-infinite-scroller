@@ -1,3 +1,3 @@
 export {
   default
-} from 'ember-simple-infinite-scroller/services/-infinite-scroller';
+} from '@zestia/ember-simple-infinite-scroller/services/-infinite-scroller';
