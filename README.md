@@ -1,6 +1,6 @@
 # ember-simple-infinite-scroller
 
-<a href="http://emberobserver.com/addons/ember-simple-infinite-scroller"><img src="http://emberobserver.com/badges/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-simple-infinite-scroller#badge-embed"><img src="https://david-dm.org/amk221/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/amk221/ember-simple-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/amk221/ember-simple-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://codeclimate.com/github/amk221/ember-simple-infinite-scroller"><img src="https://codeclimate.com/github/amk221/ember-simple-infinite-scroller/badges/gpa.svg" /></a> &nbsp; <a href="http://travis-ci.org/amk221/ember-simple-infinite-scroller"><img src="https://travis-ci.org/amk221/ember-simple-infinite-scroller.svg?branch=master"></a>
+<a href="http://emberobserver.com/addons/ember-simple-infinite-scroller"><img src="http://emberobserver.com/badges/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#badge-embed"><img src="https://david-dm.org/zestia/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/zestia/ember-simple-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="http://travis-ci.org/zestia/ember-simple-infinite-scroller"><img src="https://travis-ci.org/zestia/ember-simple-infinite-scroller.svg?branch=master"></a>
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
 Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
@@ -21,7 +21,7 @@ ember install ember-simple-infinite-scroller
 {{/infinite-scroller}}
 ```
 
-<a href="https://amk221.github.io/ember-simple-infinite-scroller">Demo</a>
+<a href="https://zestia.github.io/ember-simple-infinite-scroller">Demo</a>
 
 ## Configuration
 
