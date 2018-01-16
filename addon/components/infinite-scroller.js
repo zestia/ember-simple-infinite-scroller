@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import layout from '../templates/components/infinite-scroller';
 import { guidFor } from '@ember/object/internals';
 import { bind, debounce, cancel } from '@ember/runloop';
-import RSVP from 'rsvp';
+import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
 const { round } = Math;
 
@@ -114,7 +114,7 @@ export default Component.extend({
   _loadMore() {
     this.set('error', null);
     this.set('isLoading', true);
-    RSVP.resolve(this.get('on-load-more')())
+    resolve(this.get('on-load-more')())
       .catch(bind(this, '_loadError'))
       .finally(bind(this, '_loadFinished'));
   },

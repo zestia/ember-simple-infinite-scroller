@@ -1,6 +1,10 @@
 <p>Action is fired when the bottom of the document is scrolled to</p>
 
-{{#infinite-scroller class="example-2" on-load-more=(action 'loadMore') use-document=true as |scroller|}}
+{{#infinite-scroller
+  class="example-2"
+  on-load-more=(action "loadMore")
+  use-document=true
+as |scroller|}}
   {{#each things as |thing|}}
     <div class="thing">{{thing.name}}</div>
   {{/each}}

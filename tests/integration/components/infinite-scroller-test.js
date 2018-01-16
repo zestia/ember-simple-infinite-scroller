@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import RSVP from 'rsvp';
+import { defer, resolve, reject } from 'rsvp';
 import jQuery from 'jquery';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
@@ -177,7 +177,7 @@ test('load more action (use-document)', function(assert) {
 test('loading class name', function(assert) {
   assert.expect(3);
 
-  const willLoad = RSVP.defer();
+  const willLoad = defer();
 
   this.on('loadMore', () => {
     return willLoad.promise;
@@ -209,7 +209,7 @@ test('loading class name', function(assert) {
 test('yielded loading state', function(assert) {
   assert.expect(3);
 
-  const willLoad = RSVP.defer();
+  const willLoad = defer();
 
   this.on('loadMore', () => {
     return willLoad.promise;
@@ -245,7 +245,7 @@ test('yielded error', function(assert) {
   assert.expect(2);
 
   this.on('loadMore', () => {
-    return RSVP.reject(new Error('Fail'));
+    return reject(new Error('Fail'));
   });
 
   this.render(hbs`
@@ -272,7 +272,7 @@ test('yielded loadMore action', function(assert) {
 
   this.on('loadMore', () => {
     this.set('things', generateThings(1, 5));
-    return RSVP.resolve();
+    return resolve();
   });
 
   this.render(hbs`
@@ -299,7 +299,7 @@ test('destroying (does not blow up)', function(assert) {
 
   this.set('showScroller', true);
 
-  const willLoad = RSVP.defer();
+  const willLoad = defer();
 
   this.on('loadMore', () => {
     this.set('showScroller', false);
