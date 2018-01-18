@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.17
+
+* Reduce reliance on jQuery
+
 1.0.16
 
 * Fix travis builds
