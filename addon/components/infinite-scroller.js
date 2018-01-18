@@ -10,19 +10,19 @@ export default Component.extend({
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
-  debug: true,
+  debug: false,
 
   _infiniteScroller: inject('-infinite-scroller'),
 
   didInsertElement() {
     this._super(...arguments);
     this.set('_scrollHandler', bind(this, '_scroll'));
-    this.scroller().addEventListener('scroll', this.get('_scrollHandler'));
+    this._listener().addEventListener('scroll', this.get('_scrollHandler'));
   },
 
   willDestroyElement() {
     this._super(...arguments);
-    this.scroller().removeEventListener('scroll', this.get('_scrollHandler'));
+    this._listener().removeEventListener('scroll', this.get('_scrollHandler'));
     cancel(this.get('_scrollDebounceId'));
   },
 
@@ -42,23 +42,23 @@ export default Component.extend({
     }
   },
 
-  _scrollDebounce() {
-    return this.get('scroll-debounce') || 100;
-  },
-
-  scroller() {
+  _listener() {
     if (this.get('use-document')) {
-      return this.get('_infiniteScroller.documentElement');
+      return this.get('_infiniteScroller.document');
     } else {
       return this.get('element');
     }
   },
 
+  _scrollDebounce() {
+    return this.get('scroll-debounce') || 100;
+  },
+
   _scrollerHeight() {
     if (this.get('use-document')) {
-      return this.get('_infiniteScroller.window.innerHeight');
+      return this.get('_infiniteScroller.documentElement.clientHeight');
     } else {
-      return this.scroller().offsetHeight;
+      return this.get('element.offsetHeight');
     }
   },
 
@@ -100,12 +100,16 @@ export default Component.extend({
 
   _debug() {
     /* eslint-disable no-console */
-    console.log();
-    console.log('scroll debounce', this._scrollDebounce());
-    console.log('trigger at', this._triggerAt());
-    console.log('scroll percentage', this._scrollPercentage());
-    console.log('reached bottom', this._reachedBottom());
-    console.log('should load more', this._shouldLoadMore());
+    console.table([{
+      'scroller height': this._scrollerHeight(),
+      'scrollable height': this._scrollableHeight(),
+      'scroll top': this._scrollTop(),
+      'scroll debounce': this._scrollDebounce(),
+      'trigger at': this._triggerAt(),
+      'scroll percentage': this._scrollPercentage(),
+      'reached bottom': this._reachedBottom(),
+      'should load more': this._shouldLoadMore()
+    }]);
   },
 
   _loadMore() {

@@ -124,10 +124,6 @@ test('load more action (scroll-debounce)', function(assert) {
 test('load more action (use-document)', function(assert) {
   assert.expect(1);
 
-  const fakeWindow = {
-    innerHeight: 500
-  };
-
   const body = document.querySelector('body');
 
   const fakeDocumentElement = document.createElement('div');
@@ -140,7 +136,6 @@ test('load more action (use-document)', function(assert) {
   fakeDocumentElement.appendChild(spacer);
   body.appendChild(fakeDocumentElement);
 
-  this.set('infiniteScroller.window', fakeWindow);
   this.set('infiniteScroller.documentElement', fakeDocumentElement);
 
   this.set('things', generateThings(1, 10));
