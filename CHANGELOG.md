@@ -1,16 +1,21 @@
 # Changelog
 
+1.0.16
+
+* Fix travis builds
+* Fix dependencies
+
 1.0.15
 
 * Lint everything
 
 1.0.12
 
-* Upgrade dependancies
+* Upgrade devDependencies
 
 1.0.11
 
-* Upgrade dependencies
+* Upgrade devDependencies
 
 1.0.10
 
@@ -34,7 +39,7 @@
 
 1.0.5
 
-* Update dependancies (babel 6 etc..)
+* Update devDependencies
 
 1.0.1
 
