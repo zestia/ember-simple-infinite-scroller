@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import layout from '../templates/components/infinite-scroller';
-import { guidFor } from '@ember/object/internals';
 import { bind, debounce, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
@@ -11,64 +10,71 @@ export default Component.extend({
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
-  debug: false,
+  debug: true,
 
   _infiniteScroller: inject('-infinite-scroller'),
 
-  init() {
-    this._super(...arguments);
-    const guid = guidFor(this);
-    this.set('scrollEventName', `scroll.${guid}`);
-  },
-
   didInsertElement() {
     this._super(...arguments);
-    this.$scroller().on(this.get('scrollEventName'), e => {
-      this.set('_scrollDebounceCancelId',
-        debounce(this, '_scrollingElement', e, this._scrollDebounce())
-      );
-    });
+    this.set('_scrollHandler', bind(this, '_scroll'));
+    this.scroller().addEventListener('scroll', this.get('_scrollHandler'));
   },
 
   willDestroyElement() {
     this._super(...arguments);
-    this.$scroller().off(this.get('scrollEventName'));
-    cancel(this.get('_scrollDebounceCancelId'));
+    this.scroller().removeEventListener('scroll', this.get('_scrollHandler'));
+    cancel(this.get('_scrollDebounceId'));
+  },
+
+  _scroll(e) {
+    this.set(
+      '_scrollDebounceId',
+      debounce(this, '_debouncedScroll', e, this._scrollDebounce())
+    );
+  },
+
+  _debouncedScroll() {
+    if (this.get('debug')) {
+      this._debug();
+    }
+    if (this._shouldLoadMore()) {
+      this._loadMore();
+    }
   },
 
   _scrollDebounce() {
     return this.get('scroll-debounce') || 100;
   },
 
-  $scroller() {
+  scroller() {
     if (this.get('use-document')) {
-      return this.get('_infiniteScroller').$document();
+      return this.get('_infiniteScroller.documentElement');
     } else {
-      return this.$();
+      return this.get('element');
     }
   },
 
   _scrollerHeight() {
     if (this.get('use-document')) {
-      return this.get('_infiniteScroller').$window().height();
+      return this.get('_infiniteScroller.window.innerHeight');
     } else {
-      return this.$scroller().outerHeight();
+      return this.scroller().offsetHeight;
     }
   },
 
   _scrollableHeight() {
     if (this.get('use-document')) {
-      return this.get('_infiniteScroller').$document().outerHeight();
+      return this.get('_infiniteScroller.documentElement.offsetHeight');
     } else {
-      return this.get('element').scrollHeight;
+      return this.get('element.scrollHeight');
     }
   },
 
   _scrollTop() {
     if (this.get('use-document')) {
-      return this.get('_infiniteScroller').$document().scrollTop();
+      return this.get('_infiniteScroller.documentElement.scrollTop');
     } else {
-      return this.$().scrollTop();
+      return this.get('element.scrollTop');
     }
   },
 
@@ -90,15 +96,6 @@ export default Component.extend({
 
   _shouldLoadMore() {
     return this._reachedBottom() && !this.get('isLoading');
-  },
-
-  _scrollingElement() {
-    if (this.get('debug')) {
-      this._debug();
-    }
-    if (this._shouldLoadMore()) {
-      this._loadMore();
-    }
   },
 
   _debug() {

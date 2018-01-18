@@ -1,10 +1,10 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { defer, resolve, reject } from 'rsvp';
-import jQuery from 'jquery';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
 import wait from 'ember-test-helpers/wait';
+import { triggerEvent } from '@ember/test-helpers';
 
 
 moduleForComponent('infinite-scroller', {
@@ -124,30 +124,24 @@ test('load more action (scroll-debounce)', function(assert) {
 test('load more action (use-document)', function(assert) {
   assert.expect(1);
 
-  const $window = {
-    height() {
-      return 500;
-    }
+  const fakeWindow = {
+    innerHeight: 500
   };
 
-  const $document = jQuery('<div/>', {
-    css: {
-      maxHeight: 1000,
-      overflow: 'scroll'
-    }
-  });
+  const body = document.querySelector('body');
 
-  const $spacer = jQuery('<div/>', {
-    css: {
-      height: 2000,
-    }
-  });
+  const fakeDocumentElement = document.createElement('div');
+  fakeDocumentElement.style.maxHeight = '1000px';
+  fakeDocumentElement.style.overflow = 'scroll';
 
-  $document.append($spacer);
-  jQuery('body').append($document);
+  const spacer = document.createElement('div');
+  spacer.style.height = '2000px';
 
-  this.get('infiniteScroller').$window   = () => $window;
-  this.get('infiniteScroller').$document = () => $document;
+  fakeDocumentElement.appendChild(spacer);
+  body.appendChild(fakeDocumentElement);
+
+  this.set('infiniteScroller.window', fakeWindow);
+  this.set('infiniteScroller.documentElement', fakeDocumentElement);
 
   this.set('things', generateThings(1, 10));
 
@@ -165,7 +159,9 @@ test('load more action (use-document)', function(assert) {
     {{/infinite-scroller}}
   `);
 
-  this.get('infiniteScroller').$document().scrollTop(500).trigger('scroll');
+  fakeDocumentElement.scrollTop = 500;
+
+  triggerEvent(document, 'scroll');
 
   return wait().then(() => {
     assert.equal(this.$('.thing').length, 20,
