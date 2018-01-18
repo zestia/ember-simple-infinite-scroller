@@ -21,7 +21,11 @@ ember install @zestia/ember-simple-infinite-scroller
 {{/infinite-scroller}}
 ```
 
-<a href="https://zestia.github.io/ember-simple-infinite-scroller">Demo</a>
+### Demo
+
+<a href="https://zestia.github.io/ember-simple-infinite-scroller">
+  https://zestia.github.io/ember-simple-infinite-scroller/
+</a>
 
 ## Configuration
 
