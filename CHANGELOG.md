@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.18
+
+* Bug fixes
+
 1.0.17
 
 * Reduce reliance on jQuery

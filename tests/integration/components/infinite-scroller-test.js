@@ -154,7 +154,7 @@ test('load more action (use-document)', function(assert) {
     {{/infinite-scroller}}
   `);
 
-  fakeDocumentElement.scrollTop = 500;
+  fakeDocumentElement.scrollTop = 1000;
 
   triggerEvent(document, 'scroll');
 

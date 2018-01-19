@@ -50,32 +50,28 @@ export default Component.extend({
     }
   },
 
+  _element() {
+    if (this.get('use-document')) {
+      return this.get('_infiniteScroller.documentElement');
+    } else {
+      return this.get('element');
+    }
+  },
+
   _scrollDebounce() {
     return this.get('scroll-debounce') || 100;
   },
 
   _scrollerHeight() {
-    if (this.get('use-document')) {
-      return this.get('_infiniteScroller.documentElement.clientHeight');
-    } else {
-      return this.get('element.offsetHeight');
-    }
+    return this._element().clientHeight;
   },
 
   _scrollableHeight() {
-    if (this.get('use-document')) {
-      return this.get('_infiniteScroller.documentElement.offsetHeight');
-    } else {
-      return this.get('element.scrollHeight');
-    }
+    return this._element().scrollHeight;
   },
 
   _scrollTop() {
-    if (this.get('use-document')) {
-      return this.get('_infiniteScroller.documentElement.scrollTop');
-    } else {
-      return this.get('element.scrollTop');
-    }
+    return this._element().scrollTop;
   },
 
   _scrollerBottom() {
@@ -104,11 +100,12 @@ export default Component.extend({
       'scroller height': this._scrollerHeight(),
       'scrollable height': this._scrollableHeight(),
       'scroll top': this._scrollTop(),
-      'scroll debounce': this._scrollDebounce(),
-      'trigger at': this._triggerAt(),
+      'scroller bottom': this._scrollerBottom(),
       'scroll percentage': this._scrollPercentage(),
       'reached bottom': this._reachedBottom(),
-      'should load more': this._shouldLoadMore()
+      'should load more': this._shouldLoadMore(),
+      'scroll debounce': this._scrollDebounce(),
+      'trigger at': this._triggerAt()
     }]);
   },
 
