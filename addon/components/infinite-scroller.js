@@ -10,7 +10,7 @@ export default Component.extend({
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
-  debug: true,
+  debug: false,
 
   _infiniteScroller: inject('-infinite-scroller'),
 

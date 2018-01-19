@@ -1,6 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { defer, resolve, reject } from 'rsvp';
+import { defer, reject } from 'rsvp';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
 import wait from 'ember-test-helpers/wait';
@@ -11,6 +11,12 @@ moduleForComponent('infinite-scroller', {
   integration: true,
   beforeEach() {
     this.inject.service('-infinite-scroller', { as: 'infiniteScroller' });
+
+    this.set('things', generateThings(1, 20));
+
+    this.on('loadMore', () => {
+      this.get('things').pushObjects(generateThings(21, 40));
+    });
   }
 });
 
@@ -28,11 +34,6 @@ test('it renders', function(assert) {
 test('load more action', function(assert) {
   assert.expect(2);
 
-  this.set('things', generateThings(1, 20));
-
-  this.on('loadMore', () => {
-    this.get('things').pushObjects(generateThings(21, 40));
-  });
 
   this.render(hbs`
     {{#infinite-scroller
@@ -61,12 +62,6 @@ test('load more action', function(assert) {
 test('load more action (trigger-at)', function(assert) {
   assert.expect(1);
 
-  this.set('things', generateThings(1, 20));
-
-  this.on('loadMore', () => {
-    this.get('things').pushObjects(generateThings(21, 40));
-  });
-
   this.render(hbs`
     {{#infinite-scroller
       class="example-1"
@@ -89,12 +84,6 @@ test('load more action (trigger-at)', function(assert) {
 
 test('load more action (scroll-debounce)', function(assert) {
   assert.expect(2);
-
-  this.set('things', generateThings(1, 20));
-
-  this.on('loadMore', () => {
-    this.get('things').pushObjects(generateThings(21, 40));
-  });
 
   this.render(hbs`
     {{#infinite-scroller
@@ -124,28 +113,9 @@ test('load more action (scroll-debounce)', function(assert) {
 test('load more action (use-document)', function(assert) {
   assert.expect(1);
 
-  const body = document.querySelector('body');
-
-  const fakeDocumentElement = document.createElement('div');
-  fakeDocumentElement.style.maxHeight = '1000px';
-  fakeDocumentElement.style.overflow = 'scroll';
-
-  const spacer = document.createElement('div');
-  spacer.style.height = '2000px';
-
-  fakeDocumentElement.appendChild(spacer);
-  body.appendChild(fakeDocumentElement);
-
-  this.set('infiniteScroller.documentElement', fakeDocumentElement);
-
-  this.set('things', generateThings(1, 10));
-
-  this.on('loadMore', () => {
-    this.get('things').pushObjects(generateThings(11, 20));
-  });
-
   this.render(hbs`
     {{#infinite-scroller
+      class="example-2"
       use-document=true
       on-load-more=(action 'loadMore') as |scroller|}}
       {{#each things as |thing|}}
@@ -154,12 +124,18 @@ test('load more action (use-document)', function(assert) {
     {{/infinite-scroller}}
   `);
 
-  fakeDocumentElement.scrollTop = 1000;
+  const fakeDocumentElement = {
+    scrollTop: 1000,
+    scrollHeight: 1000,
+    clientHeight: 500
+  };
+
+  this.set('infiniteScroller.documentElement', fakeDocumentElement);
 
   triggerEvent(document, 'scroll');
 
   return wait().then(() => {
-    assert.equal(this.$('.thing').length, 20,
+    assert.equal(this.$('.thing').length, 40,
       'fires load more action at the window scroll boundary');
   });
 });
@@ -259,12 +235,7 @@ test('yielded error', function(assert) {
 
 
 test('yielded loadMore action', function(assert) {
-  assert.expect(2);
-
-  this.on('loadMore', () => {
-    this.set('things', generateThings(1, 5));
-    return resolve();
-  });
+  assert.expect(1);
 
   this.render(hbs`
     {{#infinite-scroller on-load-more=(action 'loadMore') as |scroller|}}
@@ -275,12 +246,9 @@ test('yielded loadMore action', function(assert) {
     {{/infinite-scroller}}
   `);
 
-  assert.equal(this.$('.thing').length, 0,
-    'precondition: no things rendered');
-
   this.$('button').trigger('click');
 
-  assert.equal(this.$('.thing').length, 5,
+  assert.equal(this.$('.thing').length, 40,
     'yields an action that can trigger the load more action');
 });
 
@@ -331,11 +299,11 @@ test('no promise (does not blow up)', function(assert) {
   return wait();
 });
 
+
 test('destroying during debounce (does not blow up)', function(assert) {
   assert.expect(0);
 
   this.set('show', true);
-  this.set('things', generateThings(1, 20));
 
   this.on('loadMore', () => {
     return null;
