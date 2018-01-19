@@ -1,3 +1,3 @@
 module.exports = {
-  extends: '@zestia/eslint-config/ember'
+  extends: '@zestia/eslint-config/ember-addon'
 };
