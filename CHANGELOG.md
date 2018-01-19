@@ -2,7 +2,7 @@
 
 1.0.18
 
-* Bug fixes
+* Bug fixes (`use-document` technique was broken in 1.0.17)
 
 1.0.17
 
