@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.20
+
+* Re-release due to dodgy publish
+
 1.0.19
 
 * Upgrades ember-cli
