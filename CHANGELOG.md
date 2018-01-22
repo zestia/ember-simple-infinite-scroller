@@ -1,5 +1,9 @@
 # Changelog
 
+1.0.19
+
+* Upgrades ember-cli
+
 1.0.18
 
 * Bug fixes (`use-document` technique was broken in 1.0.17)
