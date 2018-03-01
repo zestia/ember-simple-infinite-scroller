@@ -27,10 +27,7 @@ export default Component.extend({
   },
 
   _scroll(e) {
-    this.set(
-      '_scrollDebounceId',
-      debounce(this, '_debouncedScroll', e, this._scrollDebounce())
-    );
+    this.set('_scrollDebounceId', debounce(this, '_debouncedScroll', e, this._scrollDebounce()));
   },
 
   _debouncedScroll() {
