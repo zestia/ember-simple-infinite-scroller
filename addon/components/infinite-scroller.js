@@ -6,13 +6,13 @@ import { inject } from '@ember/service';
 const { round } = Math;
 
 export default Component.extend({
+  _infiniteScroller: inject('-infinite-scroller'),
+
   layout,
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
   debug: false,
-
-  _infiniteScroller: inject('-infinite-scroller'),
 
   didInsertElement() {
     this._super(...arguments);
@@ -24,6 +24,12 @@ export default Component.extend({
     this._super(...arguments);
     this._listener().removeEventListener('scroll', this.get('_scrollHandler'));
     cancel(this.get('_scrollDebounceId'));
+  },
+
+  actions: {
+    loadMore() {
+      this._loadMore();
+    }
   },
 
   _scroll(e) {
@@ -126,11 +132,5 @@ export default Component.extend({
       return;
     }
     this.set('isLoading', false);
-  },
-
-  actions: {
-    loadMore() {
-      this._loadMore();
-    }
   }
 });
