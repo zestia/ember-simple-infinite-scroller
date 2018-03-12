@@ -57,9 +57,9 @@ module('infinite-scroller', function(hooks) {
         'has not fired load more action due to debouncing of scroll event');
     }, 100);
 
-    await settled();
+    await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.equal(findAll('.thing').length, 40,
+    assert.ok(true,
       'fires load more action at the element scroll boundary');
   });
 
@@ -79,9 +79,9 @@ module('infinite-scroller', function(hooks) {
 
     find('.infinite-scroller').scrollTop = 225;
 
-    await waitUntil(() => findAll('.thing').length !== 20);
+    await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.equal(findAll('.thing').length, 40,
+    assert.ok(true,
       'fires load more action at the custom element scroll boundary');
   });
 
@@ -106,9 +106,9 @@ module('infinite-scroller', function(hooks) {
         'has not fired action due to custom debouncing of scroll event');
     }, 50);
 
-    await settled();
+    await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.equal(findAll('.thing').length, 40,
+    assert.ok(true,
       'fires load more action after being debounced');
   });
 
@@ -136,9 +136,9 @@ module('infinite-scroller', function(hooks) {
 
     await triggerEvent(document, 'scroll');
 
-    await settled();
+    await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.equal(findAll('.thing').length, 40,
+    assert.ok(true,
       'fires load more action at the window scroll boundary');
   });
 
