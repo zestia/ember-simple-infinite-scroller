@@ -4,7 +4,16 @@ import hbs from 'htmlbars-inline-precompile';
 import { defer, reject } from 'rsvp';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
-import { render, settled, triggerEvent } from '@ember/test-helpers';
+import {
+  render,
+  settled,
+  triggerEvent,
+  find,
+  findAll,
+  click,
+  waitFor,
+  waitUntil
+} from '@ember/test-helpers';
 
 module('infinite-scroller', function(hooks) {
   setupRenderingTest(hooks);
@@ -24,7 +33,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`{{infinite-scroller}}`);
 
-    assert.equal(this.$('.infinite-scroller').length, 1,
+    assert.equal(findAll('.infinite-scroller').length, 1,
       'infinite scroller component has an appropriate class name');
   });
 
@@ -41,16 +50,16 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    this.$('.infinite-scroller').scrollTop(450);
+    find('.infinite-scroller').scrollTop = 450;
 
     later(() => {
-      assert.equal(this.$('.thing').length, 20,
+      assert.equal(findAll('.thing').length, 20,
         'has not fired load more action due to debouncing of scroll event');
     }, 100);
 
     await settled();
 
-    assert.equal(this.$('.thing').length, 40,
+    assert.equal(findAll('.thing').length, 40,
       'fires load more action at the element scroll boundary');
   });
 
@@ -68,11 +77,11 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    this.$('.infinite-scroller').scrollTop(225);
+    find('.infinite-scroller').scrollTop = 225;
 
-    await settled();
+    await waitUntil(() => findAll('.thing').length !== 20);
 
-    assert.equal(this.$('.thing').length, 40,
+    assert.equal(findAll('.thing').length, 40,
       'fires load more action at the custom element scroll boundary');
   });
 
@@ -90,16 +99,16 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    this.$('.infinite-scroller').scrollTop(450);
+    find('.infinite-scroller').scrollTop = 450;
 
     later(() => {
-      assert.equal(this.$('.thing').length, 20,
+      assert.equal(findAll('.thing').length, 20,
         'has not fired action due to custom debouncing of scroll event');
     }, 50);
 
     await settled();
 
-    assert.equal(this.$('.thing').length, 40,
+    assert.equal(findAll('.thing').length, 40,
       'fires load more action after being debounced');
   });
 
@@ -129,7 +138,7 @@ module('infinite-scroller', function(hooks) {
 
     await settled();
 
-    assert.equal(this.$('.thing').length, 40,
+    assert.equal(findAll('.thing').length, 40,
       'fires load more action at the window scroll boundary');
   });
 
@@ -148,19 +157,19 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    assert.equal(this.$('.infinite-scroller.is-loading').length, 0,
+    assert.ok(!find('.infinite-scroller').classList.contains('is-loading'),
       'precondition: is not loading');
 
-    this.$('button').trigger('click');
+    await click('button');
 
-    assert.equal(this.$('.infinite-scroller.is-loading').length, 1,
+    assert.ok(find('.infinite-scroller').classList.contains('is-loading'),
       'a loading class is added whilst the action is being performed');
 
     willLoad.resolve();
 
     await settled();
 
-    assert.equal(this.$('.infinite-scroller.is-loading').length, 0,
+    assert.ok(!find('.infinite-scroller').classList.contains('is-loading'),
       'loading class name is removed after the action resolves');
   });
 
@@ -182,19 +191,21 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    assert.ok(!this.$().html().match('Please wait..'),
+    assert.ok(!find('.infinite-scroller').textContent.match('Please wait...'),
       'precondition: is not loading');
 
-    this.$('button').trigger('click');
+    click('button');
 
-    assert.ok(this.$().html().match('Please wait..'),
+    await waitFor('.infinite-scroller');
+
+    assert.ok(find('.infinite-scroller').textContent.match('Please wait...'),
       'yields a hash with the loading state');
 
     willLoad.resolve();
 
     await settled();
 
-    assert.ok(!this.$().html().match('Please wait..'),
+    assert.ok(!find('.infinite-scroller').textContent.match('Please wait...'),
       'loading state is updated');
   });
 
@@ -214,12 +225,12 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    assert.ok(!this.$().html().match('Fail'),
+    assert.ok(!find('.infinite-scroller').textContent.match('Fail'),
       'precondition: no error message');
 
-    this.$('button').trigger('click');
+    await click('button');
 
-    assert.ok(this.$().html().match('Fail'),
+    assert.ok(find('.infinite-scroller').textContent.match('Fail'),
       'yields a hash with the last rejection error');
   });
 
@@ -235,9 +246,9 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    this.$('button').trigger('click');
+    await click('button');
 
-    assert.equal(this.$('.thing').length, 40,
+    assert.equal(findAll('.thing').length, 40,
       'yields an action that can trigger the load more action');
   });
 
@@ -261,11 +272,9 @@ module('infinite-scroller', function(hooks) {
       {{/if}}
     `);
 
-    this.$('button').trigger('click');
+    await click('button');
 
     willLoad.resolve();
-
-    return settled();
   });
 
   test('no promise (does not blow up)', async function(assert) {
@@ -281,9 +290,7 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    this.$('button').trigger('click');
-
-    return settled();
+    await click('button');
   });
 
   test('destroying during debounce (does not blow up)', async function(assert) {
@@ -308,12 +315,10 @@ module('infinite-scroller', function(hooks) {
       {{/if}}
     `);
 
-    this.$('.infinite-scroller').scrollTop(450);
+    find('.infinite-scroller').scrollTop = 450;
 
     later(() => {
       this.set('show', false);
     }, 25);
-
-    return settled();
   });
 });
