@@ -40,6 +40,7 @@ export default Component.extend({
     if (this.get('debug')) {
       this._debug();
     }
+
     if (this._shouldLoadMore()) {
       this._loadMore();
     }
@@ -124,6 +125,7 @@ export default Component.extend({
     if (this.get('isDestroyed')) {
       return;
     }
+
     this.set('error', error);
   },
 
@@ -131,6 +133,7 @@ export default Component.extend({
     if (this.get('isDestroyed')) {
       return;
     }
+
     this.set('isLoading', false);
   }
 });
