@@ -10,6 +10,7 @@ DummyRouter.map(function() {
   this.route('example-1');
   this.route('example-2');
   this.route('example-3');
+  this.route('example-4');
 });
 
 export default DummyRouter;

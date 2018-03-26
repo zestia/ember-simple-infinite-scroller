@@ -4,6 +4,12 @@
   border: 1px solid red;
 }
 
+.external-element {
+  margin: 20px;
+  padding: 10px;
+  border: 1px dashed red;
+}
+
 .thing {
   border: 1px solid blue;
   height: 20px;
@@ -16,7 +22,8 @@
 }
 
 .example-1,
-.example-3 {
+.example-3,
+.external-element {
   overflow: auto;
   max-height: 200px;
 }

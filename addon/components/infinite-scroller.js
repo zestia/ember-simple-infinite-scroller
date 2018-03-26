@@ -10,9 +10,16 @@ export default Component.extend({
 
   layout,
   classNames: ['infinite-scroller'],
-  classNameBindings: ['isLoading'],
 
   debug: false,
+
+  init() {
+    this._super(...arguments);
+
+    if (this.get('tagName') !== '') {
+      this.set('classNameBindings', ['isLoading']);
+    }
+  },
 
   didInsertElement() {
     this._super(...arguments);
@@ -48,6 +55,8 @@ export default Component.extend({
   _listener() {
     if (this.get('use-document')) {
       return this.get('_infiniteScroller.document');
+    } else if (this.get('use-element')) {
+      return document.querySelector(this.get('use-element'));
     } else {
       return this.get('element');
     }
@@ -56,6 +65,8 @@ export default Component.extend({
   _element() {
     if (this.get('use-document')) {
       return this.get('_infiniteScroller.documentElement');
+    } else if (this.get('use-element')) {
+      return document.querySelector(this.get('use-element'));
     } else {
       return this.get('element');
     }

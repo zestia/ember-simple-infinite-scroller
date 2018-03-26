@@ -321,4 +321,31 @@ module('infinite-scroller', function(hooks) {
       this.set('show', false);
     }, 25);
   });
+
+  test('custom element', async function(assert) {
+    assert.expect(2);
+
+    await render(hbs`
+      <div class="external-element">
+        {{#each things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </div>
+
+      {{infinite-scroller
+        tagName=""
+        use-element=".external-element"
+        on-load-more=(action loadMore)}}
+    `);
+
+    assert.ok(!find('.infinite-scroller'),
+      'can render a tagless component when use-element is specified');
+
+    find('.external-element').scrollTop = 450;
+
+    await waitUntil(() => findAll('.thing').length === 40);
+
+    assert.ok(true,
+      'fires load more action at the custom element scroll boundary');
+  });
 });
