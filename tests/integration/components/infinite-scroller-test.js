@@ -321,4 +321,31 @@ module('infinite-scroller', function(hooks) {
       this.set('show', false);
     }, 25);
   });
+
+  test('custom element', async function(assert) {
+    assert.expect(1);
+
+    await render(hbs`
+    {{#infinite-scroller
+      use-element=".internal-element"
+      on-load-more=(action loadMore)}}
+
+      <div class = "non-scrollable-element">
+        <div class="internal-element">
+          {{#each things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+        </div>
+      </div>
+
+      {{/infinite-scroller}}
+    `);
+
+    find('.internal-element').scrollTop = 450;
+
+    await waitUntil(() => findAll('.thing').length === 40);
+
+    assert.ok(true,
+      'fires load more action at the custom element scroll boundary');
+  });
 });

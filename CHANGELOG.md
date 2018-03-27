@@ -1,5 +1,9 @@
 # Changelog
 
+2.0.0
+
+* Introduce `use-element` 
+
 1.0.20
 
 * Re-release due to dodgy publish

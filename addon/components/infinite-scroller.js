@@ -49,6 +49,8 @@ export default Component.extend({
   _listener() {
     if (this.get('use-document')) {
       return this.get('_infiniteScroller.document');
+    } else if (this.get('use-element')) {
+      return this.get('element').querySelector(this.get('use-element'));
     } else {
       return this.get('element');
     }
@@ -57,6 +59,8 @@ export default Component.extend({
   _element() {
     if (this.get('use-document')) {
       return this.get('_infiniteScroller.documentElement');
+    } else if (this.get('use-element')) {
+      return this.get('element').querySelector(this.get('use-element'));
     } else {
       return this.get('element');
     }
