@@ -1,11 +1,11 @@
-<p>Action is fired when the bottom of the external div is scrolled to</p>
+<p>Action is fired when the bottom of the internal div is scrolled to</p>
 
 {{#infinite-scroller
   class="example-4"
   on-load-more=(action "loadMore")
-  use-element=".external-element"}}
+  use-element=".internal-element"}}
   <div class="unscrollable-element">
-    <div class="external-element">
+    <div class="internal-element">
       {{#each things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}

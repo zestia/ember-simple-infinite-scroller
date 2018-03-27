@@ -4,7 +4,7 @@
   border: 1px solid red;
 }
 
-.external-element {
+.internal-element {
   margin: 20px;
   padding: 10px;
   border: 1px dashed red;
@@ -23,7 +23,7 @@
 
 .example-1,
 .example-3,
-.external-element {
+.internal-element {
   overflow: auto;
   max-height: 200px;
 }

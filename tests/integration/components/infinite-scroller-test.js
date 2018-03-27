@@ -327,11 +327,11 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
     {{#infinite-scroller
-      use-element=".external-element"
+      use-element=".internal-element"
       on-load-more=(action loadMore)}}
 
       <div class = "non-scrollable-element">
-        <div class="external-element">
+        <div class="internal-element">
           {{#each things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
@@ -341,7 +341,7 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    find('.external-element').scrollTop = 450;
+    find('.internal-element').scrollTop = 450;
 
     await waitUntil(() => findAll('.thing').length === 40);
 
