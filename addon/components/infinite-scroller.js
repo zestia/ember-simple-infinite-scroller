@@ -13,14 +13,6 @@ export default Component.extend({
 
   debug: false,
 
-  init() {
-    this._super(...arguments);
-
-    if (this.get('tagName') !== '') {
-      this.set('classNameBindings', ['isLoading']);
-    }
-  },
-
   didInsertElement() {
     this._super(...arguments);
     this.set('_scrollHandler', bind(this, '_scroll'));
@@ -56,7 +48,7 @@ export default Component.extend({
     if (this.get('use-document')) {
       return this.get('_infiniteScroller.document');
     } else if (this.get('use-element')) {
-      return document.querySelector(this.get('use-element'));
+      return this.get('element').querySelector(this.get('use-element'));
     } else {
       return this.get('element');
     }
@@ -66,7 +58,7 @@ export default Component.extend({
     if (this.get('use-document')) {
       return this.get('_infiniteScroller.documentElement');
     } else if (this.get('use-element')) {
-      return document.querySelector(this.get('use-element'));
+      return this.get('element').querySelector(this.get('use-element'));
     } else {
       return this.get('element');
     }

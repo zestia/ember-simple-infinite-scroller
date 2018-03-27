@@ -323,23 +323,23 @@ module('infinite-scroller', function(hooks) {
   });
 
   test('custom element', async function(assert) {
-    assert.expect(2);
+    assert.expect(1);
 
     await render(hbs`
-      <div class="external-element">
-        {{#each things as |thing|}}
-          <div class="thing">{{thing.name}}</div>
-        {{/each}}
+    {{#infinite-scroller
+      use-element=".external-element"
+      on-load-more=(action loadMore)}}
+
+      <div class = "non-scrollable-element">
+        <div class="external-element">
+          {{#each things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+        </div>
       </div>
 
-      {{infinite-scroller
-        tagName=""
-        use-element=".external-element"
-        on-load-more=(action loadMore)}}
+      {{/infinite-scroller}}
     `);
-
-    assert.ok(!find('.infinite-scroller'),
-      'can render a tagless component when use-element is specified');
 
     find('.external-element').scrollTop = 450;
 

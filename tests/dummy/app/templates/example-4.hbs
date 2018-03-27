@@ -1,13 +1,14 @@
 <p>Action is fired when the bottom of the external div is scrolled to</p>
 
-<div class="external-element">
-  {{#each things as |thing|}}
-    <div class="thing">{{thing.name}}</div>
-  {{/each}}
-</div>
-
-{{infinite-scroller
+{{#infinite-scroller
   class="example-4"
   on-load-more=(action "loadMore")
-  tagName=""
   use-element=".external-element"}}
+  <div class="unscrollable-element">
+    <div class="external-element">
+      {{#each things as |thing|}}
+        <div class="thing">{{thing.name}}</div>
+      {{/each}}
+    </div>
+  </div>
+{{/infinite-scroller}}

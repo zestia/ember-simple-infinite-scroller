@@ -46,7 +46,7 @@ ember install @zestia/ember-simple-infinite-scroller
   </tr>
   <tr>
     <td>use-element</td>
-    <td>Monitors the scrolling of a specific element, e.g. `use-element=".foo-bar"`. This can be used in conjunction with `tagName=""`</td>
+    <td>Monitors the scrolling of a specific element, e.g. `use-element=".foo-bar"`.</td>
     <td><code>false</code></td>
   </tr>
   <tr>
