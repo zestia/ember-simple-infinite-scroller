@@ -10,6 +10,7 @@ export default Component.extend({
 
   layout,
   classNames: ['infinite-scroller'],
+  classNameBindings: ['isLoading'],
 
   debug: false,
 
