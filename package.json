@@ -1,6 +1,6 @@
 {
   "name": "@zestia/ember-simple-infinite-scroller",
-  "version": "2.0.0",
+  "version": "1.0.21",
   "description": "Simple infinite scroller component for Ember apps",
   "directories": {
     "doc": "doc",
