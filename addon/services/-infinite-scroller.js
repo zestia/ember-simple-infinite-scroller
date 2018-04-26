@@ -2,5 +2,6 @@ import Service from '@ember/service';
 
 export default Service.extend({
   document,
-  documentElement: document.documentElement
+  documentElement: document.documentElement,
+  window
 });

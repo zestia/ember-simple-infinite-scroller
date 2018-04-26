@@ -79,7 +79,11 @@ export default Component.extend({
   },
 
   _scrollTop() {
-    return this._element().scrollTop;
+    if (this.get('use-document')) {
+      return this.get('_infiniteScroller.window.pageYOffset');
+    } else {
+      return this._element().scrollTop;
+    }
   },
 
   _scrollerBottom() {

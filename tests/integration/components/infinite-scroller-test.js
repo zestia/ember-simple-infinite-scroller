@@ -127,12 +127,16 @@ module('infinite-scroller', function(hooks) {
     `);
 
     const fakeDocumentElement = {
-      scrollTop: 1000,
       scrollHeight: 1000,
       clientHeight: 500
     };
 
+    const fakeWindow = {
+      pageYOffset: 1000
+    };
+
     this.set('infiniteScroller.documentElement', fakeDocumentElement);
+    this.set('infiniteScroller.window', fakeWindow);
 
     await triggerEvent(document, 'scroll');
 

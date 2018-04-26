@@ -1,8 +1,12 @@
 # Changelog
 
+2.0.1
+
+* Fix detection of the bottom of the document in Safari
+
 2.0.0
 
-* Introduce `use-element` 
+* Introduce `use-element`
 
 1.0.20
 
