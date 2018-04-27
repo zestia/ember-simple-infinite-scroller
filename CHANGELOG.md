@@ -1,5 +1,9 @@
 # Changelog
 
+2.0.2
+
+* Fix mismatch between github tag and published module
+
 2.0.1
 
 * Fix detection of the bottom of the document in Safari
