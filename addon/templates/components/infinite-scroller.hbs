@@ -1,1 +1,4 @@
-{{yield (hash error=error isLoading=isLoading loadMore=(action "loadMore"))}}
+{{yield (hash
+  error=this.error
+  isLoading=this.isLoading
+  loadMore=(action "loadMore"))}}
