@@ -43,7 +43,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       {{#infinite-scroller
         class="example-1"
-        on-load-more=(action loadMore) as |scroller|}}
+        on-load-more=(action loadMore)}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -70,7 +70,7 @@ module('infinite-scroller', function(hooks) {
       {{#infinite-scroller
         class="example-1"
         trigger-at="50%"
-        on-load-more=(action loadMore) as |scroller|}}
+        on-load-more=(action loadMore)}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -92,7 +92,7 @@ module('infinite-scroller', function(hooks) {
       {{#infinite-scroller
         class="example-1"
         scroll-debounce=50
-        on-load-more=(action loadMore) as |scroller|}}
+        on-load-more=(action loadMore)}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -119,7 +119,7 @@ module('infinite-scroller', function(hooks) {
       {{#infinite-scroller
         class="example-2"
         use-document=true
-        on-load-more=(action loadMore) as |scroller|}}
+        on-load-more=(action loadMore)}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -311,7 +311,7 @@ module('infinite-scroller', function(hooks) {
         {{#infinite-scroller
           class="example-1"
           scroll-debounce=50
-          on-load-more=(action loadMore) as |scroller|}}
+          on-load-more=(action loadMore)}}
           {{#each things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
@@ -330,17 +330,17 @@ module('infinite-scroller', function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-    {{#infinite-scroller
-      use-element=".internal-element"
-      on-load-more=(action loadMore)}}
+      {{#infinite-scroller
+        use-element=".internal-element"
+        on-load-more=(action loadMore)}}
 
-      <div class = "non-scrollable-element">
-        <div class="internal-element">
-          {{#each things as |thing|}}
-            <div class="thing">{{thing.name}}</div>
-          {{/each}}
+        <div class = "non-scrollable-element">
+          <div class="internal-element">
+            {{#each things as |thing|}}
+              <div class="thing">{{thing.name}}</div>
+            {{/each}}
+          </div>
         </div>
-      </div>
 
       {{/infinite-scroller}}
     `);
