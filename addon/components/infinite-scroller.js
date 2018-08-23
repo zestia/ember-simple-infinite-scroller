@@ -3,6 +3,7 @@ import layout from '../templates/components/infinite-scroller';
 import { bind, debounce, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
+import { trySet } from '@ember/object';
 const { round } = Math;
 
 export default Component.extend({
@@ -106,6 +107,22 @@ export default Component.extend({
     return this._reachedBottom() && !this.get('isLoading');
   },
 
+  _loadMore() {
+    this.set('error', null);
+    this.set('isLoading', true);
+    resolve(this.get('on-load-more')())
+      .catch(bind(this, '_loadError'))
+      .finally(bind(this, '_loadFinished'));
+  },
+
+  _loadError(error) {
+    trySet(this, 'error', error);
+  },
+
+  _loadFinished() {
+    trySet(this, 'isLoading', false);
+  },
+
   _debug() {
     /* eslint-disable no-console */
     console.table([{
@@ -120,28 +137,4 @@ export default Component.extend({
       'trigger at': this._triggerAt()
     }]);
   },
-
-  _loadMore() {
-    this.set('error', null);
-    this.set('isLoading', true);
-    resolve(this.get('on-load-more')())
-      .catch(bind(this, '_loadError'))
-      .finally(bind(this, '_loadFinished'));
-  },
-
-  _loadError(error) {
-    if (this.get('isDestroyed')) {
-      return;
-    }
-
-    this.set('error', error);
-  },
-
-  _loadFinished() {
-    if (this.get('isDestroyed')) {
-      return;
-    }
-
-    this.set('isLoading', false);
-  }
 });
