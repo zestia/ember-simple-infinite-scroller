@@ -1,8 +1,8 @@
-<p>Action is fired when the bottom of the div is scrolled to</p>
+<p>An action is fired when infinite scroll component is scrolled to the very bottom</p>
 
 {{#infinite-scroller
   class="example-1"
-  on-load-more=(action "loadMore")
+  onLoadMore=(action "loadMore")
 as |scroller|}}
   {{#each things as |thing|}}
     <div class="thing">{{thing.name}}</div>

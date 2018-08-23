@@ -1,10 +1,10 @@
-<p>Action is fired when the div is scrolled to 50%</p>
+<p>An action is fired when the infinite scroll component is scrolled to 50%</p>
 
 {{#infinite-scroller
   class="example-3"
-  on-load-more=(action "loadMore")
-  trigger-at="50%"
-  scroll-debounce=15
+  onLoadMore=(action "loadMore")
+  bottom="50%"
+  scrollDebounce=15
 as |scroller|}}
   {{#each things as |thing|}}
     <div class="thing">{{thing.name}}</div>

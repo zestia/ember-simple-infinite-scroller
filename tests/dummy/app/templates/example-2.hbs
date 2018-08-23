@@ -1,9 +1,13 @@
-<p>Action is fired when the bottom of the document is scrolled to</p>
+<p>
+  An action is fired when the bottom of the infinite scroll component becomes visible as the
+  document is scrolled. This will work even if there is other content on the page that is longer
+  than the infinite scroll content.
+</p>
 
 {{#infinite-scroller
   class="example-2"
-  on-load-more=(action "loadMore")
-  use-document=true
+  onLoadMore=(action "loadMore")
+  useDocument=true
 as |scroller|}}
   {{#each things as |thing|}}
     <div class="thing">{{thing.name}}</div>

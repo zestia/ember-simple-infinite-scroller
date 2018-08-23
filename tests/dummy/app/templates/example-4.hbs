@@ -1,9 +1,12 @@
-<p>Action is fired when the bottom of the internal div is scrolled to</p>
+<p>
+  An action is fired when a specific element within the infinite scroll component is scrolled
+  to the very bottom
+</p>
 
 {{#infinite-scroller
   class="example-4"
-  on-load-more=(action "loadMore")
-  use-element=".internal-element"}}
+  onLoadMore=(action "loadMore")
+  selector=".internal-element"}}
   <div class="unscrollable-element">
     <div class="internal-element">
       {{#each things as |thing|}}
