@@ -134,6 +134,7 @@ export default Component.extend({
   _loadMore() {
     this.set('error', null);
     this.set('isLoading', true);
+
     resolve(this.onLoadMore())
       .catch(bind(this, '_loadError'))
       .finally(bind(this, '_loadFinished'));
