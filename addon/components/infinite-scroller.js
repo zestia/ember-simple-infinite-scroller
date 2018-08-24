@@ -75,14 +75,23 @@ export default Component.extend({
   },
 
   _shouldLoadMore() {
+    let info;
+
     if (this.useDocument) {
-      return this._bottomOfElementHasBecomeVisbleInDocument();
+      info = this._detectBottomOfElementInDocument();
     } else {
-      return this._bottomOfElementHasBecomeVisible();
+      info = this._detectBottomOfElement();
     }
+
+    if (this.debug) {
+      /* eslint-disable no-console */
+      console.table([info]);
+    }
+
+    return info.reachedBottom;
   },
 
-  _bottomOfElementHasBecomeVisbleInDocument() {
+  _detectBottomOfElementInDocument() {
     const clientHeight = this._infiniteScroller.document.documentElement.clientHeight;
     const bottom = this._element().getBoundingClientRect().bottom;
     const leeway = this._leeway();
@@ -90,24 +99,17 @@ export default Component.extend({
     const percentageToBottom = (pixelsToBottom / bottom) * 100;
     const reachedBottom = percentageToBottom <= leeway;
 
-    if (this.debug) {
-      /* eslint-disable no-console */
-      console.table([
-        {
-          clientHeight,
-          bottom,
-          pixelsToBottom,
-          leeway,
-          percentageToBottom,
-          reachedBottom
-        }
-      ]);
-    }
-
-    return reachedBottom;
+    return {
+      clientHeight,
+      bottom,
+      leeway,
+      pixelsToBottom,
+      percentageToBottom,
+      reachedBottom
+    };
   },
 
-  _bottomOfElementHasBecomeVisible() {
+  _detectBottomOfElement() {
     const scrollHeight = this._element().scrollHeight;
     const scrollTop = this._element().scrollTop;
     const clientHeight = this._element().clientHeight;
@@ -117,23 +119,16 @@ export default Component.extend({
     const percentageToBottom = (pixelsToBottom / bottom) * 100;
     const reachedBottom = percentageToBottom <= leeway;
 
-    if (this.debug) {
-      /* eslint-disable no-console */
-      console.table([
-        {
-          scrollHeight,
-          scrollTop,
-          clientHeight,
-          bottom,
-          pixelsToBottom,
-          leeway,
-          percentageToBottom,
-          reachedBottom
-        }
-      ]);
-    }
-
-    return reachedBottom;
+    return {
+      scrollHeight,
+      scrollTop,
+      clientHeight,
+      bottom,
+      leeway,
+      pixelsToBottom,
+      percentageToBottom,
+      reachedBottom
+    };
   },
 
   _loadMore() {
