@@ -12,8 +12,6 @@ export default Component.extend({
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
 
-  debug: true,
-
   didInsertElement() {
     this._super(...arguments);
     this._listen();
@@ -85,16 +83,15 @@ export default Component.extend({
 
     state.shouldLoadMore = state.reachedBottom && !this.isLoading;
 
-    if (this.debug) {
-      /* eslint-disable no-console */
-      console.table([state]);
+    if (this._infiniteScroller.debug) {
+      this._infiniteScroller.log(state);
     }
 
     return state.shouldLoadMore;
   },
 
   _detectBottomOfElementInDocument() {
-    const clientHeight = this._infiniteScroller.document.documentElement.clientHeight;
+    const clientHeight = this._infiniteScroller.documentElement.clientHeight;
     const bottom = this._element().getBoundingClientRect().bottom;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;

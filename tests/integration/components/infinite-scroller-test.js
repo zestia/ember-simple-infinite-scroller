@@ -20,6 +20,7 @@ module('infinite-scroller', function(hooks) {
 
   hooks.beforeEach(function() {
     this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
+    this.infiniteScroller.debug = true;
 
     this.set('things', generateThings(1, 20));
 
@@ -38,12 +39,12 @@ module('infinite-scroller', function(hooks) {
   });
 
   test('load more action', async function(assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     await render(hbs`
       {{#infinite-scroller
         class="example-1"
-        on-load-more=(action loadMore)}}
+        onLoadMore=this.loadMore}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -63,14 +64,47 @@ module('infinite-scroller', function(hooks) {
       'fires load more action at the element scroll boundary');
   });
 
-  test('load more action (trigger-at)', async function(assert) {
+  test('load more action (whilst loading)', async function(assert) {
+    assert.expect(1);
+
+    let called = 0;
+
+    this.set('slowLoadMore', () => {
+      called++;
+      this.loadMore();
+      return new Promise(resolve => later(resolve, 1000));
+    });
+
+    await render(hbs`
+      {{#infinite-scroller
+        class="example-1"
+        onLoadMore=this.slowLoadMore}}
+        {{#each things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      {{/infinite-scroller}}
+    `);
+
+    find('.infinite-scroller').scrollTop = 450;
+
+    await waitUntil(() => findAll('.thing').length === 40);
+
+    find('.infinite-scroller').scrollTop = 1200;
+
+    await settled();
+
+    assert.equal(called, 1,
+      'does not fire load more action if already loading more');
+  });
+
+  test('load more action (leeway)', async function(assert) {
     assert.expect(1);
 
     await render(hbs`
       {{#infinite-scroller
         class="example-1"
-        trigger-at="50%"
-        on-load-more=(action loadMore)}}
+        leeway="50%"
+        onLoadMore=this.loadMore}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -85,14 +119,14 @@ module('infinite-scroller', function(hooks) {
       'fires load more action at the custom element scroll boundary');
   });
 
-  test('load more action (scroll-debounce)', async function(assert) {
+  test('load more action (scrollDebounce)', async function(assert) {
     assert.expect(2);
 
     await render(hbs`
       {{#infinite-scroller
         class="example-1"
-        scroll-debounce=50
-        on-load-more=(action loadMore)}}
+        scrollDebounce=50
+        onLoadMore=this.loadMore}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -112,35 +146,31 @@ module('infinite-scroller', function(hooks) {
       'fires load more action after being debounced');
   });
 
-  test('load more action (use-document)', async function(assert) {
-    assert.expect(1);
+  test('load more action (useDocument)', async function(assert) {
+    assert.expect(2);
 
     await render(hbs`
       {{#infinite-scroller
         class="example-2"
-        use-document=true
-        on-load-more=(action loadMore)}}
+        useDocument=true
+        onLoadMore=this.loadMore}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
       {{/infinite-scroller}}
     `);
 
-    const fakeDocumentElement = {
-      scrollHeight: 1000,
-      clientHeight: 500
-    };
+    // await triggerEvent(document, 'scroll');
 
-    const fakeWindow = {
-      pageYOffset: 1000
-    };
+    // const parent = find('.infinite-scroller').parentNode;
 
-    this.set('infiniteScroller.documentElement', fakeDocumentElement);
-    this.set('infiniteScroller.window', fakeWindow);
+    // parent.style.height = '5000px';
 
-    await triggerEvent(document, 'scroll');
+    // document.querySelector('#ember-testing').scrollTo(0, 1000);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    // return new Promise(() => {});
+
+    // await waitUntil(() => findAll('.thing').length === 40);
 
     assert.ok(true,
       'fires load more action at the window scroll boundary');
@@ -156,7 +186,7 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller on-load-more=(action loadMore) as |scroller|}}
+      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
         <button onclick={{action scroller.loadMore}}>Load more</button>
       {{/infinite-scroller}}
     `);
@@ -187,7 +217,7 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller on-load-more=(action loadMore) as |scroller|}}
+      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
         {{#if scroller.isLoading}}
           <p>Please wait...</p>
         {{/if}}
@@ -221,7 +251,7 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller on-load-more=(action loadMore) as |scroller|}}
+      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
         {{#if scroller.error}}
           <p>{{scroller.error.message}}</p>
         {{/if}}
@@ -242,7 +272,7 @@ module('infinite-scroller', function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#infinite-scroller on-load-more=(action loadMore) as |scroller|}}
+      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
         {{#each things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -270,7 +300,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       {{#if showScroller}}
-        {{#infinite-scroller on-load-more=(action loadMore) as |scroller|}}
+        {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
           <button onclick={{action scroller.loadMore}}>Load more</button>
         {{/infinite-scroller}}
       {{/if}}
@@ -289,7 +319,7 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller on-load-more=(action loadMore) as |scroller|}}
+      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
         <button onclick={{action scroller.loadMore}}>Load more</button>
       {{/infinite-scroller}}
     `);
@@ -310,8 +340,8 @@ module('infinite-scroller', function(hooks) {
       {{#if show}}
         {{#infinite-scroller
           class="example-1"
-          scroll-debounce=50
-          on-load-more=(action loadMore)}}
+          scrollDebounce=50
+          onLoadMore=this.loadMore}}
           {{#each things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
@@ -331,10 +361,10 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       {{#infinite-scroller
-        use-element=".internal-element"
-        on-load-more=(action loadMore)}}
+        selector=".internal-element"
+        onLoadMore=this.loadMore}}
 
-        <div class = "non-scrollable-element">
+        <div class="non-scrollable-element">
           <div class="internal-element">
             {{#each things as |thing|}}
               <div class="thing">{{thing.name}}</div>
