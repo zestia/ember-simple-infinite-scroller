@@ -3,7 +3,7 @@ import layout from '../templates/components/infinite-scroller';
 import { bind, debounce, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
-import { getWithDefault, trySet } from '@ember/object';
+import { trySet } from '@ember/object';
 
 export default Component.extend({
   _infiniteScroller: inject('-infinite-scroller'),
@@ -11,6 +11,12 @@ export default Component.extend({
   layout,
   classNames: ['infinite-scroller'],
   classNameBindings: ['isLoading'],
+
+  onLoadMore: null,
+  useElement: null,
+  useDocument: false,
+  scrollDebounce: 100,
+  leeway: '0%',
 
   didInsertElement() {
     this._super(...arguments);
@@ -39,7 +45,7 @@ export default Component.extend({
   },
 
   _scroll(e) {
-    this._scrollDebounceId = debounce(this, '_debouncedScroll', e, this._scrollDebounce());
+    this._scrollDebounceId = debounce(this, '_debouncedScroll', e, this.scrollDebounce);
   },
 
   _debouncedScroll() {
@@ -48,12 +54,8 @@ export default Component.extend({
     }
   },
 
-  _scrollDebounce() {
-    return getWithDefault(this, 'scrollDebounce', 100);
-  },
-
   _leeway() {
-    return parseInt(getWithDefault(this, 'leeway', '0%'), 10);
+    return parseInt(this.leeway, 10);
   },
 
   _listener() {

@@ -13,7 +13,7 @@ ember install @zestia/ember-simple-infinite-scroller
 ### Example usage
 
 ```handlebars
-{{#infinite-scroller on-load-more=(action 'loadMore') as |scroller|}}
+{{#infinite-scroller onLoadMore=(action "loadMore") as |scroller|}}
   {{#each things as |thing|}}
     ...
   {{/each}}
@@ -35,59 +35,36 @@ ember install @zestia/ember-simple-infinite-scroller
 
 <table>
   <tr>
-    <th>Attribute</th>
+    <th>Argument</th>
     <th>Description</th>
     <th>Default</th>
   </tr>
   <tr>
-    <td>on-load-more</td>
-    <td>Action to perform when the bottom is scrolled to</td>
-    <td></td>
+    <td>onLoadMore</td>
+    <td>Action to perform when the bottom is scrolled into view</td>
+    <td><code>null</code></td>
   </tr>
   <tr>
-    <td>use-element</td>
-    <td>Monitors the scrolling of a specific element, e.g. `use-element=".foo-bar"`.</td>
+    <td>useElement</td>
+    <td>Monitors the scrolling of a specific child element, e.g. `useElement=".foo-bar"`.</td>
+    <td><code>null</code></td>
+  </tr>
+  <tr>
+    <td>useDocument</td>
+    <td>Monitors the document scroll position rather than the element's scroll position.</td>
     <td><code>false</code></td>
   </tr>
   <tr>
-    <td>use-document</td>
-    <td>Goes off the document scroll position rather than the element's scroll position</td>
-    <td><code>false</code></td>
+    <td>leeway</td>
+    <td>Percentage distance away from the bottom</td>
+    <td><code>"0%"</code></td>
   </tr>
   <tr>
-    <td>trigger-at</td>
-    <td>A percentage of the scrollable height to consider as the 'bottom'</td>
-    <td><code>"100%"</code></td>
-  </tr>
-  <tr>
-    <td>scroll-debounce</td>
-    <td>Milliseconds delay used to check if the bottom has been scrolled to</td>
+    <td>scrollDebounce</td>
+    <td>Milliseconds delay used to check if the bottom has been reached</td>
     <td><code>100</code> ms</td>
   </tr>
 </table>
-
-
-##### Element vs Document scroll
-
-Either make your component scrollable:
-
-```css
-.my-element {
-  max-height: 300px;
-  overflow-y: auto;
-}
-```
-
-**OR**
-
-Set `use-document=true` if your component is not scrollable.
-
-```handlebars
-{{#infinite-scroller use-document=true}}
-  {{! action will fire when the document is scrolled to the bottom }}
-{{/infinite-scroller}}
-```
-
 
 ### Yielded API
 
@@ -111,6 +88,21 @@ The component will yield a hash that provides:
     <td>Action for manually loading more</td>
   </tr>
 </table>
+
+##### Element vs Document scroll
+
+Either make your component scrollable:
+
+```css
+.my-element {
+  max-height: 300px;
+  overflow-y: auto;
+}
+```
+
+**OR**
+
+Set `useDocument=true` if your component is not scrollable.
 
 ### Performance
 
