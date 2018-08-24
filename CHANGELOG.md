@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.1
+
+* Fix for versions <= 2.18
+
 3.0.0-beta.1
 
 * Change to camelCase component arguments

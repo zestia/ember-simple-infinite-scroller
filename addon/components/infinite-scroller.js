@@ -59,7 +59,7 @@ export default Component.extend({
 
   _listener() {
     if (this.useDocument) {
-      return this._infiniteScroller.document;
+      return this.get('_infiniteScroller.document');
     } else {
       return this._element();
     }
@@ -84,15 +84,15 @@ export default Component.extend({
 
     state.shouldLoadMore = state.reachedBottom && !this.isLoading;
 
-    if (this._infiniteScroller.debug) {
-      this._infiniteScroller.log(state);
+    if (this.get('_infiniteScroller.debug')) {
+      this.get('_infiniteScroller').log(state);
     }
 
     return state.shouldLoadMore;
   },
 
   _detectBottomOfElementInDocument() {
-    const clientHeight = this._infiniteScroller.documentElement.clientHeight;
+    const clientHeight = this.get('_infiniteScroller.documentElement.clientHeight');
     const bottom = this._element().getBoundingClientRect().bottom;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;
