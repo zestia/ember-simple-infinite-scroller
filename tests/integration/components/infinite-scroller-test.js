@@ -21,10 +21,12 @@ module('infinite-scroller', function(hooks) {
   hooks.beforeEach(function() {
     this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
     this.infiniteScroller.debug = true;
+    this.loadedMore = false;
 
     this.set('things', generateThings(1, 20));
 
     this.set('loadMore', () => {
+      this.loadedMore = true;
       this.get('things').pushObjects(generateThings(21, 40));
     });
   });
@@ -39,7 +41,7 @@ module('infinite-scroller', function(hooks) {
   });
 
   test('load more action', async function(assert) {
-    assert.expect(3);
+    assert.expect(2);
 
     await render(hbs`
       {{#infinite-scroller
@@ -60,7 +62,7 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(true,
+    assert.ok(this.loadedMore,
       'fires load more action at the element scroll boundary');
   });
 
@@ -115,7 +117,7 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(true,
+    assert.ok(this.loadedMore,
       'fires load more action at the custom element scroll boundary');
   });
 
@@ -142,12 +144,22 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(true,
+    assert.ok(this.loadedMore,
       'fires load more action after being debounced');
   });
 
   test('load more action (useDocument)', async function(assert) {
     assert.expect(2);
+
+    // This test needs to be run in QUnit's devmode so that the CSS is correct.
+
+    // Hack make the 'viewport' small, so the bottom of infinite scroll component is
+    // computed as 'past the fold'.
+    const fakeDocumentElement = {
+      clientHeight: 600
+    };
+
+    this.set('infiniteScroller.documentElement', fakeDocumentElement);
 
     await render(hbs`
       {{#infinite-scroller
@@ -160,20 +172,24 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    // await triggerEvent(document, 'scroll');
+    const el = find('.infinite-scroller');
 
-    // const parent = find('.infinite-scroller').parentNode;
+    await triggerEvent(document, 'scroll');
 
-    // parent.style.height = '5000px';
+    assert.ok(!this.loadedMore,
+      'load more action not fired yet');
 
-    // document.querySelector('#ember-testing').scrollTo(0, 1000);
+    // Hack to adjust element's `getBoundingClientRect().bottom`
+    // because we can't scroll the document in the test AFAIK
+    // This magic value means the distance between bottom of the element
+    // and the bottom of the viewport will be zero, and so the load more
+    // action will fire.
+    el.style.marginTop = `-${this.infiniteScroller._log[0].pixelsToBottom}px`;
 
-    // return new Promise(() => {});
+    await triggerEvent(document, 'scroll');
 
-    // await waitUntil(() => findAll('.thing').length === 40);
-
-    assert.ok(true,
-      'fires load more action at the window scroll boundary');
+    assert.ok(this.loadedMore,
+      'load more action fires when the bottom of the element comes into view');
   });
 
   test('loading class name', async function(assert) {
@@ -379,7 +395,7 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(true,
+    assert.ok(this.loadedMore,
       'fires load more action at the custom element scroll boundary');
   });
 });
