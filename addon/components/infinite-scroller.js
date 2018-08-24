@@ -75,20 +75,22 @@ export default Component.extend({
   },
 
   _shouldLoadMore() {
-    let info;
+    let state;
 
     if (this.useDocument) {
-      info = this._detectBottomOfElementInDocument();
+      state = this._detectBottomOfElementInDocument();
     } else {
-      info = this._detectBottomOfElement();
+      state = this._detectBottomOfElement();
     }
+
+    state.shouldLoadMore = state.reachedBottom && !this.isLoading;
 
     if (this.debug) {
       /* eslint-disable no-console */
-      console.table([info]);
+      console.table([state]);
     }
 
-    return info.reachedBottom;
+    return state.shouldLoadMore;
   },
 
   _detectBottomOfElementInDocument() {
