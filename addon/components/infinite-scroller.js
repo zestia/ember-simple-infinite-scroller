@@ -12,7 +12,7 @@ export default Component.extend({
   classNameBindings: ['isLoading'],
 
   onLoadMore: null,
-  useElement: null,
+  selector: null,
   useDocument: false,
   scrollDebounce: 100,
   leeway: '0%',

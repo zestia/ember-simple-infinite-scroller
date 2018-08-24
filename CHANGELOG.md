@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.2
+
+* Correct left over mentions of `useElement`. Which should now be `selector`
+
 3.0.1
 
 * Fix for versions <= 2.18

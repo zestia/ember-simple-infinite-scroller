@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 
 export default Service.extend({
-  debug: false,
+  debug: true,
 
   document,
   documentElement: document.documentElement,
