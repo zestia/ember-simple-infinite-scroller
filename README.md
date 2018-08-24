@@ -46,7 +46,7 @@ ember install @zestia/ember-simple-infinite-scroller
   </tr>
   <tr>
     <td>useElement</td>
-    <td>Monitors the scrolling of a specific child element, e.g. <code>useElement=".foo-bar"</code>.</td>
+    <td>Monitors the scrolling of a specific child element, e.g. <code>useElement=".foo-bar"</code></td>
     <td><code>null</code></td>
   </tr>
   <tr>
