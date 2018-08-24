@@ -174,7 +174,7 @@ module('infinite-scroller', function(hooks) {
 
     const el = find('.infinite-scroller');
 
-    await triggerEvent(document, 'scroll');
+    await triggerEvent(this.infiniteScroller.document, 'scroll');
 
     assert.ok(!this.loadedMore,
       'load more action not fired yet');
@@ -186,7 +186,7 @@ module('infinite-scroller', function(hooks) {
     // action will fire.
     el.style.marginTop = `-${this.infiniteScroller._log[0].pixelsToBottom}px`;
 
-    await triggerEvent(document, 'scroll');
+    await triggerEvent(this.infiniteScroller.document, 'scroll');
 
     assert.ok(this.loadedMore,
       'load more action fires when the bottom of the element comes into view');

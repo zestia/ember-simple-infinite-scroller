@@ -3,7 +3,6 @@ import layout from '../templates/components/infinite-scroller';
 import { bind, debounce, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
-import { trySet } from '@ember/object';
 
 export default Component.extend({
   _infiniteScroller: inject('-infinite-scroller'),
@@ -141,10 +140,18 @@ export default Component.extend({
   },
 
   _loadError(error) {
-    trySet(this, 'error', error);
+    if (this.isDestroyed) {
+      return;
+    }
+
+    this.set('error', error);
   },
 
   _loadFinished() {
-    trySet(this, 'isLoading', false);
+    if (this.isDestroyed) {
+      return;
+    }
+
+    this.set('isLoading', false);
   }
 });
