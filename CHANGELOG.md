@@ -1,5 +1,12 @@
 # Changelog
 
+3.0.0-beta.1
+
+* Change to camelCase component arguments
+* Fix bug where the load more action would not fire with `use-document=true`. This could happen if there was other content on the page, that was longer than infinite scroller content (i.e. the bottom of the document would not get hit)
+* Changed `trigger-at` to `leeway` to account for differences in the 'bottom detection' depending on the mode.
+  * To upgrade, if you were originally triggering load more at 95%, then your leeway would be 5%.
+
 2.0.2
 
 * Fix mismatch between github tag and published module
