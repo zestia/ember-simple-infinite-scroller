@@ -3,7 +3,7 @@
 {{#infinite-scroller
   class="example-3"
   onLoadMore=(action "loadMore")
-  bottom="50%"
+  leeway="50%"
   scrollDebounce=15
 as |scroller|}}
   {{#each things as |thing|}}

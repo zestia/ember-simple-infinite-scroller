@@ -4,7 +4,6 @@ import { bind, debounce, cancel } from '@ember/runloop';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
 import { getWithDefault, trySet } from '@ember/object';
-const { round } = Math;
 
 export default Component.extend({
   _infiniteScroller: inject('-infinite-scroller'),
@@ -55,8 +54,8 @@ export default Component.extend({
     return getWithDefault(this, 'scrollDebounce', 100);
   },
 
-  _bottom() {
-    return parseInt(getWithDefault(this, 'bottom', '100%'), 10);
+  _leeway() {
+    return parseInt(getWithDefault(this, 'leeway', '0%'), 10);
   },
 
   _listener() {
@@ -86,9 +85,10 @@ export default Component.extend({
   _bottomOfElementHasBecomeVisbleInDocument() {
     const clientHeight = this._infiniteScroller.document.documentElement.clientHeight;
     const bottom = this._element().getBoundingClientRect().bottom;
+    const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;
-    const percentageToBottom = ((bottom - pixelsToBottom) / bottom) * 100;
-    const reachedBottom = percentageToBottom >= this._bottom();
+    const percentageToBottom = (pixelsToBottom / bottom) * 100;
+    const reachedBottom = percentageToBottom <= leeway;
 
     if (this.debug) {
       /* eslint-disable no-console */
@@ -97,6 +97,7 @@ export default Component.extend({
           clientHeight,
           bottom,
           pixelsToBottom,
+          leeway,
           percentageToBottom,
           reachedBottom
         }
@@ -111,9 +112,10 @@ export default Component.extend({
     const scrollTop = this._element().scrollTop;
     const clientHeight = this._element().clientHeight;
     const bottom = scrollHeight - clientHeight;
+    const leeway = this._leeway();
     const pixelsToBottom = bottom - scrollTop;
-    const percentageToBottom = ((bottom - pixelsToBottom) / bottom) * 100;
-    const reachedBottom = percentageToBottom >= this._bottom();
+    const percentageToBottom = (pixelsToBottom / bottom) * 100;
+    const reachedBottom = percentageToBottom <= leeway;
 
     if (this.debug) {
       /* eslint-disable no-console */
@@ -124,6 +126,7 @@ export default Component.extend({
           clientHeight,
           bottom,
           pixelsToBottom,
+          leeway,
           percentageToBottom,
           reachedBottom
         }
