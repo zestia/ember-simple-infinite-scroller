@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.3
+
+* Give default value of `false` to yielded `isLoading` property
+
 3.0.2
 
 * Correct left over mentions of `useElement`. Which should now be `selector`
