@@ -46,7 +46,8 @@
     "ember-source-channel-url": "1.1.0",
     "ember-source": "3.3.2",
     "ember-try": "0.2.23",
-    "loader.js": "4.7.0"
+    "loader.js": "4.7.0",
+    "qunit-dom": "0.8.0"
   },
   "dependencies": {
     "ember-cli-babel": "^6.16.0",

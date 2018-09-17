@@ -36,8 +36,9 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`{{infinite-scroller}}`);
 
-    assert.equal(findAll('.infinite-scroller').length, 1,
-      'infinite scroller component has an appropriate class name');
+    assert
+      .dom('.infinite-scroller')
+      .exists({ count: 1 }, 'infinite scroller component has an appropriate class name');
   });
 
   test('load more action', async function(assert) {
@@ -56,14 +57,14 @@ module('infinite-scroller', function(hooks) {
     find('.infinite-scroller').scrollTop = 450;
 
     later(() => {
-      assert.equal(findAll('.thing').length, 20,
-        'has not fired load more action due to debouncing of scroll event');
+      assert
+        .dom('.thing')
+        .exists({ count: 20 }, 'has not fired load more action due to debouncing of scroll event');
     }, 100);
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore,
-      'fires load more action at the element scroll boundary');
+    assert.ok(this.loadedMore, 'fires load more action at the element scroll boundary');
   });
 
   test('load more action (whilst loading)', async function(assert) {
@@ -95,8 +96,7 @@ module('infinite-scroller', function(hooks) {
 
     await settled();
 
-    assert.equal(called, 1,
-      'does not fire load more action if already loading more');
+    assert.equal(called, 1, 'does not fire load more action if already loading more');
   });
 
   test('load more action (leeway)', async function(assert) {
@@ -117,8 +117,7 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore,
-      'fires load more action at the custom element scroll boundary');
+    assert.ok(this.loadedMore, 'fires load more action at the custom element scroll boundary');
   });
 
   test('load more action (scrollDebounce)', async function(assert) {
@@ -138,14 +137,14 @@ module('infinite-scroller', function(hooks) {
     find('.infinite-scroller').scrollTop = 450;
 
     later(() => {
-      assert.equal(findAll('.thing').length, 20,
-        'has not fired action due to custom debouncing of scroll event');
+      assert
+        .dom('.thing')
+        .exists({ count: 20 }, 'has not fired action due to custom debouncing of scroll event');
     }, 50);
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore,
-      'fires load more action after being debounced');
+    assert.ok(this.loadedMore, 'fires load more action after being debounced');
   });
 
   test('load more action (useDocument)', async function(assert) {
@@ -176,8 +175,7 @@ module('infinite-scroller', function(hooks) {
 
     await triggerEvent(this.infiniteScroller.document, 'scroll');
 
-    assert.ok(!this.loadedMore,
-      'load more action not fired yet');
+    assert.ok(!this.loadedMore, 'load more action not fired yet');
 
     // Hack to adjust element's `getBoundingClientRect().bottom`
     // because we can't scroll the document in the test AFAIK
@@ -188,8 +186,10 @@ module('infinite-scroller', function(hooks) {
 
     await triggerEvent(this.infiniteScroller.document, 'scroll');
 
-    assert.ok(this.loadedMore,
-      'load more action fires when the bottom of the element comes into view');
+    assert.ok(
+      this.loadedMore,
+      'load more action fires when the bottom of the element comes into view'
+    );
   });
 
   test('loading class name', async function(assert) {
@@ -207,20 +207,25 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    assert.ok(!find('.infinite-scroller').classList.contains('is-loading'),
-      'precondition: is not loading');
+    assert.ok(
+      !find('.infinite-scroller').classList.contains('is-loading'),
+      'precondition: is not loading'
+    );
 
     await click('button');
 
-    assert.ok(find('.infinite-scroller').classList.contains('is-loading'),
-      'a loading class is added whilst the action is being performed');
+    assert
+      .dom('.infinite-scroller')
+      .hasClass('is-loading', 'a loading class is added whilst the action is being performed');
 
     willLoad.resolve();
 
     await settled();
 
-    assert.ok(!find('.infinite-scroller').classList.contains('is-loading'),
-      'loading class name is removed after the action resolves');
+    assert.ok(
+      !find('.infinite-scroller').classList.contains('is-loading'),
+      'loading class name is removed after the action resolves'
+    );
   });
 
   test('yielded loading state', async function(assert) {
@@ -234,28 +239,26 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
-        {{#if scroller.isLoading}}
-          <p>Please wait...</p>
-        {{/if}}
+        <span>{{scroller.isLoading}}</span>
         <button onclick={{action scroller.loadMore}}>Load more</button>
       {{/infinite-scroller}}
     `);
 
-    assert.ok(!find('.infinite-scroller').textContent.match('Please wait...'),
-      'precondition: is not loading');
+    assert.dom('span').hasText('false',
+      'precondition: not loading');
 
     click('button');
 
     await waitFor('.infinite-scroller');
 
-    assert.ok(find('.infinite-scroller').textContent.match('Please wait...'),
+    assert.dom('span').hasText('true',
       'yields a hash with the loading state');
 
     willLoad.resolve();
 
     await settled();
 
-    assert.ok(!find('.infinite-scroller').textContent.match('Please wait...'),
+    assert.dom('span').hasText('false',
       'loading state is updated');
   });
 
@@ -275,13 +278,17 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    assert.ok(!find('.infinite-scroller').textContent.match('Fail'),
-      'precondition: no error message');
+    assert.ok(
+      !find('.infinite-scroller').textContent.match('Fail'),
+      'precondition: no error message'
+    );
 
     await click('button');
 
-    assert.ok(find('.infinite-scroller').textContent.match('Fail'),
-      'yields a hash with the last rejection error');
+    assert.ok(
+      find('.infinite-scroller').textContent.match('Fail'),
+      'yields a hash with the last rejection error'
+    );
   });
 
   test('yielded loadMore action', async function(assert) {
@@ -298,8 +305,9 @@ module('infinite-scroller', function(hooks) {
 
     await click('button');
 
-    assert.equal(findAll('.thing').length, 40,
-      'yields an action that can trigger the load more action');
+    assert
+      .dom('.thing')
+      .exists({ count: 40 }, 'yields an action that can trigger the load more action');
   });
 
   test('destroying (does not blow up)', async function(assert) {
@@ -395,7 +403,6 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore,
-      'fires load more action at the custom element scroll boundary');
+    assert.ok(this.loadedMore, 'fires load more action at the custom element scroll boundary');
   });
 });
