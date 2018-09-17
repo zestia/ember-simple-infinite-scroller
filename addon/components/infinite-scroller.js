@@ -15,6 +15,7 @@ export default Component.extend({
   selector: null,
   useDocument: false,
   scrollDebounce: 100,
+  isLoading: false,
   leeway: '0%',
 
   didInsertElement() {
