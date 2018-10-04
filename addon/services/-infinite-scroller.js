@@ -1,6 +1,5 @@
 import Service from '@ember/service';
 
-
 export default Service.extend({
   isFastBoot: typeof FastBoot !== 'undefined',
   debug: false,
@@ -17,10 +16,10 @@ export default Service.extend({
   },
 
   log(state) {
-    this._log.push(state);
-
     if (this.debug) {
-      /* eslint-disable no-console */
+      this._log.push(state);
+
+      // eslint-disable-next-line
       console.table([state]);
     }
   }

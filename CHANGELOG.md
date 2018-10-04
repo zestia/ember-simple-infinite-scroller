@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.5
+
+* Small tweaks to debug logging
+
 3.0.4
 
 * Support FastBoot
