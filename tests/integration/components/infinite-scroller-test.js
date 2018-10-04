@@ -3,6 +3,8 @@ import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { defer, reject } from 'rsvp';
 import { later } from '@ember/runloop';
+import computed from 'ember-improved-cp/read-only';
+import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/services/-infinite-scroller';
 import generateThings from 'dummy/utils/generate-things';
 import {
   render,
@@ -15,10 +17,21 @@ import {
   waitUntil
 } from '@ember/test-helpers';
 
+// Hack make the 'viewport' small, so the bottom of infinite scroll component is
+// computed as 'past the fold'.
+const infiniteScrollerStub = InfiniteScroller.extend({
+  documentElement: computed(function() {
+    return {
+      clientHeight: 600,
+    };
+  }),
+});
+
 module('infinite-scroller', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function() {
+    this.owner.register('service:-infinite-scroller', infiniteScrollerStub);
     this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
     this.infiniteScroller.debug = true;
     this.loadedMore = false;
@@ -152,14 +165,6 @@ module('infinite-scroller', function(hooks) {
 
     // This test needs to be run in QUnit's devmode so that the CSS is correct.
 
-    // Hack make the 'viewport' small, so the bottom of infinite scroll component is
-    // computed as 'past the fold'.
-    const fakeDocumentElement = {
-      clientHeight: 600
-    };
-
-    this.set('infiniteScroller.documentElement', fakeDocumentElement);
-
     await render(hbs`
       {{#infinite-scroller
         class="example-2"
@@ -171,17 +176,16 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    const el = find('.infinite-scroller');
-
     await triggerEvent(this.infiniteScroller.document, 'scroll');
 
-    assert.ok(!this.loadedMore, 'load more action not fired yet');
+    assert.notOk(this.loadedMore, 'load more action not fired yet');
 
     // Hack to adjust element's `getBoundingClientRect().bottom`
     // because we can't scroll the document in the test AFAIK
     // This magic value means the distance between bottom of the element
     // and the bottom of the viewport will be zero, and so the load more
     // action will fire.
+    const el = find('.infinite-scroller');
     el.style.marginTop = `-${this.infiniteScroller._log[0].pixelsToBottom}px`;
 
     await triggerEvent(this.infiniteScroller.document, 'scroll');
