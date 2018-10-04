@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import { computed } from '@ember/object';
+import computed from 'ember-improved-cp/read-only';
 
 const isFastBoot = typeof FastBoot !== 'undefined';
 
