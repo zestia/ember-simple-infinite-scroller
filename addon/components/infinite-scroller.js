@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/infinite-scroller';
 import { bind, debounce, cancel } from '@ember/runloop';
+import { get } from '@ember/object';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
 
@@ -61,7 +62,7 @@ export default Component.extend({
 
   _listener() {
     if (this.useDocument) {
-      return this.get('_infiniteScroller.document');
+      return get(this, '_infiniteScroller').document;
     } else {
       return this._element();
     }
@@ -86,15 +87,13 @@ export default Component.extend({
 
     state.shouldLoadMore = state.reachedBottom && !this.isLoading;
 
-    if (this.get('_infiniteScroller.debug')) {
-      this.get('_infiniteScroller').log(state);
-    }
+    get(this, '_infiniteScroller').log(state);
 
     return state.shouldLoadMore;
   },
 
   _detectBottomOfElementInDocument() {
-    const clientHeight = this.get('_infiniteScroller.documentElement.clientHeight');
+    const clientHeight = get(this, '_infiniteScroller').documentElement.clientHeight;
     const bottom = this._element().getBoundingClientRect().bottom;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;
