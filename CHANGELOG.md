@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.4
+
+* Support FastBoot
+
 3.0.3
 
 * Give default value of `false` to yielded `isLoading` property

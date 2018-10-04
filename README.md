@@ -30,6 +30,7 @@ ember install @zestia/ember-simple-infinite-scroller
 ### Notes
 
 * Does not use jQuery
+* Supports use with FastBoot
 
 ## Configuration
 
