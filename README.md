@@ -13,12 +13,12 @@ ember install @zestia/ember-simple-infinite-scroller
 ### Example usage
 
 ```handlebars
-{{#infinite-scroller onLoadMore=(action "loadMore") as |scroller|}}
+<InfiniteScroller @onLoadMore={{action "loadMore"}} as |scroller|>
   {{#each things as |thing|}}
     ...
   {{/each}}
-  {{if scroller.isLoading 'Please wait...'}}
-{{/infinite-scroller}}
+  {{if scroller.isLoading "Please wait..."}}
+</InfiniteScroller>
 ```
 
 ### Demo
