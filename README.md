@@ -139,7 +139,7 @@ To account for this, you can display a button for manually loading more...
   {{/each}}
 
   {{#if this.hasMoreThings}}
-    {{#if scroller.canScroll}}
+    {{#if scroller.isScrollable}}
       Loading more...
     {{else}}
       <button onclick={{action scroller.loadMore}}>Load more</button>
