@@ -81,8 +81,8 @@ The component will yield a hash that provides:
     <td>True when the promise for more data has not resolved yet</td>
   </tr>
   <tr>
-    <td>canScroll</td>
-    <td>True when scroll element can be scrolled</td>
+    <td>isScrollable</td>
+    <td>True when scroll element is overflowing</td>
   </tr>
   <tr>
     <td>error</td>

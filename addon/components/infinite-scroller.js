@@ -10,7 +10,7 @@ export default Component.extend({
 
   layout,
   classNames: ['infinite-scroller'],
-  classNameBindings: ['isLoading'],
+  classNameBindings: ['isLoading', 'isScrollable'],
 
   onLoadMore: null,
   selector: null,
@@ -27,7 +27,7 @@ export default Component.extend({
 
   didRender() {
     this._super(...arguments);
-    this.set('canScroll', this._canScroll());
+    this.set('isScrollable', this._isScrollable());
   },
 
   willDestroyElement() {
@@ -41,7 +41,7 @@ export default Component.extend({
     }
   },
 
-  _canScroll() {
+  _isScrollable() {
     return this._element().scrollHeight > this._element().clientHeight;
   },
 

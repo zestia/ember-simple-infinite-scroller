@@ -2,7 +2,7 @@
 
 3.0.6
 
-* Add `canScroll` property to yielded 'api'
+* Add `isScrollable` property to yielded 'api'
 
 3.0.5
 
