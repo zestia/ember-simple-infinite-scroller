@@ -130,7 +130,7 @@ If your scrollable element is displaying 10 things, but they don't cause the ele
 then the user won't ever be able to load more - because they won't be able to scroll and therefore
 the `onLoadMore` action will never fire.
 
-To account for this, you will can display a button for manually loading more...
+To account for this, you can display a button for manually loading more...
 
 ```handlebars
 <InfiniteScroller @onLoadMore={{action "loadMore"}} as |scroller|>
