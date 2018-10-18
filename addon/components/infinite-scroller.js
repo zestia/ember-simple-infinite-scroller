@@ -25,6 +25,11 @@ export default Component.extend({
     this._listen();
   },
 
+  didRender() {
+    this._super(...arguments);
+    this.set('canScroll', this._canScroll());
+  },
+
   willDestroyElement() {
     this._super(...arguments);
     this._stopListening();
@@ -34,6 +39,10 @@ export default Component.extend({
     loadMore() {
       this._loadMore();
     }
+  },
+
+  _canScroll() {
+    return this._element().scrollHeight > this._element().clientHeight;
   },
 
   _listen() {

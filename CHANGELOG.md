@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.6
+
+* Add `canScroll` property to yielded 'api'
+
 3.0.5
 
 * Small tweaks to debug logging
