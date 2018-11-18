@@ -81,6 +81,10 @@ The component will yield a hash that provides:
     <td>True when the promise for more data has not resolved yet</td>
   </tr>
   <tr>
+    <td>isScrollable</td>
+    <td>True when scroll element is overflowing</td>
+  </tr>
+  <tr>
     <td>error</td>
     <td>The caught error from the last attempt to load more</td>
   </tr>
@@ -118,4 +122,28 @@ customEvents: {
   touchend: null,
   touchcancel: null
 }
+```
+
+### Other scenarios
+
+If your scrollable element is displaying 10 things, but they don't cause the element to overflow,
+then the user won't ever be able to load more - because they won't be able to scroll and therefore
+the `onLoadMore` action will never fire.
+
+To account for this, you can display a button for manually loading more...
+
+```handlebars
+<InfiniteScroller @onLoadMore={{action "loadMore"}} as |scroller|>
+  {{#each this.things as |thing|}}
+    ...
+  {{/each}}
+
+  {{#if this.hasMoreThings}}
+    {{#if scroller.isScrollable}}
+      Loading more...
+    {{else}}
+      <button onclick={{action scroller.loadMore}}>Load more</button>
+    {{/if}}
+  {{/if}}
+</InfiniteScroller>
 ```
