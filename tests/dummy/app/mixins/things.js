@@ -16,7 +16,7 @@ export default Mixin.create({
 
   _generateThings() {
     const start = this.getWithDefault('things.length', 0) + 1;
-    const end   = this.get('page') * this.get('perPage');
+    const end = this.get('page') * this.get('perPage');
     return generateThings(start, end);
   },
 

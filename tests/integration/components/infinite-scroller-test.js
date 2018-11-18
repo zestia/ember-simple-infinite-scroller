@@ -244,22 +244,19 @@ module('infinite-scroller', function(hooks) {
       {{/infinite-scroller}}
     `);
 
-    assert.dom('span').hasText('false',
-      'precondition: not loading');
+    assert.dom('span').hasText('false', 'precondition: not loading');
 
     click('button');
 
     await waitFor('.infinite-scroller');
 
-    assert.dom('span').hasText('true',
-      'yields a hash with the loading state');
+    assert.dom('span').hasText('true', 'yields a hash with the loading state');
 
     willLoad.resolve();
 
     await settled();
 
-    assert.dom('span').hasText('false',
-      'loading state is updated');
+    assert.dom('span').hasText('false', 'loading state is updated');
   });
 
   test('yielded error', async function(assert) {
