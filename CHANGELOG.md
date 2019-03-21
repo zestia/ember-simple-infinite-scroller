@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.7
+
+* Upgrade ember-cli
+
 3.0.6
 
 * Add `isScrollable` property to yielded 'api'
