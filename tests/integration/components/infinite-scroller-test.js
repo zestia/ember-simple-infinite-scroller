@@ -34,7 +34,7 @@ module('infinite-scroller', function(hooks) {
   test('it renders', async function(assert) {
     assert.expect(1);
 
-    await render(hbs`{{infinite-scroller}}`);
+    await render(hbs`<InfiniteScroller />`);
 
     assert
       .dom('.infinite-scroller')
@@ -45,13 +45,13 @@ module('infinite-scroller', function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#infinite-scroller
-        class="example-1"
-        onLoadMore=this.loadMore}}
-        {{#each things as |thing|}}
+      <InfiniteScroller
+        @class="example-1"
+        @onLoadMore={{action this.loadMore}}>
+        {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     find('.infinite-scroller').scrollTop = 450;
@@ -79,13 +79,13 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller
-        class="example-1"
-        onLoadMore=this.slowLoadMore}}
-        {{#each things as |thing|}}
+      <InfiniteScroller
+        @class="example-1"
+        @onLoadMore={{action this.slowLoadMore}}>
+        {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     find('.infinite-scroller').scrollTop = 450;
@@ -103,14 +103,14 @@ module('infinite-scroller', function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#infinite-scroller
-        class="example-1"
-        leeway="50%"
-        onLoadMore=this.loadMore}}
-        {{#each things as |thing|}}
+      <InfiniteScroller
+        @class="example-1"
+        @leeway="50%"
+        @onLoadMore={{action this.loadMore}}>
+        {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     find('.infinite-scroller').scrollTop = 225;
@@ -124,14 +124,14 @@ module('infinite-scroller', function(hooks) {
     assert.expect(2);
 
     await render(hbs`
-      {{#infinite-scroller
-        class="example-1"
-        scrollDebounce=50
-        onLoadMore=this.loadMore}}
-        {{#each things as |thing|}}
+      <InfiniteScroller
+        @class="example-1"
+        @scrollDebounce={{50}}
+        @onLoadMore={{action this.loadMore}}>
+        {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     find('.infinite-scroller').scrollTop = 450;
@@ -161,14 +161,14 @@ module('infinite-scroller', function(hooks) {
     this.set('infiniteScroller.documentElement', fakeDocumentElement);
 
     await render(hbs`
-      {{#infinite-scroller
-        class="example-2"
-        useDocument=true
-        onLoadMore=this.loadMore}}
-        {{#each things as |thing|}}
+      <InfiniteScroller
+        @class="example-2"
+        @useDocument={{true}}
+        @onLoadMore={{action this.loadMore}}>
+        {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     const el = find('.infinite-scroller');
@@ -202,9 +202,9 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
+      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
         <button onclick={{action scroller.loadMore}}>Load more</button>
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     assert.ok(
@@ -238,10 +238,10 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
+      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
         <span>{{scroller.isLoading}}</span>
         <button onclick={{action scroller.loadMore}}>Load more</button>
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     assert.dom('span').hasText('false', 'precondition: not loading');
@@ -267,12 +267,12 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
+      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
         {{#if scroller.error}}
           <p>{{scroller.error.message}}</p>
         {{/if}}
         <button onclick={{action scroller.loadMore}}>Load more</button>
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     assert.ok(
@@ -292,12 +292,12 @@ module('infinite-scroller', function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
-        {{#each things as |thing|}}
+      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
+        {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
         <button onclick={{action scroller.loadMore}}>Load more</button>
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     await click('button');
@@ -321,9 +321,9 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       {{#if showScroller}}
-        {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
+        <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
           <button onclick={{action scroller.loadMore}}>Load more</button>
-        {{/infinite-scroller}}
+        </InfiniteScroller>
       {{/if}}
     `);
 
@@ -340,9 +340,9 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#infinite-scroller onLoadMore=this.loadMore as |scroller|}}
+      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
         <button onclick={{action scroller.loadMore}}>Load more</button>
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     await click('button');
@@ -358,15 +358,15 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#if show}}
-        {{#infinite-scroller
-          class="example-1"
-          scrollDebounce=50
-          onLoadMore=this.loadMore}}
-          {{#each things as |thing|}}
+      {{#if this.show}}
+        <InfiniteScroller
+          @class="example-1"
+          @scrollDebounce={{50}}
+          @onLoadMore={{action this.loadMore}}>
+          {{#each this.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
-        {{/infinite-scroller}}
+        </InfiniteScroller>
       {{/if}}
     `);
 
@@ -381,19 +381,19 @@ module('infinite-scroller', function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      {{#infinite-scroller
-        selector=".internal-element"
-        onLoadMore=this.loadMore}}
+      <InfiniteScroller
+        @selector=".internal-element"
+        @onLoadMore={{action this.loadMore}}>
 
         <div class="non-scrollable-element">
           <div class="internal-element">
-            {{#each things as |thing|}}
+            {{#each this.things as |thing|}}
               <div class="thing">{{thing.name}}</div>
             {{/each}}
           </div>
         </div>
 
-      {{/infinite-scroller}}
+      </InfiniteScroller>
     `);
 
     find('.internal-element').scrollTop = 450;
