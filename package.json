@@ -32,7 +32,6 @@
     "@zestia/prettier-config": "0.0.2",
     "@zestia/stylelint-config": "2.0.10",
     "broccoli-asset-rev": "3.0.0",
-    "ember-angle-bracket-invocation-polyfill": "1.3.0",
     "ember-cli-dependency-checker": "3.1.0",
     "ember-cli-github-pages": "0.2.1",
     "ember-cli-htmlbars-inline-precompile": "2.1.0",
@@ -46,7 +45,6 @@
     "ember-disable-prototype-extensions": "1.1.3",
     "ember-load-initializers": "2.0.0",
     "ember-maybe-import-regenerator": "0.1.6",
-    "ember-named-arguments-polyfill": "1.0.0",
     "ember-qunit": "4.4.1",
     "ember-resolver": "5.1.3",
     "ember-source-channel-url": "1.1.0",
@@ -62,7 +60,9 @@
   },
   "dependencies": {
     "ember-cli-babel": "^7.7.3",
-    "ember-cli-htmlbars": "^3.0.0"
+    "ember-cli-htmlbars": "^3.0.0",
+    "ember-angle-bracket-invocation-polyfill": "^1.3.0",
+    "ember-named-arguments-polyfill": "^1.0.0"
   },
   "keywords": [
     "ember-addon",
