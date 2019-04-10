@@ -46,7 +46,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller
-        @class="example-1"
+        class="example-1"
         @onLoadMore={{action this.loadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
@@ -80,7 +80,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller
-        @class="example-1"
+        class="example-1"
         @onLoadMore={{action this.slowLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
@@ -104,7 +104,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller
-        @class="example-1"
+        class="example-1"
         @leeway="50%"
         @onLoadMore={{action this.loadMore}}>
         {{#each this.things as |thing|}}
@@ -125,7 +125,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller
-        @class="example-1"
+        class="example-1"
         @scrollDebounce={{50}}
         @onLoadMore={{action this.loadMore}}>
         {{#each this.things as |thing|}}
@@ -162,7 +162,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller
-        @class="example-2"
+        class="example-2"
         @useDocument={{true}}
         @onLoadMore={{action this.loadMore}}>
         {{#each this.things as |thing|}}
@@ -360,7 +360,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       {{#if this.show}}
         <InfiniteScroller
-          @class="example-1"
+          class="example-1"
           @scrollDebounce={{50}}
           @onLoadMore={{action this.loadMore}}>
           {{#each this.things as |thing|}}
