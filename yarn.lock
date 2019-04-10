@@ -863,10 +863,10 @@
     eslint-plugin-promise "^4.0.1"
     eslint-plugin-standard "^4.0.0"
 
-"@zestia/prettier-config@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@zestia/prettier-config/-/prettier-config-0.0.1.tgz#8cee1e8d2245e368367687fef707a1a2f5bb1b17"
-  integrity sha512-/5hmfYVsMQPL8M2MYUaTSZmdU98ptD3XpekqDImUEh4xbkjcXRiH8YocEuUFC4jU4wXql6SPqkr5kgjtigBe7g==
+"@zestia/prettier-config@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@zestia/prettier-config/-/prettier-config-0.0.2.tgz#c6acf0ac5753f65c819d3f519d0d9d16ad53c1af"
+  integrity sha512-GIhBRZPT0qLc/IuqXaHCwoizbiXsL9fhiiBltSay0/qPN7tsfCELdjQUxrhuKHTBwFmvjYhUxu/5QWngvg1AtQ==
 
 "@zestia/stylelint-config@2.0.10":
   version "2.0.10"

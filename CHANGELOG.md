@@ -1,5 +1,9 @@
 # Changelog
 
+3.0.8
+
+* Upgrade dependencies
+
 3.0.7
 
 * Upgrade ember-cli
