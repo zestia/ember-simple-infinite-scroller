@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import layout from '../templates/components/infinite-scroller';
 import { bind, debounce, cancel } from '@ember/runloop';
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
 
@@ -27,7 +27,7 @@ export default Component.extend({
 
   didRender() {
     this._super(...arguments);
-    this.set('isScrollable', this._isScrollable());
+    set(this, 'isScrollable', this._isScrollable());
   },
 
   willDestroyElement() {
@@ -142,8 +142,8 @@ export default Component.extend({
   },
 
   _loadMore() {
-    this.set('error', null);
-    this.set('isLoading', true);
+    set(this, 'error', null);
+    set(this, 'isLoading', true);
 
     resolve(this.onLoadMore())
       .catch(bind(this, '_loadError'))
@@ -155,7 +155,7 @@ export default Component.extend({
       return;
     }
 
-    this.set('error', error);
+    set(this, 'error', error);
   },
 
   _loadFinished() {
@@ -163,6 +163,6 @@ export default Component.extend({
       return;
     }
 
-    this.set('isLoading', false);
+    set(this, 'isLoading', false);
   }
 });
