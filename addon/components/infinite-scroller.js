@@ -18,6 +18,7 @@ export default Component.extend({
   scrollDebounce: 100,
   error: null,
   isLoading: false,
+  isScrollable: false,
   leeway: '0%',
 
   didInsertElement() {
