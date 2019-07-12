@@ -1,12 +1,9 @@
-import Mixin from '@ember/object/mixin';
 import { later } from '@ember/runloop';
 import { Promise } from 'rsvp';
-import { inject as injectController } from '@ember/controller';
+import Controller, { inject as injectController } from '@ember/controller';
 import generateThings from '../utils/generate-things';
 
-export default Mixin.create({
-  appController: injectController('application'),
-
+export default Controller.extend({
   init() {
     this._super(...arguments);
     this.set('page', 1);
@@ -14,11 +11,7 @@ export default Mixin.create({
     this.set('things', this._generateThings());
   },
 
-  _generateThings() {
-    const start = this.getWithDefault('things.length', 0) + 1;
-    const end = this.get('page') * this.get('perPage');
-    return generateThings(start, end);
-  },
+  appController: injectController('application'),
 
   actions: {
     loadMore() {
@@ -30,5 +23,11 @@ export default Mixin.create({
         }, this.get('appController.loadDelay'));
       });
     }
+  },
+
+  _generateThings() {
+    const start = this.getWithDefault('things.length', 0) + 1;
+    const end = this.get('page') * this.get('perPage');
+    return generateThings(start, end);
   }
 });

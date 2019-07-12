@@ -1,4 +1,3 @@
-import Controller from '@ember/controller';
-import Things from '../mixins/things';
+import ThingsController from '../_controllers/things';
 
-export default Controller.extend(Things);
+export default ThingsController;

@@ -4,7 +4,7 @@
   class="example-1"
   onLoadMore=(action "loadMore")
 as |scroller|}}
-  {{#each things as |thing|}}
+  {{#each this.things as |thing|}}
     <div class="thing">{{thing.name}}</div>
   {{/each}}
   {{#if scroller.isLoading}}

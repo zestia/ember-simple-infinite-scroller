@@ -9,7 +9,7 @@
   selector=".internal-element"}}
   <div class="unscrollable-element">
     <div class="internal-element">
-      {{#each things as |thing|}}
+      {{#each this.things as |thing|}}
         <div class="thing">{{thing.name}}</div>
       {{/each}}
     </div>

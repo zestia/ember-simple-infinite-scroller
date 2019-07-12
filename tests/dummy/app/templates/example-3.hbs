@@ -6,7 +6,7 @@
   leeway="50%"
   scrollDebounce=15
 as |scroller|}}
-  {{#each things as |thing|}}
+  {{#each this.things as |thing|}}
     <div class="thing">{{thing.name}}</div>
   {{/each}}
   {{#if scroller.isLoading}}

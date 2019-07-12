@@ -320,7 +320,7 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      {{#if showScroller}}
+      {{#if this.showScroller}}
         <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
           <button onclick={{action scroller.loadMore}}>Load more</button>
         </InfiniteScroller>
