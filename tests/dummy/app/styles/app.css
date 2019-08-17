@@ -1,23 +1,27 @@
+$red: red;
+$blue: blue;
+$green: green;
+
 .infinite-scroller {
   margin: 20px;
   padding: 10px;
-  border: 1px solid red;
+  border: 1px solid $red;
 }
 
 .internal-element {
   margin: 20px;
   padding: 10px;
-  border: 1px dashed red;
+  border: 1px dashed $red;
 }
 
 .thing {
-  border: 1px solid blue;
+  border: 1px solid $blue;
   height: 20px;
   margin: 10px;
 }
 
 .status {
-  border: 1px solid green;
+  border: 1px solid $green;
   margin: 10px;
 }
 
