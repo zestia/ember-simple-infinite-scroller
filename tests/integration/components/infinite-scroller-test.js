@@ -38,7 +38,10 @@ module('infinite-scroller', function(hooks) {
 
     assert
       .dom('.infinite-scroller')
-      .exists({ count: 1 }, 'infinite scroller component has an appropriate class name');
+      .exists(
+        { count: 1 },
+        'infinite scroller component has an appropriate class name'
+      );
   });
 
   test('load more action', async function(assert) {
@@ -59,12 +62,18 @@ module('infinite-scroller', function(hooks) {
     later(() => {
       assert
         .dom('.thing')
-        .exists({ count: 20 }, 'has not fired load more action due to debouncing of scroll event');
+        .exists(
+          { count: 20 },
+          'has not fired load more action due to debouncing of scroll event'
+        );
     }, 100);
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore, 'fires load more action at the element scroll boundary');
+    assert.ok(
+      this.loadedMore,
+      'fires load more action at the element scroll boundary'
+    );
   });
 
   test('load more action (whilst loading)', async function(assert) {
@@ -96,7 +105,11 @@ module('infinite-scroller', function(hooks) {
 
     await settled();
 
-    assert.equal(called, 1, 'does not fire load more action if already loading more');
+    assert.equal(
+      called,
+      1,
+      'does not fire load more action if already loading more'
+    );
   });
 
   test('load more action (leeway)', async function(assert) {
@@ -117,7 +130,10 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore, 'fires load more action at the custom element scroll boundary');
+    assert.ok(
+      this.loadedMore,
+      'fires load more action at the custom element scroll boundary'
+    );
   });
 
   test('load more action (scrollDebounce)', async function(assert) {
@@ -139,7 +155,10 @@ module('infinite-scroller', function(hooks) {
     later(() => {
       assert
         .dom('.thing')
-        .exists({ count: 20 }, 'has not fired action due to custom debouncing of scroll event');
+        .exists(
+          { count: 20 },
+          'has not fired action due to custom debouncing of scroll event'
+        );
     }, 50);
 
     await waitUntil(() => findAll('.thing').length === 40);
@@ -216,7 +235,10 @@ module('infinite-scroller', function(hooks) {
 
     assert
       .dom('.infinite-scroller')
-      .hasClass('is-loading', 'a loading class is added whilst the action is being performed');
+      .hasClass(
+        'is-loading',
+        'a loading class is added whilst the action is being performed'
+      );
 
     willLoad.resolve();
 
@@ -304,7 +326,10 @@ module('infinite-scroller', function(hooks) {
 
     assert
       .dom('.thing')
-      .exists({ count: 40 }, 'yields an action that can trigger the load more action');
+      .exists(
+        { count: 40 },
+        'yields an action that can trigger the load more action'
+      );
   });
 
   test('destroying (does not blow up)', async function(assert) {
@@ -400,6 +425,9 @@ module('infinite-scroller', function(hooks) {
 
     await waitUntil(() => findAll('.thing').length === 40);
 
-    assert.ok(this.loadedMore, 'fires load more action at the custom element scroll boundary');
+    assert.ok(
+      this.loadedMore,
+      'fires load more action at the custom element scroll boundary'
+    );
   });
 });

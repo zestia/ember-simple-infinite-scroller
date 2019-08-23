@@ -57,7 +57,12 @@ export default Component.extend({
   },
 
   _scroll(e) {
-    this._scrollDebounceId = debounce(this, '_debouncedScroll', e, this.scrollDebounce);
+    this._scrollDebounceId = debounce(
+      this,
+      '_debouncedScroll',
+      e,
+      this.scrollDebounce
+    );
   },
 
   _debouncedScroll() {
@@ -103,7 +108,8 @@ export default Component.extend({
   },
 
   _detectBottomOfElementInDocument() {
-    const clientHeight = get(this, '_infiniteScroller').documentElement.clientHeight;
+    const clientHeight = get(this, '_infiniteScroller').documentElement
+      .clientHeight;
     const bottom = this._element().getBoundingClientRect().bottom;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;
