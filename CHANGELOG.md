@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.11
+
+- Update templates
+
 ## 3.0.10
 
 - Upgrade dependencies

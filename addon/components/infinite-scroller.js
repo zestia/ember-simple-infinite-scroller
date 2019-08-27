@@ -9,8 +9,7 @@ export default Component.extend({
   _infiniteScroller: inject('-infinite-scroller'),
 
   layout,
-  classNames: ['infinite-scroller'],
-  classNameBindings: ['isLoading', 'isScrollable'],
+  tagName: '',
 
   onLoadMore: null,
   selector: null,
@@ -21,25 +20,32 @@ export default Component.extend({
   isScrollable: false,
   leeway: '0%',
 
-  didInsertElement() {
-    this._super(...arguments);
-    this._listen();
-  },
-
-  didRender() {
-    this._super(...arguments);
-    set(this, 'isScrollable', this._isScrollable());
-  },
-
-  willDestroyElement() {
-    this._super(...arguments);
-    this._stopListening();
-  },
-
   actions: {
+    didInsertElement(element) {
+      this._registerElement(element);
+      this._listen();
+    },
+
+    didUpdateElement() {
+      set(this, 'isScrollable', this._isScrollable());
+    },
+
+    willDestroyElement() {
+      this._stopListening();
+      this._deregisterElement();
+    },
+
     loadMore() {
       this._loadMore();
     }
+  },
+
+  _registerElement(element) {
+    set(this, 'domElement', element);
+  },
+
+  _deregisterElement() {
+    set(this, 'domElement', null);
   },
 
   _isScrollable() {
@@ -85,9 +91,9 @@ export default Component.extend({
 
   _element() {
     if (this.selector) {
-      return this.element.querySelector(this.selector);
+      return this.domElement.querySelector(this.selector);
     } else {
-      return this.element;
+      return this.domElement;
     }
   },
 

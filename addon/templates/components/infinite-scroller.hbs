@@ -1,5 +1,15 @@
-{{yield (hash
-  error=this.error
-  isScrollable=this.isScrollable
-  isLoading=this.isLoading
-  loadMore=(action "loadMore"))}}
+<div
+  {{did-insert (action "didInsertElement")}}
+  {{did-update (action "didUpdateElement")}}
+  {{will-destroy (action "willDestroyElement")}}
+  class={{concat
+    "infinite-scroller"
+    (if this.isLoading " is-loading")
+    (if this.isScrollable " is-scrollable")}}
+  ...attributes>
+  {{yield (hash
+    error=this.error
+    isScrollable=this.isScrollable
+    isLoading=this.isLoading
+    loadMore=(action "loadMore"))}}
+</div>
