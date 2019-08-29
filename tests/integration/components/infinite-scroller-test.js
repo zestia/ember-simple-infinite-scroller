@@ -222,7 +222,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
-        <button onclick={{action scroller.loadMore}}>Load more</button>
+        <button {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -262,7 +262,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
         <span>{{scroller.isLoading}}</span>
-        <button onclick={{action scroller.loadMore}}>Load more</button>
+        <button {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -293,7 +293,7 @@ module('infinite-scroller', function(hooks) {
         {{#if scroller.error}}
           <p>{{scroller.error.message}}</p>
         {{/if}}
-        <button onclick={{action scroller.loadMore}}>Load more</button>
+        <button {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -318,7 +318,7 @@ module('infinite-scroller', function(hooks) {
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-        <button onclick={{action scroller.loadMore}}>Load more</button>
+        <button {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -347,7 +347,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       {{#if this.showScroller}}
         <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
-          <button onclick={{action scroller.loadMore}}>Load more</button>
+          <button {{on "click" scroller.loadMore}}>Load more</button>
         </InfiniteScroller>
       {{/if}}
     `);
@@ -366,7 +366,7 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
-        <button onclick={{action scroller.loadMore}}>Load more</button>
+        <button {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 

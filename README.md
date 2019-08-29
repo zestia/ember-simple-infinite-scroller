@@ -144,7 +144,7 @@ To account for this, you can display a button for manually loading more...
     {{#if scroller.isScrollable}}
       Loading more...
     {{else}}
-      <button onclick={{action scroller.loadMore}}>Load more</button>
+      <button {{on "click" scroller.loadMore}}>Load more</button>
     {{/if}}
   {{/if}}
 </InfiniteScroller>

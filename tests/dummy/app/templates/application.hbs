@@ -11,7 +11,7 @@
 <p>
   Load delay:<br>
   <input
-    oninput={{action (mut this.loadDelay) value="target.value"}}
+    {{on "input" (action (mut this.loadDelay) value="target.value")}}
     value={{this.loadDelay}}
     type="number">
 </p>
