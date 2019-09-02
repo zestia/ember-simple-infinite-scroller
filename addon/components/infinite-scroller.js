@@ -11,29 +11,36 @@ export default Component.extend({
   layout,
   tagName: '',
 
+  // Arguments
+
   onLoadMore: null,
   selector: null,
   useDocument: false,
   scrollDebounce: 100,
+  leeway: '0%',
+
+  // State
+
   error: null,
   isLoading: false,
   isScrollable: false,
-  leeway: '0%',
+  domElement: null,
 
   actions: {
+    // Internal actions
+
     didInsertElement(element) {
       this._registerElement(element);
+      this._checkScrollable();
       this._listen();
-    },
-
-    didUpdateElement() {
-      set(this, 'isScrollable', this._isScrollable());
     },
 
     willDestroyElement() {
       this._stopListening();
       this._deregisterElement();
     },
+
+    // Public API actions
 
     loadMore() {
       this._loadMore();
@@ -50,6 +57,10 @@ export default Component.extend({
 
   _isScrollable() {
     return this._element().scrollHeight > this._element().clientHeight;
+  },
+
+  _checkScrollable() {
+    set(this, 'isScrollable', this._isScrollable());
   },
 
   _listen() {

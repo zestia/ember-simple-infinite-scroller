@@ -44,6 +44,26 @@ module('infinite-scroller', function(hooks) {
       );
   });
 
+  test('is scrollable class', async function(assert) {
+    assert.expect(2);
+
+    await render(hbs`
+      <InfiniteScroller class="example-1">
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </InfiniteScroller>
+    `);
+
+    assert.dom('.infinite-scroller').hasClass('.is-scrollable');
+
+    await render(hbs`
+      <InfiniteScroller class="example-1" />
+    `);
+
+    assert.dom('.infinite-scroller').doesNotHaveClass('.is-scrollable');
+  });
+
   test('load more action', async function(assert) {
     assert.expect(2);
 

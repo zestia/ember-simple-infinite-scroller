@@ -6,15 +6,11 @@
   than the infinite scroll content.
 </p>
 
-{{#infinite-scroller
-  class="example-2"
-  onLoadMore=(action "loadMore")
-  useDocument=true
-as |scroller|}}
+<InfiniteScroller class="example-2" @onLoadMore={{action "loadMore"}} @useDocument={{true}} as |scroller|>
   {{#each this.things as |thing|}}
     <div class="thing">{{thing.name}}</div>
   {{/each}}
   {{#if scroller.isLoading}}
     <div class="status">Loading...</div>
   {{/if}}
-{{/infinite-scroller}}
+</InfiniteScroller>

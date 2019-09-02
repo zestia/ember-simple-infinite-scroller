@@ -1,8 +1,10 @@
 # Changelog
 
-## 3.0.11
+## 4.0.0
 
 - Update templates
+- Upgrade dependencies
+- Must be invoked using angle bracket form for attributes to be forwarded
 
 ## 3.0.10
 
