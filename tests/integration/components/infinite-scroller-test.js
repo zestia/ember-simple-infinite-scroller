@@ -55,13 +55,13 @@ module('infinite-scroller', function(hooks) {
       </InfiniteScroller>
     `);
 
-    assert.dom('.infinite-scroller').hasClass('.is-scrollable');
+    assert.dom('.infinite-scroller').hasClass('is-scrollable');
 
     await render(hbs`
       <InfiniteScroller class="example-1" />
     `);
 
-    assert.dom('.infinite-scroller').doesNotHaveClass('.is-scrollable');
+    assert.dom('.infinite-scroller').doesNotHaveClass('is-scrollable');
   });
 
   test('load more action', async function(assert) {

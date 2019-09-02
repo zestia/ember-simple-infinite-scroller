@@ -4,7 +4,7 @@
 
 - Update templates
 - Upgrade dependencies
-- Must be invoked using angle bracket form for attributes to be forwarded
+- Must be invoked using angle brackets for attributes to be forwarded
 
 ## 3.0.10
 
