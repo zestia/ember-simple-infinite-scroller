@@ -1,5 +1,9 @@
 # Changelog
 
+# 4.0.1
+
+- Upgrade dependencies
+
 ## 4.0.0
 
 - Update templates
