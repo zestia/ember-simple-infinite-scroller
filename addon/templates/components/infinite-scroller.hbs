@@ -3,8 +3,8 @@
   {{will-destroy (action "willDestroyElement")}}
   class={{concat
     "infinite-scroller"
-    (if this.isLoading " is-loading")
-    (if this.isScrollable " is-scrollable")}}
+    (if this.isLoading " infinite-scroller--loading")
+    (if this.isScrollable " infinite-scroller--scrollable")}}
   ...attributes>
   {{yield (hash
     error=this.error

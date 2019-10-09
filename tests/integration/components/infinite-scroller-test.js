@@ -55,13 +55,15 @@ module('infinite-scroller', function(hooks) {
       </InfiniteScroller>
     `);
 
-    assert.dom('.infinite-scroller').hasClass('is-scrollable');
+    assert.dom('.infinite-scroller').hasClass('infinite-scroller--scrollable');
 
     await render(hbs`
       <InfiniteScroller class="example-1" />
     `);
 
-    assert.dom('.infinite-scroller').doesNotHaveClass('is-scrollable');
+    assert
+      .dom('.infinite-scroller')
+      .doesNotHaveClass('infinite-scroller--scrollable');
   });
 
   test('load more action', async function(assert) {
@@ -247,7 +249,9 @@ module('infinite-scroller', function(hooks) {
     `);
 
     assert.ok(
-      !find('.infinite-scroller').classList.contains('is-loading'),
+      !find('.infinite-scroller').classList.contains(
+        'infinite-scroller--loading'
+      ),
       'precondition: is not loading'
     );
 
@@ -256,7 +260,7 @@ module('infinite-scroller', function(hooks) {
     assert
       .dom('.infinite-scroller')
       .hasClass(
-        'is-loading',
+        'infinite-scroller--loading',
         'a loading class is added whilst the action is being performed'
       );
 
@@ -265,7 +269,9 @@ module('infinite-scroller', function(hooks) {
     await settled();
 
     assert.ok(
-      !find('.infinite-scroller').classList.contains('is-loading'),
+      !find('.infinite-scroller').classList.contains(
+        'infinite-scroller--loading'
+      ),
       'loading class name is removed after the action resolves'
     );
   });
