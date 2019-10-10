@@ -29,13 +29,13 @@ export default Component.extend({
   actions: {
     // Internal actions
 
-    didInsertElement(element) {
+    handleInsertElement(element) {
       this._registerElement(element);
       this._checkScrollable();
       this._listen();
     },
 
-    willDestroyElement() {
+    handleDestroyElement() {
       this._stopListening();
       this._deregisterElement();
     },

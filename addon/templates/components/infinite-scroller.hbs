@@ -1,6 +1,6 @@
 <div
-  {{did-insert (action "didInsertElement")}}
-  {{will-destroy (action "willDestroyElement")}}
+  {{did-insert (action "handleInsertElement")}}
+  {{will-destroy (action "handleDestroyElement")}}
   class={{concat
     "infinite-scroller"
     (if this.isLoading " infinite-scroller--loading")
