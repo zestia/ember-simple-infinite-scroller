@@ -5,16 +5,20 @@
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
 Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
 
-### Installation
+## Installation
 
 ```
 ember install @zestia/ember-simple-infinite-scroller
 ```
 
-### Example usage
+## Demo
+
+https://zestia.github.io/ember-simple-infinite-scroller/
+
+## Example
 
 ```handlebars
-<InfiniteScroller @onLoadMore={{action "loadMore"}} as |scroller|>
+<InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
   {{#each things as |thing|}}
     ...
   {{/each}}
@@ -22,13 +26,7 @@ ember install @zestia/ember-simple-infinite-scroller
 </InfiniteScroller>
 ```
 
-### Demo
-
-<a href="https://zestia.github.io/ember-simple-infinite-scroller/#/example-1">
-  https://zestia.github.io/ember-simple-infinite-scroller/
-</a>
-
-### Notes
+## Notes
 
 - Does not use jQuery ✔︎
 - Ember Data Friendly ✔︎
@@ -69,7 +67,7 @@ ember install @zestia/ember-simple-infinite-scroller
   </tr>
 </table>
 
-### Yielded API
+## Yielded API
 
 The component will yield a hash that provides:
 
@@ -96,7 +94,7 @@ The component will yield a hash that provides:
   </tr>
 </table>
 
-##### Element vs Document scroll
+## Element vs Document scroll
 
 Either make your component scrollable:
 
@@ -111,7 +109,7 @@ Either make your component scrollable:
 
 Set `useDocument=true` if your component is not scrollable.
 
-### Performance
+## Performance
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
 
@@ -126,7 +124,7 @@ customEvents: {
 }
 ```
 
-### Other scenarios
+## Other scenarios
 
 If your scrollable element is displaying 10 things, but they don't cause the element to overflow,
 then the user won't ever be able to load more - because they won't be able to scroll and therefore
@@ -135,7 +133,7 @@ the `onLoadMore` action will never fire.
 To account for this, you can display a button for manually loading more...
 
 ```handlebars
-<InfiniteScroller @onLoadMore={{action "loadMore"}} as |scroller|>
+<InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
   {{#each this.things as |thing|}}
     ...
   {{/each}}
