@@ -107,7 +107,7 @@ Either make your component scrollable:
 
 **OR**
 
-Set `@useDocument=true` if your component is not scrollable.
+Set `@useDocument={{true}}` if your component is not scrollable.
 
 ## Performance
 
