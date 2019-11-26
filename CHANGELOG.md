@@ -1,16 +1,9 @@
 # Changelog
 
-## 5.0.2
-
-- Upgrade dependencies
-
-## 5.0.1
-
-- Upgrade dependencies
-
 ## 5.0.0
 
 - Switch to BEM syntax
+- Upgrade dependencies
 
 ## 4.0.1
 
