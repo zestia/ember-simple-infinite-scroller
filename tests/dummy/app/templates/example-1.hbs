@@ -1,10 +1,19 @@
-<p>An action is fired when infinite scroll component is scrolled to the very bottom</p>
+<p>
+  An action is fired when infinite scroll component is scrolled to the very bottom
+</p>
 
-<InfiniteScroller class="example-1" @onLoadMore={{action "loadMore"}} as |scroller|>
+<InfiniteScroller
+  class="example-1"
+  @onLoadMore={{action "loadMore"}} as |scroller|
+>
   {{#each this.things as |thing|}}
-    <div class="thing">{{thing.name}}</div>
+    <div class="thing">
+      {{thing.name}}
+    </div>
   {{/each}}
   {{#if scroller.isLoading}}
-    <div class="status">Loading...</div>
+    <div class="status">
+      Loading...
+    </div>
   {{/if}}
 </InfiniteScroller>

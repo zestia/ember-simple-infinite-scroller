@@ -1,10 +1,21 @@
-<p>An action is fired when the infinite scroll component is scrolled to 50%</p>
+<p>
+  An action is fired when the infinite scroll component is scrolled to 50%
+</p>
 
-<InfiniteScroller class="example-3" @onLoadMore={{action "loadMore"}} @leeway="50%" scrollDebounce={{15}} as |scroller|>
+<InfiniteScroller
+  class="example-3"
+  @onLoadMore={{action "loadMore"}}
+  @leeway="50%"
+  scrollDebounce={{15}} as |scroller|
+>
   {{#each this.things as |thing|}}
-    <div class="thing">{{thing.name}}</div>
+    <div class="thing">
+      {{thing.name}}
+    </div>
   {{/each}}
   {{#if scroller.isLoading}}
-    <div class="status">Loading...</div>
+    <div class="status">
+      Loading...
+    </div>
   {{/if}}
 </InfiniteScroller>

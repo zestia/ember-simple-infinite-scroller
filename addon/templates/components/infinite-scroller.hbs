@@ -1,14 +1,19 @@
 <div
-  {{did-insert (action "handleInsertElement")}}
-  {{will-destroy (action "handleDestroyElement")}}
   class={{concat
     "infinite-scroller"
     (if this.isLoading " infinite-scroller--loading")
-    (if this.isScrollable " infinite-scroller--scrollable")}}
-  ...attributes>
-  {{yield (hash
-    error=this.error
-    isScrollable=this.isScrollable
-    isLoading=this.isLoading
-    loadMore=(action "loadMore"))}}
+    (if this.isScrollable " infinite-scroller--scrollable")
+  }}
+  ...attributes
+  {{did-insert (action "handleInsertElement")}}
+  {{will-destroy (action "handleDestroyElement")}}
+>
+  {{yield
+    (hash
+      error=this.error
+      isScrollable=this.isScrollable
+      isLoading=this.isLoading
+      loadMore=(action "loadMore")
+    )
+  }}
 </div>

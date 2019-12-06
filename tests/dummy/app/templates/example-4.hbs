@@ -3,15 +3,23 @@
   to the very bottom
 </p>
 
-<InfiniteScroller class="example-4" @onLoadMore={{action "loadMore"}} @selector=".internal-element" as |scroller|>
+<InfiniteScroller
+  class="example-4"
+  @onLoadMore={{action "loadMore"}}
+  @selector=".internal-element" as |scroller|
+>
   <div class="unscrollable-element">
     <div class="internal-element">
       {{#each this.things as |thing|}}
-        <div class="thing">{{thing.name}}</div>
+        <div class="thing">
+          {{thing.name}}
+        </div>
       {{/each}}
     </div>
   </div>
   {{#if scroller.isLoading}}
-    <div class="status">Loading...</div>
+    <div class="status">
+      Loading...
+    </div>
   {{/if}}
 </InfiniteScroller>
