@@ -9,6 +9,7 @@ export default class InfiniteScrollerComponent extends Component {
   @inject('-infinite-scroller') _infiniteScroller;
 
   layout = layout;
+  tagName = '';
 
   // Arguments
 

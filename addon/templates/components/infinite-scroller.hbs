@@ -5,15 +5,15 @@
     (if this.isScrollable " infinite-scroller--scrollable")
   }}
   ...attributes
-  {{did-insert (action "handleInsertElement")}}
-  {{will-destroy (action "handleDestroyElement")}}
+  {{did-insert this.handleInsertElement}}
+  {{will-destroy this.handleDestroyElement}}
 >
   {{yield
     (hash
       error=this.error
       isScrollable=this.isScrollable
       isLoading=this.isLoading
-      loadMore=(action "loadMore")
+      loadMore=this.loadMore
     )
   }}
 </div>

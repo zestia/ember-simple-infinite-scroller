@@ -4,7 +4,7 @@
 
 <InfiniteScroller
   class="example-1"
-  @onLoadMore={{action "loadMore"}} as |scroller|
+  @onLoadMore={{this.loadMore}} as |scroller|
 >
   {{#each this.things as |thing|}}
     <div class="thing">

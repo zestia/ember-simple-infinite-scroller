@@ -72,7 +72,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @onLoadMore={{action this.loadMore}}>
+        @onLoadMore={{this.loadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -112,7 +112,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @onLoadMore={{action this.slowLoadMore}}>
+        @onLoadMore={{this.slowLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -141,7 +141,7 @@ module('infinite-scroller', function(hooks) {
       <InfiniteScroller
         class="example-1"
         @leeway="50%"
-        @onLoadMore={{action this.loadMore}}>
+        @onLoadMore={{this.loadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -165,7 +165,7 @@ module('infinite-scroller', function(hooks) {
       <InfiniteScroller
         class="example-1"
         @scrollDebounce={{50}}
-        @onLoadMore={{action this.loadMore}}>
+        @onLoadMore={{this.loadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -205,7 +205,7 @@ module('infinite-scroller', function(hooks) {
       <InfiniteScroller
         class="example-2"
         @useDocument={{true}}
-        @onLoadMore={{action this.loadMore}}>
+        @onLoadMore={{this.loadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -243,8 +243,8 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
-        <button {{on "click" scroller.loadMore}}>Load more</button>
+      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+        <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -286,9 +286,9 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
         <span>{{scroller.isLoading}}</span>
-        <button {{on "click" scroller.loadMore}}>Load more</button>
+        <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -315,11 +315,11 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
         {{#if scroller.error}}
           <p>{{scroller.error.message}}</p>
         {{/if}}
-        <button {{on "click" scroller.loadMore}}>Load more</button>
+        <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -340,11 +340,11 @@ module('infinite-scroller', function(hooks) {
     assert.expect(1);
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
-        <button {{on "click" scroller.loadMore}}>Load more</button>
+        <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -372,8 +372,8 @@ module('infinite-scroller', function(hooks) {
 
     await render(hbs`
       {{#if this.showScroller}}
-        <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
-          <button {{on "click" scroller.loadMore}}>Load more</button>
+        <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+          <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
         </InfiniteScroller>
       {{/if}}
     `);
@@ -391,8 +391,8 @@ module('infinite-scroller', function(hooks) {
     });
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{action this.loadMore}} as |scroller|>
-        <button {{on "click" scroller.loadMore}}>Load more</button>
+      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+        <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
 
@@ -413,7 +413,7 @@ module('infinite-scroller', function(hooks) {
         <InfiniteScroller
           class="example-1"
           @scrollDebounce={{50}}
-          @onLoadMore={{action this.loadMore}}>
+          @onLoadMore={{this.loadMore}}>
           {{#each this.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
@@ -434,7 +434,7 @@ module('infinite-scroller', function(hooks) {
     await render(hbs`
       <InfiniteScroller
         @selector=".internal-element"
-        @onLoadMore={{action this.loadMore}}>
+        @onLoadMore={{this.loadMore}}>
 
         <div class="non-scrollable-element">
           <div class="internal-element">

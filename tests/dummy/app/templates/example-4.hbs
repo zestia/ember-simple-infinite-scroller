@@ -5,7 +5,7 @@
 
 <InfiniteScroller
   class="example-4"
-  @onLoadMore={{action "loadMore"}}
+  @onLoadMore={{this.loadMore}}
   @selector=".internal-element" as |scroller|
 >
   <div class="unscrollable-element">
