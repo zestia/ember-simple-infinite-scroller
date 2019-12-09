@@ -1,6 +1,24 @@
 # @zestia/ember-simple-infinite-scroller
 
-<a href="https://badge.fury.io/js/%40zestia%2Fember-simple-infinite-scroller"><img src="https://badge.fury.io/js/%40zestia%2Fember-simple-infinite-scroller.svg" alt="npm version" height="18"></a> &nbsp; <a href="http://travis-ci.org/zestia/ember-simple-infinite-scroller"><img src="https://travis-ci.org/zestia/ember-simple-infinite-scroller.svg?branch=master"></a> &nbsp; <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#badge-embed"><img src="https://david-dm.org/zestia/ember-simple-infinite-scroller.svg"></a> &nbsp; <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#dev-badge-embed"><img src="https://david-dm.org/zestia/ember-simple-infinite-scroller/dev-status.svg"></a> &nbsp; <a href="https://emberobserver.com/addons/@zestia/ember-simple-infinite-scroller"><img src="https://emberobserver.com/badges/-zestia-ember-simple-infinite-scroller.svg"></a>
+<p>
+  <a href="http://travis-ci.org/zestia/ember-simple-infinite-scroller">
+    <img src="https://travis-ci.org/zestia/ember-simple-infinite-scroller.svg?branch=master">
+  </a>
+
+  <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#badge-embed">
+    <img src="https://david-dm.org/zestia/ember-simple-infinite-scroller.svg">
+  </a>
+
+  <a href="https://david-dm.org/zestia/ember-simple-infinite-scroller#dev-badge-embed">
+    <img src="https://david-dm.org/zestia/ember-simple-infinite-scroller/dev-status.svg">
+  </a>
+
+  <a href="https://emberobserver.com/addons/@zestia/ember-simple-infinite-scroller">
+    <img src="https://emberobserver.com/badges/-zestia-ember-simple-infinite-scroller.svg">
+  </a>
+
+  <img src="https://img.shields.io/badge/Ember-%3E%3D%203.11-brightgreen">
+</p>
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
 Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
