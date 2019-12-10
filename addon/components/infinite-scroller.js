@@ -53,7 +53,7 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _isScrollable() {
-    return this._element().scrollHeight > this._element().clientHeight;
+    return this._scroller().scrollHeight > this._scroller().clientHeight;
   }
 
   _checkScrollable() {
@@ -93,11 +93,11 @@ export default class InfiniteScrollerComponent extends Component {
     if (this.useDocument) {
       return get(this, '_infiniteScroller').document;
     } else {
-      return this._element();
+      return this._scroller();
     }
   }
 
-  _element() {
+  _scroller() {
     if (this.selector) {
       return this.domElement.querySelector(this.selector);
     } else {
@@ -124,7 +124,7 @@ export default class InfiniteScrollerComponent extends Component {
   _detectBottomOfElementInDocument() {
     const clientHeight = get(this, '_infiniteScroller').documentElement
       .clientHeight;
-    const bottom = this._element().getBoundingClientRect().bottom;
+    const bottom = this._scroller().getBoundingClientRect().bottom;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;
     const percentageToBottom = (pixelsToBottom / bottom) * 100;
@@ -141,9 +141,9 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _detectBottomOfElement() {
-    const scrollHeight = this._element().scrollHeight;
-    const scrollTop = this._element().scrollTop;
-    const clientHeight = this._element().clientHeight;
+    const scrollHeight = this._scroller().scrollHeight;
+    const scrollTop = this._scroller().scrollTop;
+    const clientHeight = this._scroller().clientHeight;
     const bottom = scrollHeight - clientHeight;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - scrollTop;
