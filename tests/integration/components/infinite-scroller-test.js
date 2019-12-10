@@ -456,4 +456,37 @@ module('infinite-scroller', function(hooks) {
       'fires load more action at the custom element scroll boundary'
     );
   });
+
+  test('is scrollable', async function(assert) {
+    assert.expect(2);
+
+    this.set('things', generateThings(1, 2));
+
+    await render(hbs`
+      <InfiniteScroller
+        class="example-1"
+        @onLoadMore={{this.loadMore}} as |scroller|>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+        {{#unless scroller.isScrollable}}
+          <button type="button" {{on "click" scroller.loadMore}} class="load-more">Load more</button>
+        {{/unless}}
+      </InfiniteScroller>
+    `);
+
+    assert
+      .dom('.load-more')
+      .exists(
+        'load more button shows because infinite scroller component determined that there is no scroll movement available'
+      );
+
+    await click('.load-more');
+
+    assert
+      .dom('.load-more')
+      .doesNotExist(
+        'infinite scroller component re-computes whether or not there is scroll movement available'
+      );
+  });
 });

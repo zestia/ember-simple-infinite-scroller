@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { bind, debounce, cancel } from '@ember/runloop';
+import { bind, debounce, cancel, scheduleOnce } from '@ember/runloop';
 import layout from '../templates/components/infinite-scroller';
 import { action, get, set } from '@ember/object';
 import { resolve } from 'rsvp';
@@ -53,7 +53,13 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _isScrollable() {
-    return this._scroller().scrollHeight > this._scroller().clientHeight;
+    let element = this._scroller();
+
+    if (this.useDocument) {
+      element = this._documentElement();
+    }
+
+    return element.scrollHeight > element.clientHeight;
   }
 
   _checkScrollable() {
@@ -85,13 +91,25 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
+  _log() {
+    get(this, '_infiniteScroller').log(...arguments);
+  }
+
   _leeway() {
     return parseInt(this.leeway, 10);
   }
 
+  _document() {
+    return get(this, '_infiniteScroller').document;
+  }
+
+  _documentElement() {
+    return get(this, '_infiniteScroller').documentElement;
+  }
+
   _listener() {
     if (this.useDocument) {
-      return get(this, '_infiniteScroller').document;
+      return this._document();
     } else {
       return this._scroller();
     }
@@ -116,7 +134,7 @@ export default class InfiniteScrollerComponent extends Component {
 
     state.shouldLoadMore = state.reachedBottom && !this.isLoading;
 
-    get(this, '_infiniteScroller').log(state);
+    this._log(state);
 
     return state.shouldLoadMore;
   }
@@ -185,5 +203,7 @@ export default class InfiniteScrollerComponent extends Component {
     }
 
     set(this, 'isLoading', false);
+
+    scheduleOnce('afterRender', this, '_checkScrollable');
   }
 }

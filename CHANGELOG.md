@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.1
+
+- Re-computes `scroller.isScrollable` after new content is loaded
+
 ## 5.0.0
 
 - Switch to BEM syntax
