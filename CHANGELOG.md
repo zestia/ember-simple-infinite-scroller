@@ -1,8 +1,9 @@
 # Changelog
 
-## 5.0.1
+## 6.0.0
 
 - Re-computes `scroller.isScrollable` after new content is loaded
+- Drop support for < Ember 3.11
 
 ## 5.0.0
 
