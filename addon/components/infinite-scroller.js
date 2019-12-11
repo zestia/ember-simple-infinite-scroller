@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { bind, debounce, cancel } from '@ember/runloop';
+import { bind, debounce, cancel, scheduleOnce } from '@ember/runloop';
 import layout from '../templates/components/infinite-scroller';
 import { action, get, set } from '@ember/object';
 import { resolve } from 'rsvp';
@@ -53,7 +53,13 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _isScrollable() {
-    return this._element().scrollHeight > this._element().clientHeight;
+    let element = this._scroller();
+
+    if (this.useDocument) {
+      element = this._documentElement();
+    }
+
+    return element.scrollHeight > element.clientHeight;
   }
 
   _checkScrollable() {
@@ -85,19 +91,31 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
+  _log() {
+    get(this, '_infiniteScroller').log(...arguments);
+  }
+
   _leeway() {
     return parseInt(this.leeway, 10);
   }
 
+  _document() {
+    return get(this, '_infiniteScroller').document;
+  }
+
+  _documentElement() {
+    return get(this, '_infiniteScroller').documentElement;
+  }
+
   _listener() {
     if (this.useDocument) {
-      return get(this, '_infiniteScroller').document;
+      return this._document();
     } else {
-      return this._element();
+      return this._scroller();
     }
   }
 
-  _element() {
+  _scroller() {
     if (this.selector) {
       return this.domElement.querySelector(this.selector);
     } else {
@@ -116,7 +134,7 @@ export default class InfiniteScrollerComponent extends Component {
 
     state.shouldLoadMore = state.reachedBottom && !this.isLoading;
 
-    get(this, '_infiniteScroller').log(state);
+    this._log(state);
 
     return state.shouldLoadMore;
   }
@@ -124,7 +142,7 @@ export default class InfiniteScrollerComponent extends Component {
   _detectBottomOfElementInDocument() {
     const clientHeight = get(this, '_infiniteScroller').documentElement
       .clientHeight;
-    const bottom = this._element().getBoundingClientRect().bottom;
+    const bottom = this._scroller().getBoundingClientRect().bottom;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - clientHeight;
     const percentageToBottom = (pixelsToBottom / bottom) * 100;
@@ -141,9 +159,9 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _detectBottomOfElement() {
-    const scrollHeight = this._element().scrollHeight;
-    const scrollTop = this._element().scrollTop;
-    const clientHeight = this._element().clientHeight;
+    const scrollHeight = this._scroller().scrollHeight;
+    const scrollTop = this._scroller().scrollTop;
+    const clientHeight = this._scroller().clientHeight;
     const bottom = scrollHeight - clientHeight;
     const leeway = this._leeway();
     const pixelsToBottom = bottom - scrollTop;
@@ -185,5 +203,7 @@ export default class InfiniteScrollerComponent extends Component {
     }
 
     set(this, 'isLoading', false);
+
+    scheduleOnce('afterRender', this, '_checkScrollable');
   }
 }

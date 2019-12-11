@@ -5,8 +5,7 @@
 <InfiniteScroller
   class="example-3"
   @onLoadMore={{this.loadMore}}
-  @leeway="50%"
-  scrollDebounce={{15}} as |scroller|
+  @leeway="50%" as |scroller|
 >
   {{#each this.things as |thing|}}
     <div class="thing">

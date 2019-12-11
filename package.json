@@ -1,6 +1,6 @@
 {
   "name": "@zestia/ember-simple-infinite-scroller",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Simple infinite scroller component for Ember apps",
   "directories": {
     "doc": "doc",
@@ -61,10 +61,8 @@
     "stylelint": "^12.0.0"
   },
   "dependencies": {
-    "ember-angle-bracket-invocation-polyfill": "^2.0.2",
     "ember-cli-babel": "^7.13.0",
-    "ember-cli-htmlbars": "^4.0.9",
-    "ember-named-arguments-polyfill": "^1.0.0"
+    "ember-cli-htmlbars": "^4.0.9"
   },
   "keywords": [
     "ember-addon",
