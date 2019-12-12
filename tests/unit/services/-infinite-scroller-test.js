@@ -4,9 +4,8 @@ import { setupTest } from 'ember-qunit';
 module('Unit | Service | infinite scroller', function(hooks) {
   setupTest(hooks);
 
-  // Replace this with your real tests.
-  test('it exists', function(assert) {
+  test('debug', function(assert) {
     const service = this.owner.lookup('service:-infinite-scroller');
-    assert.ok(service);
+    assert.strictEqual(service.debug, false);
   });
 });

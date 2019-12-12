@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.0.1
+
+- Turn off debug mode
+- Add test to prevent publishing with debug mode on
+
 ## 6.0.0
 
 - Re-computes `scroller.isScrollable` after new content is loaded

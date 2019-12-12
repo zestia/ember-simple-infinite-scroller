@@ -2,7 +2,7 @@ import Service from '@ember/service';
 
 export default Service.extend({
   isFastBoot: typeof FastBoot !== 'undefined',
-  debug: true,
+  debug: false,
 
   init() {
     this._super(...arguments);
