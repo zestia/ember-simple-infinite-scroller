@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { defer, reject } from 'rsvp';
-import { later } from '@ember/runloop';
+import { later, run } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
 import {
   render,
@@ -21,6 +21,7 @@ module('infinite-scroller', function(hooks) {
   hooks.beforeEach(function() {
     this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
     this.infiniteScroller.debug = true;
+    this.infiniteScroller.raf = run;
     this.loadedMore = false;
 
     this.set('things', generateThings(1, 20));
@@ -44,7 +45,7 @@ module('infinite-scroller', function(hooks) {
       );
   });
 
-  test('is scrollable class', async function(assert) {
+  test('scrollable class', async function(assert) {
     assert.expect(2);
 
     await render(hbs`

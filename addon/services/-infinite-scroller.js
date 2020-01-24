@@ -1,19 +1,19 @@
 import Service from '@ember/service';
 
-export default Service.extend({
-  isFastBoot: typeof FastBoot !== 'undefined',
-  debug: false,
+export default class InfiniteScrollerService extends Service {
+  isFastBoot = typeof FastBoot !== 'undefined';
+  raf = window.requestAnimationFrame;
+  debug = false;
+  _log = [];
 
   init() {
-    this._super(...arguments);
-
-    this.set('_log', []);
+    super.init(...arguments);
 
     if (!this.isFastBoot) {
-      this.set('document', document);
-      this.set('documentElement', document.documentElement);
+      this.document = document;
+      this.documentElement = document.documentElement;
     }
-  },
+  }
 
   log(state) {
     if (this.debug) {
@@ -23,4 +23,4 @@ export default Service.extend({
       console.table([state]);
     }
   }
-});
+}

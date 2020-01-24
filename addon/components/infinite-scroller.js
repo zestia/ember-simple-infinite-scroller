@@ -63,7 +63,9 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkScrollable() {
-    set(this, 'isScrollable', this._isScrollable());
+    this._infiniteScroller.raf(() =>
+      set(this, 'isScrollable', this._isScrollable())
+    );
   }
 
   _listen() {
