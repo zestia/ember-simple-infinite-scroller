@@ -1,13 +1,10 @@
 # Changelog
 
-## 6.0.4
-
-- Move render modifiers to dependencies
-- Upgrade dependencies
-
 ## 6.0.3
 
 - Fix forced reflow during initial render
+- Move render modifiers to dependencies
+- Upgrade dependencies
 
 ## 6.0.2
 
