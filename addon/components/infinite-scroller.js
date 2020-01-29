@@ -29,7 +29,7 @@ export default class InfiniteScrollerComponent extends Component {
   @action
   handleInsertElement(element) {
     this._registerElement(element);
-    this._checkScrollable();
+    this._scheduleCheckScrollable();
     this._listen();
   }
 
@@ -62,10 +62,12 @@ export default class InfiniteScrollerComponent extends Component {
     return element.scrollHeight > element.clientHeight;
   }
 
+  _scheduleCheckScrollable() {
+    scheduleOnce('afterRender', this, '_checkScrollable');
+  }
+
   _checkScrollable() {
-    this._infiniteScroller.raf(() =>
-      set(this, 'isScrollable', this._isScrollable())
-    );
+    set(this, 'isScrollable', this._isScrollable());
   }
 
   _listen() {
@@ -205,6 +207,6 @@ export default class InfiniteScrollerComponent extends Component {
 
     set(this, 'isLoading', false);
 
-    scheduleOnce('afterRender', this, '_checkScrollable');
+    this._scheduleCheckScrollable();
   }
 }
