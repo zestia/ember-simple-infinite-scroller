@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.4
+
+- Fix illegal invocation of requestAnimationFrame
+
 ## 6.0.3
 
 - Fix forced reflow during initial render

@@ -2,7 +2,7 @@ import Service from '@ember/service';
 
 export default class InfiniteScrollerService extends Service {
   isFastBoot = typeof FastBoot !== 'undefined';
-  raf = window.requestAnimationFrame;
+  raf = window.requestAnimationFrame.bind(window);
   debug = false;
   _log = [];
 
