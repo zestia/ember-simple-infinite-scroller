@@ -10,7 +10,7 @@ export default class ThingsController extends Controller {
   init() {
     super.init(...arguments);
     set(this, 'page', 1);
-    set(this, 'perPage', 20);
+    set(this, 'perPage', 10);
     set(this, 'things', this._generateThings());
   }
 
