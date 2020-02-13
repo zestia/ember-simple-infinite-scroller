@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.5
+
+- Upgrade dependencies
+
 ## 6.0.4
 
 - Fix illegal invocation of requestAnimationFrame
