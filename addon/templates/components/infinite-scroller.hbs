@@ -1,5 +1,6 @@
 <div
-  class={{concat
+  class={{
+    concat
     "infinite-scroller"
     (if this.isLoading " infinite-scroller--loading")
     (if this.isScrollable " infinite-scroller--scrollable")
@@ -8,7 +9,8 @@
   {{did-insert this.handleInsertElement}}
   {{will-destroy this.handleDestroyElement}}
 >
-  {{yield
+  {{
+    yield
     (hash
       error=this.error
       isScrollable=this.isScrollable

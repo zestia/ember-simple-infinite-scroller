@@ -157,7 +157,7 @@ export default class InfiniteScrollerComponent extends Component {
       leeway,
       pixelsToBottom,
       percentageToBottom,
-      reachedBottom
+      reachedBottom,
     };
   }
 
@@ -179,7 +179,7 @@ export default class InfiniteScrollerComponent extends Component {
       leeway,
       pixelsToBottom,
       percentageToBottom,
-      reachedBottom
+      reachedBottom,
     };
   }
 

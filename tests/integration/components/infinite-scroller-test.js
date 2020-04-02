@@ -12,13 +12,13 @@ import {
   findAll,
   click,
   waitFor,
-  waitUntil
+  waitUntil,
 } from '@ember/test-helpers';
 
-module('infinite-scroller', function(hooks) {
+module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
     this.infiniteScroller.debug = true;
     this.loadedMore = false;
@@ -31,7 +31,7 @@ module('infinite-scroller', function(hooks) {
     });
   });
 
-  test('it renders', async function(assert) {
+  test('it renders', async function (assert) {
     assert.expect(1);
 
     await render(hbs`<InfiniteScroller />`);
@@ -44,7 +44,7 @@ module('infinite-scroller', function(hooks) {
       );
   });
 
-  test('scrollable class', async function(assert) {
+  test('scrollable class', async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -66,7 +66,7 @@ module('infinite-scroller', function(hooks) {
       .doesNotHaveClass('infinite-scroller--scrollable');
   });
 
-  test('load more action', async function(assert) {
+  test('load more action', async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -98,7 +98,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('load more action (whilst loading)', async function(assert) {
+  test('load more action (whilst loading)', async function (assert) {
     assert.expect(1);
 
     let called = 0;
@@ -106,7 +106,7 @@ module('infinite-scroller', function(hooks) {
     this.set('slowLoadMore', () => {
       called++;
       this.loadMore();
-      return new Promise(resolve => later(resolve, 1000));
+      return new Promise((resolve) => later(resolve, 1000));
     });
 
     await render(hbs`
@@ -134,7 +134,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('load more action (leeway)', async function(assert) {
+  test('load more action (leeway)', async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -158,7 +158,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('load more action (scrollDebounce)', async function(assert) {
+  test('load more action (scrollDebounce)', async function (assert) {
     assert.expect(2);
 
     await render(hbs`
@@ -188,7 +188,7 @@ module('infinite-scroller', function(hooks) {
     assert.ok(this.loadedMore, 'fires load more action after being debounced');
   });
 
-  test('load more action (useDocument)', async function(assert) {
+  test('load more action (useDocument)', async function (assert) {
     assert.expect(2);
 
     // This test needs to be run in QUnit's devmode so that the CSS is correct.
@@ -196,7 +196,7 @@ module('infinite-scroller', function(hooks) {
     // Hack make the 'viewport' small, so the bottom of infinite scroll component is
     // computed as 'past the fold'.
     const fakeDocumentElement = {
-      clientHeight: 600
+      clientHeight: 600,
     };
 
     this.set('infiniteScroller.documentElement', fakeDocumentElement);
@@ -233,7 +233,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('loading class name', async function(assert) {
+  test('loading class name', async function (assert) {
     assert.expect(3);
 
     const willLoad = defer();
@@ -276,7 +276,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('yielded loading state', async function(assert) {
+  test('yielded loading state', async function (assert) {
     assert.expect(3);
 
     const willLoad = defer();
@@ -307,7 +307,7 @@ module('infinite-scroller', function(hooks) {
     assert.dom('span').hasText('false', 'loading state is updated');
   });
 
-  test('yielded error', async function(assert) {
+  test('yielded error', async function (assert) {
     assert.expect(2);
 
     this.set('loadMore', () => {
@@ -336,7 +336,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('yielded loadMore action', async function(assert) {
+  test('yielded loadMore action', async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -358,7 +358,7 @@ module('infinite-scroller', function(hooks) {
       );
   });
 
-  test('destroying (does not blow up)', async function(assert) {
+  test('destroying (does not blow up)', async function (assert) {
     assert.expect(0);
 
     this.set('showScroller', true);
@@ -383,7 +383,7 @@ module('infinite-scroller', function(hooks) {
     willLoad.resolve();
   });
 
-  test('no promise (does not blow up)', async function(assert) {
+  test('no promise (does not blow up)', async function (assert) {
     assert.expect(0);
 
     this.set('loadMore', () => {
@@ -399,7 +399,7 @@ module('infinite-scroller', function(hooks) {
     await click('button');
   });
 
-  test('destroying during debounce (does not blow up)', async function(assert) {
+  test('destroying during debounce (does not blow up)', async function (assert) {
     assert.expect(0);
 
     this.set('show', true);
@@ -428,7 +428,7 @@ module('infinite-scroller', function(hooks) {
     }, 25);
   });
 
-  test('custom element', async function(assert) {
+  test('custom element', async function (assert) {
     assert.expect(1);
 
     await render(hbs`
@@ -457,7 +457,7 @@ module('infinite-scroller', function(hooks) {
     );
   });
 
-  test('is scrollable', async function(assert) {
+  test('is scrollable', async function (assert) {
     assert.expect(2);
 
     this.set('things', generateThings(1, 2));
