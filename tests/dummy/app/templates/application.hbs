@@ -2,7 +2,7 @@
   @zestia/ember-simple-infinite-scroller
 </h1>
 
-{{! template-lint-disable inline-styles }}
+{{! template-lint-disable no-inline-styles }}
 <a href="https://github.com/zestia/ember-simple-infinite-scroller">
   <img
     style="position: absolute; top: 0; right: 0; border: 0;"
@@ -12,7 +12,7 @@
     class="attachment-full size-full"
     alt="Fork me on GitHub"
     data-recalc-dims="1"
-  />
+  >
 </a>
 
 <LinkTo @route="example-1">Example 1</LinkTo> |
@@ -22,12 +22,12 @@
 
 <p>
   Load delay:
-  <br />
+  <br>
   <input
     value={{this.loadDelay}}
     type="number"
     {{on "input" this.setLoadDelay}}
-  />
+  >
 </p>
 
 {{outlet}}
