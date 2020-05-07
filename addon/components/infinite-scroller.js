@@ -1,30 +1,33 @@
-import Component from '@ember/component';
-import { bind, debounce, cancel, scheduleOnce } from '@ember/runloop';
-import layout from '../templates/components/infinite-scroller';
-import { action, set } from '@ember/object';
+import Component from '@glimmer/component';
+import { debounce, cancel, scheduleOnce } from '@ember/runloop';
+import { action } from '@ember/object';
 import { resolve } from 'rsvp';
 import { inject } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class InfiniteScrollerComponent extends Component {
   @inject('-infinite-scroller') _infiniteScroller;
 
-  layout = layout;
-  tagName = '';
-
-  // Arguments
-
-  onLoadMore = null;
-  selector = null;
-  useDocument = false;
-  scrollDebounce = 100;
-  leeway = '0%';
-
-  // State
-
-  error = null;
-  isLoading = false;
-  isScrollable = false;
+  @tracked error = null;
+  @tracked isLoading = false;
+  @tracked isScrollable = false;
   domElement = null;
+
+  get selector() {
+    return this.args.selector || null;
+  }
+
+  get useDocument() {
+    return this.args.useDocument || false;
+  }
+
+  get scrollDebounce() {
+    return this.args.scrollDebounce || 100;
+  }
+
+  get leeway() {
+    return parseInt(this.args.leeway || '0%', 10);
+  }
 
   @action
   handleInsertElement(element) {
@@ -45,11 +48,11 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _registerElement(element) {
-    set(this, 'domElement', element);
+    this.domElement = element;
   }
 
   _deregisterElement() {
-    set(this, 'domElement', null);
+    this.domElement = null;
   }
 
   _isScrollable() {
@@ -57,6 +60,10 @@ export default class InfiniteScrollerComponent extends Component {
 
     if (this.useDocument) {
       element = this._documentElement();
+    }
+
+    if (!element) {
+      return;
     }
 
     return element.scrollHeight > element.clientHeight;
@@ -67,11 +74,11 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkScrollable() {
-    set(this, 'isScrollable', this._isScrollable());
+    this.isScrollable = this._isScrollable();
   }
 
   _listen() {
-    this._scrollHandler = bind(this, '_scroll');
+    this._scrollHandler = this._scroll.bind(this);
     this._listener().addEventListener('scroll', this._scrollHandler);
   }
 
@@ -97,10 +104,6 @@ export default class InfiniteScrollerComponent extends Component {
 
   _log() {
     this._infiniteScroller.log(...arguments);
-  }
-
-  _leeway() {
-    return parseInt(this.leeway, 10);
   }
 
   _document() {
@@ -144,9 +147,10 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _detectBottomOfElementInDocument() {
+    const scroller = this._scroller();
     const clientHeight = this._infiniteScroller.documentElement.clientHeight;
-    const bottom = this._scroller().getBoundingClientRect().bottom;
-    const leeway = this._leeway();
+    const bottom = scroller.getBoundingClientRect().bottom;
+    const leeway = this.leeway;
     const pixelsToBottom = bottom - clientHeight;
     const percentageToBottom = (pixelsToBottom / bottom) * 100;
     const reachedBottom = percentageToBottom <= leeway;
@@ -162,11 +166,12 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _detectBottomOfElement() {
-    const scrollHeight = this._scroller().scrollHeight;
-    const scrollTop = this._scroller().scrollTop;
-    const clientHeight = this._scroller().clientHeight;
+    const scroller = this._scroller();
+    const scrollHeight = scroller.scrollHeight;
+    const scrollTop = scroller.scrollTop;
+    const clientHeight = scroller.clientHeight;
     const bottom = scrollHeight - clientHeight;
-    const leeway = this._leeway();
+    const leeway = this.leeway;
     const pixelsToBottom = bottom - scrollTop;
     const percentageToBottom = (pixelsToBottom / bottom) * 100;
     const reachedBottom = percentageToBottom <= leeway;
@@ -184,28 +189,26 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _loadMore() {
-    set(this, 'error', null);
-    set(this, 'isLoading', true);
+    const action = this.args.onLoadMore;
 
-    resolve(this.onLoadMore())
-      .catch(bind(this, '_loadError'))
-      .finally(bind(this, '_loadFinished'));
+    if (typeof action !== 'function') {
+      return;
+    }
+
+    this.error = null;
+    this.isLoading = true;
+
+    resolve(action())
+      .catch(this._loadError.bind(this))
+      .finally(this._loadFinished.bind(this));
   }
 
   _loadError(error) {
-    if (this.isDestroyed) {
-      return;
-    }
-
-    set(this, 'error', error);
+    this.error = error;
   }
 
   _loadFinished() {
-    if (this.isDestroyed) {
-      return;
-    }
-
-    set(this, 'isLoading', false);
+    this.isLoading = false;
 
     this._scheduleCheckScrollable();
   }

@@ -17,7 +17,7 @@
     <img src="https://emberobserver.com/badges/-zestia-ember-simple-infinite-scroller.svg">
   </a>
 
-  <img src="https://img.shields.io/badge/Ember-%3E%3D%203.12-brightgreen">
+  <img src="https://img.shields.io/badge/Ember-%3E%3D%203.16-brightgreen">
 </p>
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
