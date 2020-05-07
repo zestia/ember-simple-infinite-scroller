@@ -79,11 +79,17 @@ export default class InfiniteScrollerComponent extends Component {
 
   _listen() {
     this._scrollHandler = this._scroll.bind(this);
-    this._listener().addEventListener('scroll', this._scrollHandler);
+
+    this._listener().addEventListener('scroll', this._scrollHandler, {
+      passive: true,
+    });
   }
 
   _stopListening() {
-    this._listener().removeEventListener('scroll', this._scrollHandler);
+    this._listener().removeEventListener('scroll', this._scrollHandler, {
+      passive: true,
+    });
+
     cancel(this._scrollDebounceId);
   }
 
