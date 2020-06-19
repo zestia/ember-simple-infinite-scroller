@@ -1,14 +1,5 @@
 'use strict';
 
 module.exports = {
-  extends: '@zestia/eslint-config/ember-addon',
-
-  overrides: [
-    {
-      files: '**/*.js',
-      rules: {
-        'ember/no-get': 'off'
-      }
-    }
-  ]
+  extends: '@zestia/eslint-config/ember-addon'
 };

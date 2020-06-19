@@ -1,27 +1,30 @@
 import { later } from '@ember/runloop';
 import { Promise } from 'rsvp';
-import { action, set, get } from '@ember/object';
+import { action } from '@ember/object';
 import Controller, { inject as injectController } from '@ember/controller';
 import generateThings from '../utils/generate-things';
+import { tracked } from '@glimmer/tracking';
 
 export default class ThingsController extends Controller {
   @injectController('application') appController;
 
+  @tracked page = 1;
+  @tracked things;
+  perPage = 10;
+
   init() {
     super.init(...arguments);
-    set(this, 'page', 1);
-    set(this, 'perPage', 10);
-    set(this, 'things', this._generateThings());
+    this.things = this._generateThings();
   }
 
   @action
   loadMore() {
     return new Promise((resolve) => {
       later(() => {
-        this.incrementProperty('page');
-        this.things.pushObjects(this._generateThings());
+        this.page++;
+        this.things = [...this.things, ...this._generateThings()];
         resolve();
-      }, get(this, 'appController.loadDelay'));
+      }, this.appController.loadDelay);
     });
   }
 
