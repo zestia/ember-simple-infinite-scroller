@@ -1,5 +1,10 @@
 # Changelog
 
+## 7.0.1
+
+- Upgrade dependencies
+- Run prettier
+
 ## 7.0.0
 
 - Glimmerise component

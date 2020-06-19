@@ -11,7 +11,7 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked error = null;
   @tracked isLoading = false;
   @tracked isScrollable = false;
-  domElement = null;
+  element = null;
 
   get selector() {
     return this.args.selector || null;
@@ -48,11 +48,11 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _registerElement(element) {
-    this.domElement = element;
+    this.element = element;
   }
 
   _deregisterElement() {
-    this.domElement = null;
+    this.element = null;
   }
 
   _isScrollable() {
@@ -126,9 +126,9 @@ export default class InfiniteScrollerComponent extends Component {
 
   _scroller() {
     if (this.selector) {
-      return this.domElement.querySelector(this.selector);
+      return this.element.querySelector(this.selector);
     } else {
-      return this.domElement;
+      return this.element;
     }
   }
 
@@ -163,7 +163,7 @@ export default class InfiniteScrollerComponent extends Component {
       leeway,
       pixelsToBottom,
       percentageToBottom,
-      reachedBottom,
+      reachedBottom
     };
   }
 
@@ -186,7 +186,7 @@ export default class InfiniteScrollerComponent extends Component {
       leeway,
       pixelsToBottom,
       percentageToBottom,
-      reachedBottom,
+      reachedBottom
     };
   }
 

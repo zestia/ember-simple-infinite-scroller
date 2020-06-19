@@ -12,7 +12,7 @@ export default class App extends Application {
     touchstart: null,
     touchmove: null,
     touchend: null,
-    touchcancel: null,
+    touchcancel: null
   };
 }
 

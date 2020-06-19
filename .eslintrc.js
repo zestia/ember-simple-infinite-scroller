@@ -7,8 +7,8 @@ module.exports = {
     {
       files: '**/*.js',
       rules: {
-        'ember/no-get': 'off',
-      },
-    },
-  ],
+        'ember/no-get': 'off'
+      }
+    }
+  ]
 };

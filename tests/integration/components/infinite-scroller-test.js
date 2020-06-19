@@ -12,7 +12,7 @@ import {
   findAll,
   click,
   waitFor,
-  waitUntil,
+  waitUntil
 } from '@ember/test-helpers';
 
 module('infinite-scroller', function (hooks) {
@@ -198,7 +198,7 @@ module('infinite-scroller', function (hooks) {
     // Hack make the 'viewport' small, so the bottom of infinite scroll component is
     // computed as 'past the fold'.
     const fakeDocumentElement = {
-      clientHeight: 600,
+      clientHeight: 600
     };
 
     this.set('infiniteScroller.documentElement', fakeDocumentElement);

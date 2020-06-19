@@ -15,19 +15,30 @@
   />
 </a>
 
-<LinkTo @route="example-1">Example 1</LinkTo> |
-<LinkTo @route="example-2">Example 2</LinkTo> |
-<LinkTo @route="example-3">Example 3</LinkTo> |
-<LinkTo @route="example-4">Example 4</LinkTo>
+<LinkTo @route="example-1">
+  Example 1
+</LinkTo>
+|
+<LinkTo @route="example-2">
+  Example 2
+</LinkTo>
+|
+<LinkTo @route="example-3">
+  Example 3
+</LinkTo>
+|
+<LinkTo @route="example-4">
+  Example 4
+</LinkTo>
 
 <p>
   Load delay:
-  <br>
+  <br />
   <input
     value={{this.loadDelay}}
     type="number"
     {{on "input" this.setLoadDelay}}
-  >
+  />
 </p>
 
 {{outlet}}
