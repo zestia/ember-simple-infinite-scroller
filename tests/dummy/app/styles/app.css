@@ -4,6 +4,11 @@
   --green: green;
 }
 
+/* stylelint-disable-next-line */
+a {
+  display: inline-block;
+}
+
 .infinite-scroller {
   margin: 20px;
   padding: 10px;
