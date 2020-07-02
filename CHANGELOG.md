@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.2
+
+- Upgrade dependencies
+
 ## 7.0.1
 
 - Upgrade dependencies
