@@ -5,8 +5,8 @@ export default class InfiniteScrollerService extends Service {
   debug = false;
   _log = [];
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
 
     if (!this.isFastBoot) {
       this.document = document;
