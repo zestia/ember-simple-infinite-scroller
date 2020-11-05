@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.6
+
+- Run ember-cli-update
+
 ## 7.0.5
 
 - Upgrade dependencies
