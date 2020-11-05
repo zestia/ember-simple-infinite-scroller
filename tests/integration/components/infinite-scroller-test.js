@@ -22,13 +22,12 @@ module('infinite-scroller', function (hooks) {
     this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
     this.infiniteScroller.debug = true;
     this.loadMoreCount = 0;
+    this.things = generateThings(1, 20);
 
-    this.set('things', generateThings(1, 20));
-
-    this.set('loadMore', () => {
+    this.handleLoadMore = () => {
       this.loadMoreCount++;
       this.things.pushObjects(generateThings(21, 40));
-    });
+    };
   });
 
   test('it renders', async function (assert) {
@@ -69,7 +68,7 @@ module('infinite-scroller', function (hooks) {
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @onLoadMore={{this.loadMore}}>
+        @onLoadMore={{this.handleLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -99,15 +98,15 @@ module('infinite-scroller', function (hooks) {
   test('load more action (whilst loading)', async function (assert) {
     assert.expect(1);
 
-    this.set('slowLoadMore', () => {
-      this.loadMore();
+    this.handleSlowLoadMore = () => {
+      this.handleLoadMore();
       return new Promise((resolve) => later(resolve, 1000));
-    });
+    };
 
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @onLoadMore={{this.slowLoadMore}}>
+        @onLoadMore={{this.handleSlowLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -136,7 +135,7 @@ module('infinite-scroller', function (hooks) {
       <InfiniteScroller
         class="example-1"
         @leeway="50%"
-        @onLoadMore={{this.loadMore}}>
+        @onLoadMore={{this.handleLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -161,7 +160,7 @@ module('infinite-scroller', function (hooks) {
       <InfiniteScroller
         class="example-1"
         @scrollDebounce={{50}}
-        @onLoadMore={{this.loadMore}}>
+        @onLoadMore={{this.handleLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -201,13 +200,13 @@ module('infinite-scroller', function (hooks) {
       clientHeight: 600
     };
 
-    this.set('infiniteScroller.documentElement', fakeDocumentElement);
+    this.infiniteScroller.documentElement = fakeDocumentElement;
 
     await render(hbs`
       <InfiniteScroller
         class="example-2"
         @useDocument={{true}}
-        @onLoadMore={{this.loadMore}}>
+        @onLoadMore={{this.handleLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -241,12 +240,10 @@ module('infinite-scroller', function (hooks) {
 
     const willLoad = defer();
 
-    this.set('loadMore', () => {
-      return willLoad.promise;
-    });
+    this.handleLoadMore = () => willLoad.promise;
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
         <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
@@ -284,12 +281,10 @@ module('infinite-scroller', function (hooks) {
 
     const willLoad = defer();
 
-    this.set('loadMore', () => {
-      return willLoad.promise;
-    });
+    this.handleLoadMore = () => willLoad.promise;
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
         <span>{{scroller.isLoading}}</span>
         <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
@@ -313,12 +308,10 @@ module('infinite-scroller', function (hooks) {
   test('yielded error', async function (assert) {
     assert.expect(2);
 
-    this.set('loadMore', () => {
-      return reject(new Error('Fail'));
-    });
+    this.handleLoadMore = () => reject(new Error('Fail'));
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
         {{#if scroller.error}}
           <p>{{scroller.error.message}}</p>
         {{/if}}
@@ -341,7 +334,7 @@ module('infinite-scroller', function (hooks) {
     assert.expect(1);
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -362,18 +355,18 @@ module('infinite-scroller', function (hooks) {
   test('destroying (does not blow up)', async function (assert) {
     assert.expect(0);
 
-    this.set('showScroller', true);
+    this.showScroller = true;
 
     const willLoad = defer();
 
-    this.set('loadMore', () => {
+    this.handleLoadMore = () => {
       this.set('showScroller', false);
       return willLoad.promise;
-    });
+    };
 
     await render(hbs`
       {{#if this.showScroller}}
-        <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+        <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
           <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
         </InfiniteScroller>
       {{/if}}
@@ -387,12 +380,10 @@ module('infinite-scroller', function (hooks) {
   test('no promise (does not blow up)', async function (assert) {
     assert.expect(0);
 
-    this.set('loadMore', () => {
-      return null;
-    });
+    this.handleLoadMore = () => null;
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
         <button type="button" {{on "click" scroller.loadMore}}>Load more</button>
       </InfiniteScroller>
     `);
@@ -403,18 +394,16 @@ module('infinite-scroller', function (hooks) {
   test('destroying during debounce (does not blow up)', async function (assert) {
     assert.expect(0);
 
-    this.set('show', true);
+    this.show = true;
 
-    this.set('loadMore', () => {
-      return null;
-    });
+    this.handleLoadMore = () => null;
 
     await render(hbs`
       {{#if this.show}}
         <InfiniteScroller
           class="example-1"
           @scrollDebounce={{50}}
-          @onLoadMore={{this.loadMore}}>
+          @onLoadMore={{this.handleLoadMore}}>
           {{#each this.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
@@ -435,7 +424,7 @@ module('infinite-scroller', function (hooks) {
     await render(hbs`
       <InfiniteScroller
         @selector=".internal-element"
-        @onLoadMore={{this.loadMore}}>
+        @onLoadMore={{this.handleLoadMore}}>
 
         <div class="non-scrollable-element">
           <div class="internal-element">
@@ -462,12 +451,12 @@ module('infinite-scroller', function (hooks) {
   test('is scrollable', async function (assert) {
     assert.expect(2);
 
-    this.set('things', generateThings(1, 2));
+    this.things = generateThings(1, 2);
 
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @onLoadMore={{this.loadMore}} as |scroller|>
+        @onLoadMore={{this.handleLoadMore}} as |scroller|>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
