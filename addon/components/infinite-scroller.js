@@ -154,7 +154,7 @@ export default class InfiniteScrollerComponent extends Component {
     const bottom = scroller.getBoundingClientRect().bottom;
     const leeway = this.leeway;
     const pixelsToBottom = bottom - clientHeight;
-    const percentageToBottom = (pixelsToBottom / bottom) * 100;
+    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
     const reachedBottom = percentageToBottom <= leeway;
 
     return {
@@ -175,7 +175,7 @@ export default class InfiniteScrollerComponent extends Component {
     const bottom = scrollHeight - clientHeight;
     const leeway = this.leeway;
     const pixelsToBottom = bottom - scrollTop;
-    const percentageToBottom = (pixelsToBottom / bottom) * 100;
+    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
     const reachedBottom = percentageToBottom <= leeway;
 
     return {
@@ -188,6 +188,14 @@ export default class InfiniteScrollerComponent extends Component {
       percentageToBottom,
       reachedBottom
     };
+  }
+
+  _percentage(a, b) {
+    if (a === 0 && b === 0) {
+      return 0;
+    }
+
+    return (a / b) * 100;
   }
 
   _loadMore() {

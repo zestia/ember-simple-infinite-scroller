@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.0.7
+
+- Fix division by zero
+
 ## 7.0.6
 
 - Run ember-cli-update
