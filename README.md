@@ -107,21 +107,6 @@ The component will yield a hash that provides:
   </tr>
 </table>
 
-## Element vs Document scroll
-
-Either make your component scrollable:
-
-```css
-.my-element {
-  max-height: 300px;
-  overflow-y: auto;
-}
-```
-
-**OR**
-
-Set `@useDocument={{true}}` if your component is not scrollable.
-
 ## Performance
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
@@ -129,18 +114,18 @@ Please read: https://github.com/TryGhost/Ghost/issues/7934
 You may need to add this to `app/app.js`
 
 ```javascript
-customEvents: {
+customEvents = {
   touchstart: null,
   touchmove: null,
   touchend: null,
   touchcancel: null
-}
+};
 ```
 
 ## Other scenarios
 
 If your scrollable element is displaying 10 things, but they don't cause the element to overflow,
-then the user won't ever be able to load more - because they won't be able to scroll and therefore
+then the user won't ever be able to load more - because they won't be able to _scroll_ and therefore
 the `onLoadMore` action will never fire.
 
 To account for this, you can display a button for manually loading more...
