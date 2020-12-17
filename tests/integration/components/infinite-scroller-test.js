@@ -7,7 +7,6 @@ import generateThings from 'dummy/utils/generate-things';
 import {
   render,
   settled,
-  triggerEvent,
   find,
   findAll,
   click,
@@ -25,6 +24,15 @@ module('infinite-scroller', function (hooks) {
     this.handleLoadMore = () => {
       this.loadMoreCount++;
       this.things.pushObjects(generateThings(21, 40));
+    };
+
+    // Intentionally not using Ember's async scrollTo helper
+    this.scrollSync = (selector, y) => {
+      find(selector).scrollTop = y;
+    };
+
+    this.waitForMoreLoaded = () => {
+      return waitUntil(() => findAll('.thing').length === 40);
     };
   });
 
@@ -70,7 +78,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    find('.infinite-scroller').scrollTop = 450;
+    this.scrollSync('.infinite-scroller', 450);
 
     later(() => {
       assert
@@ -81,7 +89,7 @@ module('infinite-scroller', function (hooks) {
         );
     }, 100);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
     assert.equal(
       this.loadMoreCount,
@@ -109,11 +117,11 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    find('.infinite-scroller').scrollTop = 450;
+    this.scrollSync('.infinite-scroller', 450);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
-    find('.infinite-scroller').scrollTop = 1200;
+    this.scrollSync('.infinite-scroller', 1200);
 
     await settled();
 
@@ -139,9 +147,9 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    find('.infinite-scroller').scrollTop = 225;
+    this.scrollSync('.infinite-scroller', 225);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
     assert.equal(
       this.loadMoreCount,
@@ -165,7 +173,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    find('.infinite-scroller').scrollTop = 450;
+    this.scrollSync('.infinite-scroller', 450);
 
     later(() => {
       assert.equal(this.loadMoreCount, 0, 'not fired yet');
@@ -178,7 +186,7 @@ module('infinite-scroller', function (hooks) {
         );
     }, 50);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
     assert.equal(
       this.loadMoreCount,
@@ -205,9 +213,9 @@ module('infinite-scroller', function (hooks) {
       />
     `);
 
-    find('.external-element').scrollTop = 450;
+    this.scrollSync('.external-element', 450);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
     assert.equal(
       this.loadMoreCount,
@@ -232,9 +240,9 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    find('.internal-element').scrollTop = 450;
+    this.scrollSync('.internal-element', 450);
 
-    await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
     assert.equal(
       this.loadMoreCount,
@@ -243,31 +251,31 @@ module('infinite-scroller', function (hooks) {
     );
   });
 
-  // test('load more action (document)', async function (assert) {
-  //   assert.expect(2);
+  test('load more action (document)', async function (assert) {
+    assert.expect(2);
 
-  //   await render(hbs`
-  //     <InfiniteScroller
-  //       class="example-2"
-  //       @element={{this.document}}
-  //       @onLoadMore={{this.handleLoadMore}}
-  //     >
-  //       {{#each this.things as |thing|}}
-  //         <div class="thing">{{thing.name}}</div>
-  //       {{/each}}
-  //     </InfiniteScroller>
-  //   `);
+    await render(hbs`
+      <InfiniteScroller
+        class="example-2"
+        @element={{this.document}}
+        @onLoadMore={{this.handleLoadMore}}
+      >
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </InfiniteScroller>
+    `);
 
-  //   find('.internal-element').scrollTop = 450;
+    this.scrollSync(document.documentElement, 450);
 
-  //   await waitUntil(() => findAll('.thing').length === 40);
+    await this.waitForMoreLoaded();
 
-  //   assert.equal(
-  //     this.loadMoreCount,
-  //     1,
-  //     'fires load more action at the document element scroll boundary'
-  //   );
-  // });
+    assert.equal(
+      this.loadMoreCount,
+      1,
+      'fires load more action at the document element scroll boundary'
+    );
+  });
 
   test('loading class name', async function (assert) {
     assert.expect(3);
@@ -473,7 +481,7 @@ module('infinite-scroller', function (hooks) {
       {{/if}}
     `);
 
-    find('.infinite-scroller').scrollTop = 450;
+    this.scrollSync('.infinite-scroller', 450);
 
     later(() => {
       this.set('show', false);
