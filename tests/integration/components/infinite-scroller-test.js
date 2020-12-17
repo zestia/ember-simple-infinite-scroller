@@ -19,8 +19,6 @@ module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function () {
-    this.infiniteScroller = this.owner.lookup('service:-infinite-scroller');
-    this.infiniteScroller.debug = true;
     this.loadMoreCount = 0;
     this.things = generateThings(1, 20);
 
