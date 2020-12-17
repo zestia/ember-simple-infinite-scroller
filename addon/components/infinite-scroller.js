@@ -22,6 +22,8 @@ export default class InfiniteScrollerComponent extends Component {
 
   @action
   handleInsertElement(element) {
+    this.element = element;
+
     if (!this.scroller) {
       this._registerScroller(this.args.element ?? element);
     }
@@ -104,9 +106,17 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  _shouldLoadMore() {
-    const state = this._detectBottomOfScroller();
+  _normaliseScroller() {
+    if (this.scroller instanceof Document) {
+      return this.scroller.documentElement;
+    } else {
+      return this.scroller;
+    }
+  }
 
+  _shouldLoadMore() {
+    const element = this._normaliseScroller();
+    const state = this._detectBottom(element);
     const shouldLoadMore = state.reachedBottom && !this.isLoading;
 
     this._log({ ...state, shouldLoadMore });
@@ -114,11 +124,10 @@ export default class InfiniteScrollerComponent extends Component {
     return shouldLoadMore;
   }
 
-  _detectBottomOfScroller() {
-    const scroller = this.scroller;
-    const scrollHeight = scroller.scrollHeight;
-    const scrollTop = scroller.scrollTop;
-    const clientHeight = scroller.clientHeight;
+  _detectBottom(element) {
+    const scrollHeight = element.scrollHeight;
+    const scrollTop = element.scrollTop;
+    const clientHeight = element.clientHeight;
     const bottom = scrollHeight - clientHeight;
     const leeway = this.leeway;
     const pixelsToBottom = bottom - scrollTop;
