@@ -281,7 +281,7 @@ module('infinite-scroller', function (hooks) {
 
     assert.dom('span').hasText('false', 'precondition: not loading');
 
-    click('button');
+    click('button'); // Intentionally no await
 
     await waitFor('.infinite-scroller');
 
