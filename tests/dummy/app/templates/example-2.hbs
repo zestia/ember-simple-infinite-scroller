@@ -9,7 +9,7 @@
 <InfiniteScroller
   class="example-2"
   @onLoadMore={{this.handleLoadMore}}
-  @element={{this.documentElement}} as |scroller|
+  @element={{this.document}} as |scroller|
 >
   {{#each this.things as |thing|}}
     <div class="thing">
