@@ -64,14 +64,9 @@ https://zestia.github.io/ember-simple-infinite-scroller/
     <td><code>null</code></td>
   </tr>
   <tr>
-    <td>selector</td>
-    <td>Monitors the scrolling of a specific child element, e.g. <code>selector=".foo-bar"</code></td>
+    <td>element</td>
+    <td>Monitors the scroll position of the given element</td>
     <td><code>null</code></td>
-  </tr>
-  <tr>
-    <td>useDocument</td>
-    <td>Monitors the document scroll position rather than the element's scroll position.</td>
-    <td><code>false</code></td>
   </tr>
   <tr>
     <td>leeway</td>
