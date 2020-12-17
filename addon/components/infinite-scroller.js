@@ -29,35 +29,6 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  get scrollState() {
-    const element = this.normalisedScrollerElement;
-    const scrollHeight = element.scrollHeight;
-    const scrollTop = element.scrollTop;
-    const clientHeight = element.clientHeight;
-    const isScrollable = scrollHeight > clientHeight;
-    const bottom = scrollHeight - clientHeight;
-    const leeway = this.leeway;
-    const pixelsToBottom = bottom - scrollTop;
-    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
-    const reachedBottom = percentageToBottom <= leeway;
-
-    return {
-      scrollHeight,
-      scrollTop,
-      clientHeight,
-      isScrollable,
-      bottom,
-      leeway,
-      pixelsToBottom,
-      percentageToBottom,
-      reachedBottom
-    };
-  }
-
-  get shouldLoadMore() {
-    return this.scrollState.reachedBottom && !this.isLoading;
-  }
-
   @action
   handleInsertElement(element) {
     if (!this.scroller) {
@@ -118,28 +89,30 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkShouldLoadMore() {
-    this._debug();
+    const scrollState = this._getScrollState();
+    const shouldLoadMore = scrollState.reachedBottom && !this.isLoading;
 
-    if (this.shouldLoadMore) {
+    this._debug({ ...scrollState, shouldLoadMore });
+
+    if (shouldLoadMore) {
       this._loadMore();
     }
   }
 
   _checkScrollable() {
-    this._debug();
+    const scrollState = this._getScrollState();
 
-    this.isScrollable = this.scrollState.isScrollable;
+    this._debug({ ...scrollState });
+
+    console.log(document.querySelectorAll('.thing').length);
+
+    this.isScrollable = scrollState.isScrollable;
   }
 
-  _debug() {
+  _debug(state) {
     if (!this.debug) {
       return;
     }
-
-    const state = {
-      ...this.scrollState,
-      shouldLoadMore: this.shouldLoadMore
-    };
 
     console.table([state]); // eslint-disable-line
   }
@@ -150,6 +123,31 @@ export default class InfiniteScrollerComponent extends Component {
     }
 
     return round((a / b) * 100);
+  }
+
+  _getScrollState() {
+    const element = this.normalisedScrollerElement;
+    const scrollHeight = element.scrollHeight;
+    const scrollTop = element.scrollTop;
+    const clientHeight = element.clientHeight;
+    const isScrollable = scrollHeight > clientHeight;
+    const bottom = scrollHeight - clientHeight;
+    const leeway = this.leeway;
+    const pixelsToBottom = bottom - scrollTop;
+    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
+    const reachedBottom = percentageToBottom <= leeway;
+
+    return {
+      scrollHeight,
+      scrollTop,
+      clientHeight,
+      isScrollable,
+      bottom,
+      leeway,
+      pixelsToBottom,
+      percentageToBottom,
+      reachedBottom
+    };
   }
 
   _loadMore() {
