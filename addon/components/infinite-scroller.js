@@ -8,6 +8,7 @@ const { round } = Math;
 export default class InfiniteScrollerComponent extends Component {
   debug = true;
   scroller = null;
+  scrollId = null;
 
   @tracked error = null;
   @tracked isLoading = false;
@@ -55,37 +56,32 @@ export default class InfiniteScrollerComponent extends Component {
 
   _registerScroller(element) {
     if (this.scroller) {
-      this._stopListening();
+      this._stopListeningToScroll();
     }
 
     this.scroller = element;
 
-    this._startListening();
+    this._startListeningToScroll();
   }
 
   _deregisterScroller() {
-    this._stopListening();
+    this._stopListeningToScroll();
+    cancel(this.scrollId);
     this.scroller = null;
   }
 
-  _scheduleCheckScrollable() {
-    scheduleOnce('afterRender', this, '_checkScrollable');
-  }
-
-  _startListening() {
+  _startListeningToScroll() {
     this._scrollHandler = this._handleScroll.bind(this);
 
     this.scroller.addEventListener('scroll', this._scrollHandler);
   }
 
-  _stopListening() {
+  _stopListeningToScroll() {
     this.scroller.removeEventListener('scroll', this._scrollHandler);
-
-    cancel(this._debounceId);
   }
 
-  _handleScroll(e) {
-    this._debounceId = debounce(this, '_checkShouldLoadMore', e, this.debounce);
+  _handleScroll() {
+    this.scrollId = debounce(this, '_checkShouldLoadMore', this.debounce);
   }
 
   _checkShouldLoadMore() {
@@ -104,9 +100,11 @@ export default class InfiniteScrollerComponent extends Component {
 
     this._debug({ ...scrollState });
 
-    console.log(document.querySelectorAll('.thing').length);
-
     this.isScrollable = scrollState.isScrollable;
+  }
+
+  _scheduleCheckScrollable() {
+    scheduleOnce('afterRender', this, '_checkScrollable');
   }
 
   _debug(state) {
