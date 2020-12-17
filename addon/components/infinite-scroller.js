@@ -3,6 +3,7 @@ import { debounce, cancel, scheduleOnce } from '@ember/runloop';
 import { action } from '@ember/object';
 import { resolve } from 'rsvp';
 import { tracked } from '@glimmer/tracking';
+const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
   debug = true;
@@ -12,18 +13,53 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
-  get scrollDebounce() {
-    return this.args.scrollDebounce ?? 100;
+  get debounce() {
+    return this.args.debounce ?? 100;
   }
 
   get leeway() {
     return parseInt(this.args.leeway ?? '0%', 10);
   }
 
+  get normalisedScrollerElement() {
+    if (this.scroller instanceof Document) {
+      return this.scroller.documentElement;
+    } else {
+      return this.scroller;
+    }
+  }
+
+  get scrollState() {
+    const element = this.normalisedScrollerElement;
+    const scrollHeight = element.scrollHeight;
+    const scrollTop = element.scrollTop;
+    const clientHeight = element.clientHeight;
+    const isScrollable = scrollHeight > clientHeight;
+    const bottom = scrollHeight - clientHeight;
+    const leeway = this.leeway;
+    const pixelsToBottom = bottom - scrollTop;
+    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
+    const reachedBottom = percentageToBottom <= leeway;
+
+    return {
+      scrollHeight,
+      scrollTop,
+      clientHeight,
+      isScrollable,
+      bottom,
+      leeway,
+      pixelsToBottom,
+      percentageToBottom,
+      reachedBottom
+    };
+  }
+
+  get shouldLoadMore() {
+    return this.scrollState.reachedBottom && !this.isLoading;
+  }
+
   @action
   handleInsertElement(element) {
-    this.element = element;
-
     if (!this.scroller) {
       this._registerScroller(this.args.element ?? element);
     }
@@ -61,16 +97,8 @@ export default class InfiniteScrollerComponent extends Component {
     this.scroller = null;
   }
 
-  _isScrollable() {
-    return this.scroller.scrollHeight > this.scroller.clientHeight;
-  }
-
   _scheduleCheckScrollable() {
     scheduleOnce('afterRender', this, '_checkScrollable');
-  }
-
-  _checkScrollable() {
-    this.isScrollable = this._isScrollable();
   }
 
   _startListening() {
@@ -82,68 +110,38 @@ export default class InfiniteScrollerComponent extends Component {
   _stopListening() {
     this.scroller.removeEventListener('scroll', this._scrollHandler);
 
-    cancel(this._scrollDebounceId);
+    cancel(this._debounceId);
   }
 
   _handleScroll(e) {
-    this._scrollDebounceId = debounce(
-      this,
-      '_debouncedScroll',
-      e,
-      this.scrollDebounce
-    );
+    this._debounceId = debounce(this, '_checkShouldLoadMore', e, this.debounce);
   }
 
-  _debouncedScroll() {
-    if (this._shouldLoadMore()) {
+  _checkShouldLoadMore() {
+    this._debug();
+
+    if (this.shouldLoadMore) {
       this._loadMore();
     }
   }
 
-  _log(state) {
-    if (this.debug) {
-      console.table([state]); // eslint-disable-line
+  _checkScrollable() {
+    this._debug();
+
+    this.isScrollable = this.scrollState.isScrollable;
+  }
+
+  _debug() {
+    if (!this.debug) {
+      return;
     }
-  }
 
-  _normaliseScroller() {
-    if (this.scroller instanceof Document) {
-      return this.scroller.documentElement;
-    } else {
-      return this.scroller;
-    }
-  }
-
-  _shouldLoadMore() {
-    const element = this._normaliseScroller();
-    const state = this._detectBottom(element);
-    const shouldLoadMore = state.reachedBottom && !this.isLoading;
-
-    this._log({ ...state, shouldLoadMore });
-
-    return shouldLoadMore;
-  }
-
-  _detectBottom(element) {
-    const scrollHeight = element.scrollHeight;
-    const scrollTop = element.scrollTop;
-    const clientHeight = element.clientHeight;
-    const bottom = scrollHeight - clientHeight;
-    const leeway = this.leeway;
-    const pixelsToBottom = bottom - scrollTop;
-    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
-    const reachedBottom = percentageToBottom <= leeway;
-
-    return {
-      scrollHeight,
-      scrollTop,
-      clientHeight,
-      bottom,
-      leeway,
-      pixelsToBottom,
-      percentageToBottom,
-      reachedBottom
+    const state = {
+      ...this.scrollState,
+      shouldLoadMore: this.shouldLoadMore
     };
+
+    console.table([state]); // eslint-disable-line
   }
 
   _percentage(a, b) {
@@ -151,7 +149,7 @@ export default class InfiniteScrollerComponent extends Component {
       return 0;
     }
 
-    return (a / b) * 100;
+    return round((a / b) * 100);
   }
 
   _loadMore() {
@@ -159,8 +157,8 @@ export default class InfiniteScrollerComponent extends Component {
     this.isLoading = true;
 
     resolve(this._invokeAction('onLoadMore'))
-      .catch(this._loadError.bind(this))
-      .finally(this._loadFinished.bind(this));
+      .catch(this._handleLoadError.bind(this))
+      .finally(this._handleLoadFinished.bind(this));
   }
 
   _invokeAction(name, ...args) {
@@ -171,11 +169,11 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  _loadError(error) {
+  _handleLoadError(error) {
     this.error = error;
   }
 
-  _loadFinished() {
+  _handleLoadFinished() {
     this.isLoading = false;
 
     this._scheduleCheckScrollable();

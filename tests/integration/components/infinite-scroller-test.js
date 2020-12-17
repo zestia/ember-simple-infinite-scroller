@@ -153,13 +153,13 @@ module('infinite-scroller', function (hooks) {
     );
   });
 
-  test('load more action (scrollDebounce)', async function (assert) {
+  test('load more action (debounce)', async function (assert) {
     assert.expect(3);
 
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @scrollDebounce={{50}}
+        @debounce={{50}}
         @onLoadMore={{this.handleLoadMore}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
@@ -402,7 +402,7 @@ module('infinite-scroller', function (hooks) {
       {{#if this.show}}
         <InfiniteScroller
           class="example-1"
-          @scrollDebounce={{50}}
+          @debounce={{50}}
           @onLoadMore={{this.handleLoadMore}}>
           {{#each this.things as |thing|}}
             <div class="thing">{{thing.name}}</div>

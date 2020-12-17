@@ -74,7 +74,7 @@ https://zestia.github.io/ember-simple-infinite-scroller/
     <td><code>"0%"</code></td>
   </tr>
   <tr>
-    <td>scrollDebounce</td>
+    <td>debounce</td>
     <td>Milliseconds delay used to check if the bottom has been reached</td>
     <td><code>100</code> ms</td>
   </tr>
