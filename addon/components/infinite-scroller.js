@@ -161,7 +161,7 @@ export default class InfiniteScrollerComponent extends Component {
     const action = this.args[name];
 
     if (typeof action === 'function') {
-      action(...args);
+      return action(...args);
     }
   }
 
