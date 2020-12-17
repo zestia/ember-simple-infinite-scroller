@@ -96,6 +96,10 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkScrollable() {
+    if (!this.scroller) {
+      return;
+    }
+
     const scrollState = this._getScrollState();
 
     this._debug({ ...scrollState });
