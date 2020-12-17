@@ -6,14 +6,12 @@
   class="example-4"
   @onLoadMore={{this.handleLoadMore}} as |scroller|
 >
-  <div class="non-scrollable-element">
-    <div class="internal-element" {{did-insert scroller.setElement}}>
-      {{#each this.things as |thing|}}
-        <div class="thing">
-          {{thing.name}}
-        </div>
-      {{/each}}
-    </div>
+  <div class="internal-element" {{did-insert scroller.setElement}}>
+    {{#each this.things as |thing|}}
+      <div class="thing">
+        {{thing.name}}
+      </div>
+    {{/each}}
   </div>
   {{#if scroller.isLoading}}
     <div class="status">

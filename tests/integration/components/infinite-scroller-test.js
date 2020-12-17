@@ -426,20 +426,47 @@ module('infinite-scroller', function (hooks) {
     }, 25);
   });
 
-  test('custom element', async function (assert) {
+  test('custom element via argument', async function (assert) {
+    assert.expect(1);
+
+    this.setElement = (element) => this.set('customElement', element);
+
+    await render(hbs`
+      <div class="external-element" {{did-insert this.setElement}}>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </div>
+
+      <InfiniteScroller
+        @element={{this.customElement}}
+        @onLoadMore={{this.handleLoadMore}}
+      />
+    `);
+
+    find('.external-element').scrollTop = 450;
+
+    await waitUntil(() => findAll('.thing').length === 40);
+
+    assert.equal(
+      this.loadMoreCount,
+      1,
+      'fires load more action at the custom element scroll boundary'
+    );
+  });
+
+  test('custom element via registration', async function (assert) {
     assert.expect(1);
 
     await render(hbs`
       <InfiniteScroller
-        @selector=".internal-element"
         @onLoadMore={{this.handleLoadMore}}
+        as |scroller|
       >
-        <div class="non-scrollable-element">
-          <div class="internal-element">
-            {{#each this.things as |thing|}}
-              <div class="thing">{{thing.name}}</div>
-            {{/each}}
-          </div>
+        <div class="internal-element" {{did-insert scroller.setElement}}>
+          {{#each this.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
         </div>
       </InfiniteScroller>
     `);
