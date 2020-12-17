@@ -8,7 +8,7 @@ const { round } = Math;
 export default class InfiniteScrollerComponent extends Component {
   debug = true;
   scroller = null;
-  scrollId = null;
+  debounceId = null;
 
   @tracked error = null;
   @tracked isLoading = false;
@@ -66,7 +66,7 @@ export default class InfiniteScrollerComponent extends Component {
 
   _deregisterScroller() {
     this._stopListeningToScroll();
-    cancel(this.scrollId);
+    cancel(this.debounceId);
     this.scroller = null;
   }
 
@@ -81,7 +81,7 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _handleScroll() {
-    this.scrollId = debounce(this, '_checkShouldLoadMore', this.debounce);
+    this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
   }
 
   _checkShouldLoadMore() {
