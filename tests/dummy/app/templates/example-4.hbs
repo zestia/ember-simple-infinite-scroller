@@ -1,15 +1,13 @@
 <p>
-  An action is fired when a specific element within the infinite scroll component is scrolled
-  to the very bottom
+  An action is fired when a specific element is scrolled to the very bottom
 </p>
 
 <InfiniteScroller
   class="example-4"
-  @onLoadMore={{this.loadMore}}
-  @selector=".internal-element" as |scroller|
+  @onLoadMore={{this.handleLoadMore}} as |scroller|
 >
   <div class="unscrollable-element">
-    <div class="internal-element">
+    <div class="internal-element" {{did-insert scroller.setElement}}>
       {{#each this.things as |thing|}}
         <div class="thing">
           {{thing.name}}

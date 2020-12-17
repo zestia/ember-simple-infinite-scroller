@@ -4,7 +4,7 @@
 
 <InfiniteScroller
   class="example-3"
-  @onLoadMore={{this.loadMore}}
+  @onLoadMore={{this.handleLoadMore}}
   @leeway="50%" as |scroller|
 >
   {{#each this.things as |thing|}}

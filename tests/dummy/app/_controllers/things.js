@@ -12,13 +12,13 @@ export default class ThingsController extends Controller {
   @tracked things;
   perPage = 10;
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
     this.things = this._generateThings();
   }
 
   @action
-  loadMore() {
+  handleLoadMore() {
     return new Promise((resolve) => {
       later(() => {
         this.page++;

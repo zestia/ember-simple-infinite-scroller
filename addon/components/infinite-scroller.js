@@ -2,44 +2,36 @@ import Component from '@glimmer/component';
 import { debounce, cancel, scheduleOnce } from '@ember/runloop';
 import { action } from '@ember/object';
 import { resolve } from 'rsvp';
-import { inject } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class InfiniteScrollerComponent extends Component {
-  @inject('-infinite-scroller') _infiniteScroller;
+  debug = true;
+  scroller = null;
 
   @tracked error = null;
   @tracked isLoading = false;
   @tracked isScrollable = false;
-  element = null;
-
-  get selector() {
-    return this.args.selector || null;
-  }
-
-  get useDocument() {
-    return this.args.useDocument || false;
-  }
 
   get scrollDebounce() {
-    return this.args.scrollDebounce || 100;
+    return this.args.scrollDebounce ?? 100;
   }
 
   get leeway() {
-    return parseInt(this.args.leeway || '0%', 10);
+    return parseInt(this.args.leeway ?? '0%', 10);
   }
 
   @action
   handleInsertElement(element) {
-    this._registerElement(element);
+    if (!this.scroller) {
+      this._registerScroller(this.args.element ?? element);
+    }
+
     this._scheduleCheckScrollable();
-    this._listen();
   }
 
   @action
   handleDestroyElement() {
-    this._stopListening();
-    this._deregisterElement();
+    this._deregisterScroller();
   }
 
   @action
@@ -47,26 +39,28 @@ export default class InfiniteScrollerComponent extends Component {
     this._loadMore();
   }
 
-  _registerElement(element) {
-    this.element = element;
+  @action
+  setElement(element) {
+    this._registerScroller(element);
   }
 
-  _deregisterElement() {
-    this.element = null;
+  _registerScroller(element) {
+    if (this.scroller) {
+      this._stopListening();
+    }
+
+    this.scroller = element;
+
+    this._startListening();
+  }
+
+  _deregisterScroller() {
+    this._stopListening();
+    this.scroller = null;
   }
 
   _isScrollable() {
-    let element = this._scroller();
-
-    if (this.useDocument) {
-      element = this._documentElement();
-    }
-
-    if (!element) {
-      return;
-    }
-
-    return element.scrollHeight > element.clientHeight;
+    return this.scroller.scrollHeight > this.scroller.clientHeight;
   }
 
   _scheduleCheckScrollable() {
@@ -77,19 +71,19 @@ export default class InfiniteScrollerComponent extends Component {
     this.isScrollable = this._isScrollable();
   }
 
-  _listen() {
-    this._scrollHandler = this._scroll.bind(this);
+  _startListening() {
+    this._scrollHandler = this._handleScroll.bind(this);
 
-    this._listener().addEventListener('scroll', this._scrollHandler);
+    this.scroller.addEventListener('scroll', this._scrollHandler);
   }
 
   _stopListening() {
-    this._listener().removeEventListener('scroll', this._scrollHandler);
+    this.scroller.removeEventListener('scroll', this._scrollHandler);
 
     cancel(this._scrollDebounceId);
   }
 
-  _scroll(e) {
+  _handleScroll(e) {
     this._scrollDebounceId = debounce(
       this,
       '_debouncedScroll',
@@ -104,71 +98,24 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  _log() {
-    this._infiniteScroller.log(...arguments);
-  }
-
-  _document() {
-    return this._infiniteScroller.document;
-  }
-
-  _documentElement() {
-    return this._infiniteScroller.documentElement;
-  }
-
-  _listener() {
-    if (this.useDocument) {
-      return this._document();
-    } else {
-      return this._scroller();
-    }
-  }
-
-  _scroller() {
-    if (this.selector) {
-      return this.element.querySelector(this.selector);
-    } else {
-      return this.element;
+  _log(state) {
+    if (this.debug) {
+      console.table([state]); // eslint-disable-line
     }
   }
 
   _shouldLoadMore() {
-    let state;
+    const state = this._detectBottomOfScroller();
 
-    if (this.useDocument) {
-      state = this._detectBottomOfElementInDocument();
-    } else {
-      state = this._detectBottomOfElement();
-    }
+    const shouldLoadMore = state.reachedBottom && !this.isLoading;
 
-    state.shouldLoadMore = state.reachedBottom && !this.isLoading;
+    this._log({ ...state, shouldLoadMore });
 
-    this._log(state);
-
-    return state.shouldLoadMore;
+    return shouldLoadMore;
   }
 
-  _detectBottomOfElementInDocument() {
-    const scroller = this._scroller();
-    const clientHeight = this._infiniteScroller.documentElement.clientHeight;
-    const bottom = scroller.getBoundingClientRect().bottom;
-    const leeway = this.leeway;
-    const pixelsToBottom = bottom - clientHeight;
-    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
-    const reachedBottom = percentageToBottom <= leeway;
-
-    return {
-      clientHeight,
-      bottom,
-      leeway,
-      pixelsToBottom,
-      percentageToBottom,
-      reachedBottom
-    };
-  }
-
-  _detectBottomOfElement() {
-    const scroller = this._scroller();
+  _detectBottomOfScroller() {
+    const scroller = this.scroller;
     const scrollHeight = scroller.scrollHeight;
     const scrollTop = scroller.scrollTop;
     const clientHeight = scroller.clientHeight;
@@ -199,18 +146,20 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _loadMore() {
-    const action = this.args.onLoadMore;
-
-    if (typeof action !== 'function') {
-      return;
-    }
-
     this.error = null;
     this.isLoading = true;
 
-    resolve(action())
+    resolve(this._invokeAction('onLoadMore'))
       .catch(this._loadError.bind(this))
       .finally(this._loadFinished.bind(this));
+  }
+
+  _invokeAction(name, ...args) {
+    const action = this.args[name];
+
+    if (typeof action === 'function') {
+      action(...args);
+    }
   }
 
   _loadError(error) {

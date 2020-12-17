@@ -90,6 +90,10 @@ The component will yield a hash that provides:
     <th>Description</th>
   </tr>
   <tr>
+    <td>setElement</td>
+    <td>Sets the element for which to monitor the scroll position of</td>
+  </tr>
+  <tr>
     <td>isLoading</td>
     <td>True when the promise for more data has not resolved yet</td>
   </tr>

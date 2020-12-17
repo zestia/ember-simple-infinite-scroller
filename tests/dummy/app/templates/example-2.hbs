@@ -1,10 +1,5 @@
 <p>
-  An action is fired when the bottom of the infinite scroll component becomes visible as the
-  document is scrolled.
-</p>
-<p>
-  This will work even if there is other content on the page that is longer
-  than the infinite scroll content.
+  An action is fired when document is scrolled to the very bottom
 </p>
 <p>
   Note that if there is no scroll movement available (due to lack of enough items to cause overflow),
@@ -13,8 +8,8 @@
 
 <InfiniteScroller
   class="example-2"
-  @onLoadMore={{this.loadMore}}
-  @useDocument={{true}} as |scroller|
+  @onLoadMore={{this.handleLoadMore}}
+  @element={{this.documentElement}} as |scroller|
 >
   {{#each this.things as |thing|}}
     <div class="thing">
