@@ -26,9 +26,19 @@ module('infinite-scroller', function (hooks) {
       this.things.pushObjects(generateThings(21, 40));
     };
 
-    // Intentionally not using Ember's async scrollTo helper
-    this.scrollSync = (selector, y) => {
-      find(selector).scrollTop = y;
+    this.scrollSync = (el, y) => {
+      el.scrollTop = y;
+    };
+
+    this.scrollToBottomSync = (selector) => {
+      const el = find(selector);
+      this.scrollSync(el, el.scrollHeight);
+    };
+
+    this.scrollToPercentageSync = (selector, percentage) => {
+      const el = find(selector);
+      const y = ((el.scrollHeight - el.clientHeight) / 100) * percentage;
+      this.scrollSync(el, y);
     };
 
     this.waitForMoreLoaded = () => {
@@ -78,7 +88,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollSync('.infinite-scroller', 450);
+    this.scrollToBottomSync('.infinite-scroller');
 
     later(() => {
       assert
@@ -117,11 +127,11 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollSync('.infinite-scroller', 450);
+    this.scrollToBottomSync('.infinite-scroller');
 
     await this.waitForMoreLoaded();
 
-    this.scrollSync('.infinite-scroller', 1200);
+    this.scrollToBottomSync('.infinite-scroller');
 
     await settled();
 
@@ -133,7 +143,7 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('load more action (leeway)', async function (assert) {
-    assert.expect(1);
+    assert.expect(2);
 
     await render(hbs`
       <InfiniteScroller
@@ -147,7 +157,13 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollSync('.infinite-scroller', 225);
+    this.scrollToPercentageSync('.infinite-scroller', 49);
+
+    await settled();
+
+    assert.equal(this.loadMoreCount, 0, 'not scrolled enough');
+
+    this.scrollToPercentageSync('.infinite-scroller', 50);
 
     await this.waitForMoreLoaded();
 
@@ -173,7 +189,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollSync('.infinite-scroller', 450);
+    this.scrollToBottomSync('.infinite-scroller');
 
     later(() => {
       assert.equal(this.loadMoreCount, 0, 'not fired yet');
@@ -213,7 +229,7 @@ module('infinite-scroller', function (hooks) {
       />
     `);
 
-    this.scrollSync('.external-element', 450);
+    this.scrollToBottomSync('.external-element');
 
     await this.waitForMoreLoaded();
 
@@ -240,7 +256,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollSync('.internal-element', 450);
+    this.scrollToBottomSync('.internal-element');
 
     await this.waitForMoreLoaded();
 
@@ -252,7 +268,9 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('load more action (document)', async function (assert) {
-    assert.expect(2);
+    assert.expect(1);
+
+    this.document = document;
 
     await render(hbs`
       <InfiniteScroller
@@ -266,7 +284,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollSync(document.documentElement, 450);
+    this.scrollToBottomSync(document.documentElement);
 
     await this.waitForMoreLoaded();
 
@@ -481,7 +499,7 @@ module('infinite-scroller', function (hooks) {
       {{/if}}
     `);
 
-    this.scrollSync('.infinite-scroller', 450);
+    this.scrollToBottomSync('.infinite-scroller');
 
     later(() => {
       this.set('show', false);
