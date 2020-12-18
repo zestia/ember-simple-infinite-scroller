@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
-  debug = true;
+  debug = false;
   scroller = null;
   debounceId = null;
 
