@@ -4,9 +4,6 @@
 
 - Removes `@selector` in favour of `@element`
 - Removes `@useDocument` in favour of `@element`
-- Breaking: `@element={{this.document}}` is _not_ the same as the old `@useDocument={{true}}`
-  - The former fires when the bottom of the document is reached
-  - The latter fired when the bottom of the InfiniteScroller component came into view
 - Adds `scroller.setElement` to make setting child elements easier
 - `@scrollDebounce` argument renamed `@debounce`
 
