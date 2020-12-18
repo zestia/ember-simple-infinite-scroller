@@ -9,12 +9,12 @@
   {{did-insert this.handleInsertElement}}
   {{will-destroy this.handleDestroyElement}}
 >
-  {{
-    yield
+  {{yield
     (hash
-      error=this.error
+      setElement=this.setElement
       isScrollable=this.isScrollable
       isLoading=this.isLoading
+      error=this.error
       loadMore=this.loadMore
     )
   }}

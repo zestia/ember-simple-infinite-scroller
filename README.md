@@ -64,14 +64,9 @@ https://zestia.github.io/ember-simple-infinite-scroller/
     <td><code>null</code></td>
   </tr>
   <tr>
-    <td>selector</td>
-    <td>Monitors the scrolling of a specific child element, e.g. <code>selector=".foo-bar"</code></td>
+    <td>element</td>
+    <td>Monitors the scroll position of the given element</td>
     <td><code>null</code></td>
-  </tr>
-  <tr>
-    <td>useDocument</td>
-    <td>Monitors the document scroll position rather than the element's scroll position.</td>
-    <td><code>false</code></td>
   </tr>
   <tr>
     <td>leeway</td>
@@ -79,7 +74,7 @@ https://zestia.github.io/ember-simple-infinite-scroller/
     <td><code>"0%"</code></td>
   </tr>
   <tr>
-    <td>scrollDebounce</td>
+    <td>debounce</td>
     <td>Milliseconds delay used to check if the bottom has been reached</td>
     <td><code>100</code> ms</td>
   </tr>
@@ -93,6 +88,10 @@ The component will yield a hash that provides:
   <tr>
     <th>Property</th>
     <th>Description</th>
+  </tr>
+  <tr>
+    <td>setElement</td>
+    <td>Sets the element for which to monitor the scroll position of</td>
   </tr>
   <tr>
     <td>isLoading</td>
@@ -112,21 +111,6 @@ The component will yield a hash that provides:
   </tr>
 </table>
 
-## Element vs Document scroll
-
-Either make your component scrollable:
-
-```css
-.my-element {
-  max-height: 300px;
-  overflow-y: auto;
-}
-```
-
-**OR**
-
-Set `@useDocument={{true}}` if your component is not scrollable.
-
 ## Performance
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
@@ -134,18 +118,18 @@ Please read: https://github.com/TryGhost/Ghost/issues/7934
 You may need to add this to `app/app.js`
 
 ```javascript
-customEvents: {
+customEvents = {
   touchstart: null,
   touchmove: null,
   touchend: null,
   touchcancel: null
-}
+};
 ```
 
 ## Other scenarios
 
 If your scrollable element is displaying 10 things, but they don't cause the element to overflow,
-then the user won't ever be able to load more - because they won't be able to scroll and therefore
+then the user won't ever be able to load more - because they won't be able to _scroll_ and therefore
 the `onLoadMore` action will never fire.
 
 To account for this, you can display a button for manually loading more...

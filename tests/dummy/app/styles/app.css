@@ -15,7 +15,8 @@ a {
   border: 1px solid var(--red);
 }
 
-.internal-element {
+.internal-element,
+.external-element {
   margin: 20px;
   padding: 10px;
   border: 1px dashed var(--red);
@@ -34,7 +35,8 @@ a {
 
 .example-1,
 .example-3,
-.internal-element {
+.internal-element,
+.external-element {
   overflow: auto;
   max-height: 200px;
 }
