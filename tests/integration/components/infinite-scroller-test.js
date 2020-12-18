@@ -273,6 +273,18 @@ module('infinite-scroller', function (hooks) {
     this.document = document;
 
     await render(hbs`
+    <style>
+      /*
+      We want to test that the scroll event fires on the document,
+      so the document must be scrollable, make it so by 1px.
+      */
+
+      #ember-testing-container {
+        height: calc(100vh + 1px);
+        max-height: unset;
+      }
+      </style>
+
       <InfiniteScroller
         class="example-2"
         @element={{this.document}}
