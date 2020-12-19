@@ -10,7 +10,6 @@ export default class InfiniteScrollerComponent extends Component {
   scroller = null;
   debounceId = null;
 
-  @tracked error = null;
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
@@ -150,13 +149,14 @@ export default class InfiniteScrollerComponent extends Component {
     };
   }
 
-  _loadMore() {
-    this.error = null;
+  async _loadMore() {
     this.isLoading = true;
 
-    resolve(this._invokeAction('onLoadMore'))
-      .catch(this._handleLoadError.bind(this))
-      .finally(this._handleLoadFinished.bind(this));
+    await this._invokeAction('onLoadMore');
+
+    this.isLoading = false;
+
+    this._scheduleCheckScrollable();
   }
 
   _invokeAction(name, ...args) {
@@ -165,15 +165,5 @@ export default class InfiniteScrollerComponent extends Component {
     if (typeof action === 'function') {
       return action(...args);
     }
-  }
-
-  _handleLoadError(error) {
-    this.error = error;
-  }
-
-  _handleLoadFinished() {
-    this.isLoading = false;
-
-    this._scheduleCheckScrollable();
   }
 }
