@@ -1,48 +1,25 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { defer, reject } from 'rsvp';
+import { defer } from 'rsvp';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
-import {
-  render,
-  settled,
-  find,
-  findAll,
-  click,
-  waitFor,
-  waitUntil
-} from '@ember/test-helpers';
+import { render, settled, find, click, scrollTo } from '@ember/test-helpers';
 
 module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function () {
-    this.loadMoreCount = 0;
-    this.things = generateThings(1, 20);
-
+  hooks.beforeEach(function (assert) {
     this.handleLoadMore = () => {
-      this.loadMoreCount++;
-      this.things.pushObjects(generateThings(21, 40));
+      assert.step('load more');
+      this.willLoad = defer();
+      return this.willLoad.promise;
     };
 
-    this.scrollSync = (el, y) => {
-      el.scrollTop = y;
-    };
-
-    this.scrollToBottomSync = (selector) => {
-      const el = find(selector);
-      this.scrollSync(el, el.scrollHeight);
-    };
-
-    this.scrollToPercentageSync = (selector, percentage) => {
+    this.scrollToPercentage = (selector, percentage) => {
       const el = find(selector);
       const y = ((el.scrollHeight - el.clientHeight) / 100) * percentage;
-      this.scrollSync(el, y);
-    };
-
-    this.waitForMoreLoaded = () => {
-      return waitUntil(() => findAll('.thing').length === 40);
+      return scrollTo(el, 0, y);
     };
   });
 
@@ -56,6 +33,8 @@ module('infinite-scroller', function (hooks) {
 
   test('scrollable class', async function (assert) {
     assert.expect(2);
+
+    this.things = generateThings(1, 20);
 
     await render(hbs`
       <InfiniteScroller class="example-1">
@@ -75,7 +54,9 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('load more action', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
+
+    this.things = generateThings(1, 20);
 
     await render(hbs`
       <InfiniteScroller
@@ -88,38 +69,29 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollToBottomSync('.infinite-scroller');
+    const promise = this.scrollToPercentage('.infinite-scroller', 100);
 
     later(() => {
-      assert
-        .dom('.thing')
-        .exists(
-          { count: 20 },
-          'has not fired load more action due to debouncing of scroll event'
-        );
+      assert.verifySteps(
+        [],
+        'has not fired load more action due to debouncing of scroll event'
+      );
     }, 100);
 
-    await this.waitForMoreLoaded();
+    await promise;
 
-    assert.equal(
-      this.loadMoreCount,
-      1,
-      'fires load more action at the element scroll boundary'
-    );
+    assert.verifySteps(['load more']);
   });
 
   test('load more action (whilst loading)', async function (assert) {
-    assert.expect(1);
+    assert.expect(2);
 
-    this.handleSlowLoadMore = () => {
-      this.handleLoadMore();
-      return new Promise((resolve) => later(resolve, 1000));
-    };
+    this.things = generateThings(1, 20);
 
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @onLoadMore={{this.handleSlowLoadMore}}
+        @onLoadMore={{this.handleLoadMore}}
       >
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
@@ -127,23 +99,16 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollToBottomSync('.infinite-scroller');
+    await this.scrollToPercentage('.infinite-scroller', 100);
+    await this.scrollToPercentage('.infinite-scroller', 100);
 
-    await this.waitForMoreLoaded();
-
-    this.scrollToBottomSync('.infinite-scroller');
-
-    await settled();
-
-    assert.equal(
-      this.loadMoreCount,
-      1,
-      'does not fire load more action if already loading more'
-    );
+    assert.verifySteps(['load more'], 'does not fire if already loading');
   });
 
   test('load more action (leeway)', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
+
+    this.things = generateThings(1, 20);
 
     await render(hbs`
       <InfiniteScroller
@@ -157,25 +122,19 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollToPercentageSync('.infinite-scroller', 49);
+    await this.scrollToPercentage('.infinite-scroller', 49);
 
-    await settled();
+    assert.verifySteps([], 'not scrolled enough');
 
-    assert.equal(this.loadMoreCount, 0, 'not scrolled enough');
+    await this.scrollToPercentage('.infinite-scroller', 50);
 
-    this.scrollToPercentageSync('.infinite-scroller', 50);
-
-    await this.waitForMoreLoaded();
-
-    assert.equal(
-      this.loadMoreCount,
-      1,
-      'fires load more action at the custom element scroll boundary'
-    );
+    assert.verifySteps(['load more']);
   });
 
   test('load more action (debounce)', async function (assert) {
     assert.expect(3);
+
+    this.things = generateThings(1, 20);
 
     await render(hbs`
       <InfiniteScroller
@@ -189,86 +148,22 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollToBottomSync('.infinite-scroller');
+    const promise = this.scrollToPercentage('.infinite-scroller', 100);
 
     later(() => {
-      assert.equal(this.loadMoreCount, 0, 'not fired yet');
-
-      assert
-        .dom('.thing')
-        .exists(
-          { count: 20 },
-          'has not fired action due to custom debouncing of scroll event'
-        );
+      assert.verifySteps([], 'not fired yet');
     }, 50);
 
-    await this.waitForMoreLoaded();
+    await promise;
 
-    assert.equal(
-      this.loadMoreCount,
-      1,
+    assert.verifySteps(
+      ['load more'],
       'fires load more action after being debounced'
     );
   });
 
-  test('custom element via argument', async function (assert) {
-    assert.expect(1);
-
-    this.setElement = (element) => this.set('customElement', element);
-
-    await render(hbs`
-      <div class="external-element" {{did-insert this.setElement}}>
-        {{#each this.things as |thing|}}
-          <div class="thing">{{thing.name}}</div>
-        {{/each}}
-      </div>
-
-      <InfiniteScroller
-        @element={{this.customElement}}
-        @onLoadMore={{this.handleLoadMore}}
-      />
-    `);
-
-    this.scrollToBottomSync('.external-element');
-
-    await this.waitForMoreLoaded();
-
-    assert.equal(
-      this.loadMoreCount,
-      1,
-      'fires load more action at the custom element scroll boundary'
-    );
-  });
-
-  test('custom element via registration', async function (assert) {
-    assert.expect(1);
-
-    await render(hbs`
-      <InfiniteScroller
-        @onLoadMore={{this.handleLoadMore}}
-        as |scroller|
-      >
-        <div class="internal-element" {{did-insert scroller.setElement}}>
-          {{#each this.things as |thing|}}
-            <div class="thing">{{thing.name}}</div>
-          {{/each}}
-        </div>
-      </InfiniteScroller>
-    `);
-
-    this.scrollToBottomSync('.internal-element');
-
-    await this.waitForMoreLoaded();
-
-    assert.equal(
-      this.loadMoreCount,
-      1,
-      'fires load more action at the custom element scroll boundary'
-    );
-  });
-
   test('load more action (document)', async function (assert) {
-    assert.expect(1);
+    assert.expect(2);
 
     this.document = document;
 
@@ -296,23 +191,61 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    this.scrollToBottomSync(document.documentElement);
+    await this.scrollToPercentage(document.documentElement, 100);
 
-    await this.waitForMoreLoaded();
+    assert.verifySteps(['load more']);
+  });
 
-    assert.equal(
-      this.loadMoreCount,
-      1,
-      'fires load more action at the document element scroll boundary'
-    );
+  test('custom element via argument', async function (assert) {
+    assert.expect(2);
+
+    this.things = generateThings(1, 20);
+
+    this.setElement = (element) => this.set('customElement', element);
+
+    await render(hbs`
+      <div class="external-element" {{did-insert this.setElement}}>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </div>
+
+      <InfiniteScroller
+        @element={{this.customElement}}
+        @onLoadMore={{this.handleLoadMore}}
+      />
+    `);
+
+    await this.scrollToPercentage('.external-element', 100);
+
+    assert.verifySteps(['load more']);
+  });
+
+  test('custom element via registration', async function (assert) {
+    assert.expect(2);
+
+    this.things = generateThings(1, 20);
+
+    await render(hbs`
+      <InfiniteScroller
+        @onLoadMore={{this.handleLoadMore}}
+        as |scroller|
+      >
+        <div class="internal-element" {{did-insert scroller.setElement}}>
+          {{#each this.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+        </div>
+      </InfiniteScroller>
+    `);
+
+    await this.scrollToPercentage('.internal-element', 100);
+
+    assert.verifySteps(['load more']);
   });
 
   test('loading class name', async function (assert) {
-    assert.expect(3);
-
-    const willLoad = defer();
-
-    this.handleLoadMore = () => willLoad.promise;
+    assert.expect(5);
 
     await render(hbs`
       <InfiniteScroller
@@ -340,7 +273,7 @@ module('infinite-scroller', function (hooks) {
         'a loading class is added whilst the action is being performed'
       );
 
-    willLoad.resolve();
+    this.willLoad.resolve();
 
     await settled();
 
@@ -350,14 +283,30 @@ module('infinite-scroller', function (hooks) {
         'infinite-scroller--loading',
         'loading class name is removed after the action resolves'
       );
+
+    assert.verifySteps(['load more']);
+  });
+
+  test('yielded loadMore action', async function (assert) {
+    assert.expect(2);
+
+    await render(hbs`
+      <InfiniteScroller
+        @onLoadMore={{this.handleLoadMore}} as |scroller|
+      >
+        <button type="button" {{on "click" scroller.loadMore}}>
+          Load more
+        </button>
+      </InfiniteScroller>
+    `);
+
+    await click('button');
+
+    assert.verifySteps(['load more']);
   });
 
   test('yielded loading state', async function (assert) {
-    assert.expect(3);
-
-    const willLoad = defer();
-
-    this.handleLoadMore = () => willLoad.promise;
+    assert.expect(5);
 
     await render(hbs`
       <InfiniteScroller
@@ -373,90 +322,26 @@ module('infinite-scroller', function (hooks) {
 
     assert.dom('span').hasText('false', 'precondition: not loading');
 
-    click('button'); // Intentionally no await
-
-    await waitFor('.infinite-scroller');
+    await click('button');
 
     assert.dom('span').hasText('true', 'yields a hash with the loading state');
 
-    willLoad.resolve();
+    this.willLoad.resolve();
 
     await settled();
 
     assert.dom('span').hasText('false', 'loading state is updated');
-  });
 
-  test('yielded error', async function (assert) {
-    assert.expect(2);
-
-    this.handleLoadMore = () => reject(new Error('Fail'));
-
-    await render(hbs`
-      <InfiniteScroller
-        @onLoadMore={{this.handleLoadMore}} as |scroller|
-      >
-        {{#if scroller.error}}
-          <p>{{scroller.error.message}}</p>
-        {{/if}}
-
-        <button type="button" {{on "click" scroller.loadMore}}>
-          Load more
-        </button>
-      </InfiniteScroller>
-    `);
-
-    assert
-      .dom('.infinite-scroller')
-      .doesNotContainText('Fail', 'precondition: no error message');
-
-    await click('button');
-
-    assert
-      .dom('.infinite-scroller')
-      .containsText('Fail', 'yields a hash with the last rejection error');
-  });
-
-  test('yielded loadMore action', async function (assert) {
-    assert.expect(1);
-
-    await render(hbs`
-      <InfiniteScroller
-        @onLoadMore={{this.handleLoadMore}} as |scroller|
-      >
-        {{#each this.things as |thing|}}
-          <div class="thing">{{thing.name}}</div>
-        {{/each}}
-
-        <button type="button" {{on "click" scroller.loadMore}}>
-          Load more
-        </button>
-      </InfiniteScroller>
-    `);
-
-    await click('button');
-
-    assert
-      .dom('.thing')
-      .exists(
-        { count: 40 },
-        'yields an action that can trigger the load more action'
-      );
+    assert.verifySteps(['load more']);
   });
 
   test('destroying (does not blow up)', async function (assert) {
-    assert.expect(0);
+    assert.expect(2);
 
-    this.showScroller = true;
-
-    const willLoad = defer();
-
-    this.handleLoadMore = () => {
-      this.set('showScroller', false);
-      return willLoad.promise;
-    };
+    this.show = true;
 
     await render(hbs`
-      {{#if this.showScroller}}
+      {{#if this.show}}
         <InfiniteScroller
           @onLoadMore={{this.handleLoadMore}} as |scroller|
         >
@@ -469,7 +354,11 @@ module('infinite-scroller', function (hooks) {
 
     await click('button');
 
-    willLoad.resolve();
+    this.set('show', false);
+
+    this.willLoad.resolve();
+
+    assert.verifySteps(['load more']);
   });
 
   test('no promise (does not blow up)', async function (assert) {
@@ -491,11 +380,9 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('destroying during debounce (does not blow up)', async function (assert) {
-    assert.expect(0);
+    assert.expect(1);
 
     this.show = true;
-
-    this.handleLoadMore = () => null;
 
     await render(hbs`
       {{#if this.show}}
@@ -511,17 +398,19 @@ module('infinite-scroller', function (hooks) {
       {{/if}}
     `);
 
-    this.scrollToBottomSync('.infinite-scroller');
+    const promise = this.scrollToPercentage('.infinite-scroller', 100);
 
     later(() => {
       this.set('show', false);
     }, 25);
+
+    await promise;
+
+    assert.verifySteps([]);
   });
 
   test('is scrollable', async function (assert) {
-    assert.expect(2);
-
-    this.things = generateThings(1, 2);
+    assert.expect(4);
 
     await render(hbs`
       <InfiniteScroller
@@ -535,7 +424,6 @@ module('infinite-scroller', function (hooks) {
         {{#unless scroller.isScrollable}}
           <button
             type="button"
-            class="load-more"
             {{on "click" scroller.loadMore}}
           >
             Load more
@@ -545,18 +433,75 @@ module('infinite-scroller', function (hooks) {
     `);
 
     assert
-      .dom('.load-more')
+      .dom('button')
       .exists(
         'load more button shows because infinite scroller component ' +
           'determined that there is no scroll movement available'
       );
 
-    await click('.load-more');
+    await click('button');
+
+    this.set('things', generateThings(1, 20));
+    this.willLoad.resolve();
+
+    await settled();
 
     assert
-      .dom('.load-more')
+      .dom('button')
       .doesNotExist(
         'infinite scroller component re-computes whether or not there is scroll movement available'
       );
+
+    assert.verifySteps(['load more']);
+  });
+
+  test('changing element argument', async function (assert) {
+    assert.expect(3);
+
+    this.things = generateThings(1, 20);
+
+    this.setDiv1 = (element) => {
+      this.set('div1', element);
+      this.set('customElement', this.div1);
+    };
+
+    this.setDiv2 = (element) => {
+      this.set('div2', element);
+    };
+
+    await render(hbs`
+      <div class="external-element" {{did-insert this.setDiv1}}>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </div>
+
+      <div class="external-element" {{did-insert this.setDiv2}}>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </div>
+
+      <InfiniteScroller
+        @element={{this.customElement}}
+        @onLoadMore={{this.handleLoadMore}}
+      />
+    `);
+
+    await this.scrollToPercentage('.external-element:nth-child(1)', 100);
+
+    this.willLoad.resolve();
+
+    assert.verifySteps(['load more']);
+
+    this.set('customElement', this.div2);
+
+    await this.scrollToPercentage('.external-element:nth-child(2)', 100);
+
+    assert.verifySteps(
+      [],
+      'only fires load action once, because the scroll listeners are not' +
+        'reconfigured when element changes.'
+    );
   });
 });

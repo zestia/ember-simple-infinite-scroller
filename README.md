@@ -102,10 +102,6 @@ The component will yield a hash that provides:
     <td>True when scroll element is overflowing</td>
   </tr>
   <tr>
-    <td>error</td>
-    <td>The caught error from the last attempt to load more</td>
-  </tr>
-  <tr>
     <td>loadMore</td>
     <td>Action for manually loading more</td>
   </tr>
