@@ -113,7 +113,7 @@ module('infinite-scroller', function (hooks) {
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @leeway="50%"
+        @leeway="40%"
         @onLoadMore={{this.handleLoadMore}}
       >
         {{#each this.things as |thing|}}
@@ -122,11 +122,11 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    await this.scrollToPercentage('.infinite-scroller', 49);
+    await this.scrollToPercentage('.infinite-scroller', 59);
 
     assert.verifySteps([], 'not scrolled enough');
 
-    await this.scrollToPercentage('.infinite-scroller', 50);
+    await this.scrollToPercentage('.infinite-scroller', 60);
 
     assert.verifySteps(['load more']);
   });
