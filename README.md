@@ -77,7 +77,7 @@ https://zestia.github.io/ember-simple-infinite-scroller/
   <tr>
     <td>debounce</td>
     <td>Milliseconds delay for when to check if more needs to be loaded</td>
-    <td><code>100</code> ms</td>
+    <td><code>100</code></td>
   </tr>
 </table>
 
