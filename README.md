@@ -49,6 +49,7 @@ https://zestia.github.io/ember-simple-infinite-scroller/
 - Does not use jQuery ✔︎
 - Ember Data Friendly ✔︎
 - Supports use with FastBoot ✔︎
+- No included styles ✔︎
 
 ## Configuration
 
