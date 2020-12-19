@@ -5,8 +5,9 @@
 - Removes `@selector` in favour of `@element`
 - Removes `@useDocument` in favour of `@element`
 - Removes `scroller.error`
-- Adds `scroller.setElement` to make setting child elements easier
 - Renames `@scrollDebounce` to `@debounce`
+- Renames `@leeway` to `@percent`. This is the inverse!
+- Adds `scroller.setElement` to make setting child elements easier
 - Upgrades dependencies
 
 ## 7.0.7

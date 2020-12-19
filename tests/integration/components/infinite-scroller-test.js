@@ -105,7 +105,7 @@ module('infinite-scroller', function (hooks) {
     assert.verifySteps(['load more'], 'does not fire if already loading');
   });
 
-  test('load more action (leeway)', async function (assert) {
+  test('load more action (percent)', async function (assert) {
     assert.expect(3);
 
     this.things = generateThings(1, 20);
@@ -113,7 +113,7 @@ module('infinite-scroller', function (hooks) {
     await render(hbs`
       <InfiniteScroller
         class="example-1"
-        @leeway="40%"
+        @percent={{60}}
         @onLoadMore={{this.handleLoadMore}}
       >
         {{#each this.things as |thing|}}

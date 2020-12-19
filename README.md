@@ -69,9 +69,9 @@ https://zestia.github.io/ember-simple-infinite-scroller/
     <td><code>null</code></td>
   </tr>
   <tr>
-    <td>leeway</td>
-    <td>Percentage distance away from the bottom</td>
-    <td><code>"0%"</code></td>
+    <td>percent</td>
+    <td>Distance scroll from the top for when to fire the load more action</td>
+    <td><code>100</code></td>
   </tr>
   <tr>
     <td>debounce</td>

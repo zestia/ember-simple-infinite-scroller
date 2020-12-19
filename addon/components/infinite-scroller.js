@@ -18,8 +18,8 @@ export default class InfiniteScrollerComponent extends Component {
     return this.args.debounce ?? 100;
   }
 
-  get leeway() {
-    return parseInt(this.args.leeway ?? '0%', 10);
+  get percent() {
+    return this.args.percent ?? 100;
   }
 
   get normalisedScrollerElement() {
@@ -134,20 +134,18 @@ export default class InfiniteScrollerComponent extends Component {
     const clientHeight = element.clientHeight;
     const isScrollable = scrollHeight > clientHeight;
     const bottom = scrollHeight - clientHeight;
-    const leeway = this.leeway;
-    const pixelsToBottom = bottom - scrollTop;
-    const percentageToBottom = this._percentage(pixelsToBottom, bottom);
-    const reachedBottom = percentageToBottom <= leeway;
+    const percent = this.percent;
+    const percentScrolled = this._percentage(scrollTop, bottom);
+    const reachedBottom = percentScrolled >= percent;
 
     return {
-      scrollHeight,
-      scrollTop,
-      clientHeight,
       isScrollable,
+      scrollHeight,
+      clientHeight,
+      scrollTop,
       bottom,
-      leeway,
-      pixelsToBottom,
-      percentageToBottom,
+      percent,
+      percentScrolled,
       reachedBottom
     };
   }
