@@ -123,7 +123,7 @@ customEvents = {
 };
 ```
 
-## Other scenarios
+## Scenario to be aware of
 
 If your scrollable element is displaying 10 things, but they don't cause the element to overflow,
 then the user won't ever be able to load more - because they won't be able to _scroll_ and therefore
