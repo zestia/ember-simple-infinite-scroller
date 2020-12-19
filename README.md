@@ -137,10 +137,8 @@ To account for this, you can display a button for manually loading more...
     ...
   {{/each}}
 
-  {{#if scroller.isScrollable}}
-    Loading more...
-  {{else}}
+  {{#unless scroller.isScrollable}}
     <button {{on "click" scroller.loadMore}}>Load more</button>
-  {{/if}}
+  {{/unless}}
 </InfiniteScroller>
 ```
