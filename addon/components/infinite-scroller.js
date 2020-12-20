@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { debounce, cancel, scheduleOnce } from '@ember/runloop';
 import { action } from '@ember/object';
-import { resolve } from 'rsvp';
 import { tracked } from '@glimmer/tracking';
 const { round } = Math;
 
