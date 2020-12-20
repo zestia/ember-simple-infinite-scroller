@@ -117,14 +117,6 @@ export default class InfiniteScrollerComponent extends Component {
     console.table([state]); // eslint-disable-line
   }
 
-  _percentage(a, b) {
-    if (a === 0 && b === 0) {
-      return 0;
-    }
-
-    return round((a / b) * 100);
-  }
-
   _getScrollState() {
     const element = this.normalisedScrollerElement;
     const scrollHeight = element.scrollHeight;
@@ -133,7 +125,7 @@ export default class InfiniteScrollerComponent extends Component {
     const isScrollable = scrollHeight > clientHeight;
     const bottom = scrollHeight - clientHeight;
     const percent = this.percent;
-    const percentScrolled = this._percentage(scrollTop, bottom);
+    const percentScrolled = round((scrollTop / bottom) * 100);
     const reachedBottom = percentScrolled >= percent;
 
     return {
