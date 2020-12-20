@@ -184,11 +184,7 @@ module('infinite-scroller', function (hooks) {
         class="example-2"
         @element={{this.document}}
         @onLoadMore={{this.handleLoadMore}}
-      >
-        {{#each this.things as |thing|}}
-          <div class="thing">{{thing.name}}</div>
-        {{/each}}
-      </InfiniteScroller>
+      />
     `);
 
     await this.scrollToPercentage(document.documentElement, 100);
@@ -247,13 +243,16 @@ module('infinite-scroller', function (hooks) {
   test('loading class name', async function (assert) {
     assert.expect(5);
 
+    this.things = generateThings(1, 20);
+
     await render(hbs`
       <InfiniteScroller
-        @onLoadMore={{this.handleLoadMore}} as |scroller|
+        class="example-1"
+        @onLoadMore={{this.handleLoadMore}}
       >
-        <button type="button" {{on "click" scroller.loadMore}}>
-          Load more
-        </button>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
       </InfiniteScroller>
     `);
 
@@ -264,7 +263,7 @@ module('infinite-scroller', function (hooks) {
         'precondition: is not loading'
       );
 
-    await click('button');
+    await this.scrollToPercentage('.infinite-scroller', 100);
 
     assert
       .dom('.infinite-scroller')
@@ -308,29 +307,38 @@ module('infinite-scroller', function (hooks) {
   test('yielded loading state', async function (assert) {
     assert.expect(5);
 
+    this.things = generateThings(1, 20);
+
     await render(hbs`
       <InfiniteScroller
+        class="example-1"
         @onLoadMore={{this.handleLoadMore}} as |scroller|
       >
-        <span>{{scroller.isLoading}}</span>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
 
-        <button type="button" {{on "click" scroller.loadMore}}>
-          Load more
-        </button>
+        Loading: {{scroller.isLoading}}
       </InfiniteScroller>
     `);
 
-    assert.dom('span').hasText('false', 'precondition: not loading');
+    assert
+      .dom('.infinite-scroller')
+      .containsText('Loading: false', 'precondition: not loading');
 
-    await click('button');
+    await this.scrollToPercentage('.infinite-scroller', 100);
 
-    assert.dom('span').hasText('true', 'yields a hash with the loading state');
+    assert
+      .dom('.infinite-scroller')
+      .containsText('Loading: true', 'yields a hash with the loading state');
 
     this.willLoad.resolve();
 
     await settled();
 
-    assert.dom('span').hasText('false', 'loading state is updated');
+    assert
+      .dom('.infinite-scroller')
+      .containsText('Loading: false', 'loading state is updated');
 
     assert.verifySteps(['load more']);
   });
@@ -338,21 +346,24 @@ module('infinite-scroller', function (hooks) {
   test('destroying (does not blow up)', async function (assert) {
     assert.expect(2);
 
+    this.things = generateThings(1, 20);
+
     this.show = true;
 
     await render(hbs`
       {{#if this.show}}
         <InfiniteScroller
-          @onLoadMore={{this.handleLoadMore}} as |scroller|
+          class="example-1"
+          @onLoadMore={{this.handleLoadMore}}
         >
-          <button type="button" {{on "click" scroller.loadMore}}>
-            Load more
-          </button>
+          {{#each this.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
         </InfiniteScroller>
       {{/if}}
     `);
 
-    await click('button');
+    await this.scrollToPercentage('.infinite-scroller', 100);
 
     this.set('show', false);
 
@@ -368,15 +379,16 @@ module('infinite-scroller', function (hooks) {
 
     await render(hbs`
       <InfiniteScroller
-        @onLoadMore={{this.handleLoadMore}} as |scroller|
+        class="example-1"
+        @onLoadMore={{this.handleLoadMore}}
       >
-        <button type="button" {{on "click" scroller.loadMore}}>
-          Load more
-        </button>
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
       </InfiniteScroller>
     `);
 
-    await click('button');
+    await this.scrollToPercentage('.infinite-scroller', 100);
   });
 
   test('destroying during debounce (does not blow up)', async function (assert) {
@@ -442,6 +454,7 @@ module('infinite-scroller', function (hooks) {
     await click('button');
 
     this.set('things', generateThings(1, 20));
+
     this.willLoad.resolve();
 
     await settled();
