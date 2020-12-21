@@ -61,7 +61,7 @@ https://zestia.github.io/ember-simple-infinite-scroller/
   </tr>
   <tr>
     <td>onLoadMore</td>
-    <td>Action to perform when the <code>@percent</code> is scrolled past</td>
+    <td>Action to perform when the <code>@percent</code> scrolled is reached</td>
     <td><code>null</code></td>
   </tr>
   <tr>
