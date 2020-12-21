@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.0.0-beta.1
+## 8.0.0-beta.0
 
 - Removes `@selector` in favour of `@element`
 - Removes `@useDocument` in favour of `@element`
