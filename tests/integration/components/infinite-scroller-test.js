@@ -4,7 +4,15 @@ import hbs from 'htmlbars-inline-precompile';
 import { defer } from 'rsvp';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
-import { render, settled, find, click, scrollTo } from '@ember/test-helpers';
+import {
+  render,
+  settled,
+  find,
+  click,
+  scrollTo,
+  setupOnerror,
+  resetOnerror
+} from '@ember/test-helpers';
 
 module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);
@@ -53,7 +61,7 @@ module('infinite-scroller', function (hooks) {
       .doesNotHaveClass('infinite-scroller--scrollable');
   });
 
-  test('load more action', async function (assert) {
+  test('load more action (success)', async function (assert) {
     assert.expect(3);
 
     this.things = generateThings(1, 20);
@@ -81,6 +89,51 @@ module('infinite-scroller', function (hooks) {
     await promise;
 
     assert.verifySteps(['load more']);
+  });
+
+  test('load more action (failure)', async function (assert) {
+    assert.expect(3);
+
+    const example = new Error();
+    example.message = 'example failure';
+
+    setupOnerror((error) => {
+      if (error === example) {
+        return;
+      }
+
+      throw error;
+    });
+
+    this.things = generateThings(1, 20);
+
+    await render(hbs`
+      <InfiniteScroller
+        class="example-1"
+        @onLoadMore={{this.handleLoadMore}}
+      >
+        {{#each this.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </InfiniteScroller>
+    `);
+
+    await this.scrollToPercentage('.infinite-scroller', 100);
+
+    this.willLoad.reject(example);
+
+    await settled();
+
+    assert
+      .dom('.infinite-scroller')
+      .doesNotHaveClass(
+        'infinite-scroller--loading',
+        'is no longer considered loading if loading fails'
+      );
+
+    assert.verifySteps(['load more']);
+
+    resetOnerror();
   });
 
   test('load more action (whilst loading)', async function (assert) {

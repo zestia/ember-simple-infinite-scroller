@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.0.1
+
+- Make sure component is not in a loading state if there is a failure to load more.
+
 ## 8.0.0
 
 - Release changes from beta 8

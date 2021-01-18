@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { resolve } from 'rsvp';
 import { debounce, cancel, scheduleOnce } from '@ember/runloop';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
@@ -140,14 +141,14 @@ export default class InfiniteScrollerComponent extends Component {
     };
   }
 
-  async _loadMore() {
+  _loadMore() {
     this.isLoading = true;
 
-    await this._invokeAction('onLoadMore');
+    resolve(this._invokeAction('onLoadMore')).finally(() => {
+      this.isLoading = false;
 
-    this.isLoading = false;
-
-    this._scheduleCheckScrollable();
+      this._scheduleCheckScrollable();
+    });
   }
 
   _invokeAction(name, ...args) {
