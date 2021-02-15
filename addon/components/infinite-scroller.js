@@ -44,6 +44,11 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   @action
+  handleScroll() {
+    this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
+  }
+
+  @action
   loadMore() {
     this._loadMore();
   }
@@ -70,17 +75,11 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _startListening() {
-    this._scrollHandler = this._handleScroll.bind(this);
-
-    this.scroller.addEventListener('scroll', this._scrollHandler);
+    this.scroller.addEventListener('scroll', this.handleScroll);
   }
 
   _stopListening() {
-    this.scroller.removeEventListener('scroll', this._scrollHandler);
-  }
-
-  _handleScroll() {
-    this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
+    this.scroller.removeEventListener('scroll', this.handleScroll);
   }
 
   _checkShouldLoadMore() {
