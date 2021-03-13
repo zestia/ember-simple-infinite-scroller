@@ -227,9 +227,8 @@ module('infinite-scroller', function (hooks) {
       so the document must be scrollable, make it so by 1px.
       */
 
-      #ember-testing-container {
+      :root {
         height: calc(100vh + 1px);
-        max-height: unset;
       }
       </style>
 
