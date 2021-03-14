@@ -1,9 +1,5 @@
 # Changelog
 
-## 8.0.3
-
-- Upgrade dependencies
-
 ## 8.0.2
 
 - Upgrade dependencies
