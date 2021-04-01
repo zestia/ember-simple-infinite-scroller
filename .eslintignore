@@ -12,7 +12,7 @@
 
 # misc
 /coverage/
-!.*
+.eslintcache
 
 # ember-try
 /.node_modules.ember-try/

@@ -1,3 +1,3 @@
-module.exports = {
-  extends: '@zestia/stylelint-config'
-};
+'use strict';
+
+module.exports = require('@zestia/stylelint-config');
