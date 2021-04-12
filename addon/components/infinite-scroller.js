@@ -3,6 +3,7 @@ import { resolve } from 'rsvp';
 import { debounce, cancel, scheduleOnce } from '@ember/runloop';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { modifier } from 'ember-modifier';
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
@@ -29,19 +30,14 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  @action
-  handleInsertElement(element) {
-    if (!this.scroller) {
-      this._registerScroller(this.args.element ?? element);
-    }
+  handleElementLifecycle = modifier((element) => {
+    this._handleInsertElement(element);
+    return () => this._handleDestroyElement();
+  });
 
-    this._scheduleCheckScrollable();
-  }
-
-  @action
-  handleDestroyElement() {
-    this._deregisterScroller();
-  }
+  setElement = modifier((element) => {
+    this._registerScroller(element);
+  });
 
   @action
   handleScroll() {
@@ -53,9 +49,16 @@ export default class InfiniteScrollerComponent extends Component {
     this._loadMore();
   }
 
-  @action
-  setElement(element) {
-    this._registerScroller(element);
+  _handleInsertElement(element) {
+    if (!this.scroller) {
+      this._registerScroller(this.args.element ?? element);
+    }
+
+    this._scheduleCheckScrollable();
+  }
+
+  _handleDestroyElement() {
+    this._deregisterScroller();
   }
 
   _registerScroller(element) {

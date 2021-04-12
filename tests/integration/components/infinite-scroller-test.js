@@ -4,6 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { defer } from 'rsvp';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
+import { modifier } from 'ember-modifier';
 import {
   render,
   settled,
@@ -249,10 +250,12 @@ module('infinite-scroller', function (hooks) {
 
     this.things = generateThings(1, 20);
 
-    this.setElement = (element) => this.set('customElement', element);
+    this.setElement = modifier((element) => {
+      this.set('customElement', element);
+    });
 
     await render(hbs`
-      <div class="external-element" {{did-insert this.setElement}}>
+      <div class="external-element" {{this.setElement}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -269,7 +272,7 @@ module('infinite-scroller', function (hooks) {
     assert.verifySteps(['load more']);
   });
 
-  test('custom element via registration', async function (assert) {
+  test('custom element via modifier registration', async function (assert) {
     assert.expect(2);
 
     this.things = generateThings(1, 20);
@@ -279,7 +282,7 @@ module('infinite-scroller', function (hooks) {
         @onLoadMore={{this.handleLoadMore}}
         as |scroller|
       >
-        <div class="internal-element" {{did-insert scroller.setElement}}>
+        <div class="internal-element" {{scroller.setElement}}>
           {{#each this.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
           {{/each}}
@@ -525,23 +528,22 @@ module('infinite-scroller', function (hooks) {
 
     this.things = generateThings(1, 20);
 
-    this.setDiv1 = (element) => {
+    this.setDiv1 = modifier((element) => {
       this.set('div1', element);
-      this.set('customElement', this.div1);
-    };
+    });
 
-    this.setDiv2 = (element) => {
+    this.setDiv2 = modifier((element) => {
       this.set('div2', element);
-    };
+    });
 
     await render(hbs`
-      <div class="external-element" {{did-insert this.setDiv1}}>
+      <div class="external-element" {{this.setDiv1}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
       </div>
 
-      <div class="external-element" {{did-insert this.setDiv2}}>
+      <div class="external-element" {{this.setDiv2}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -553,11 +555,13 @@ module('infinite-scroller', function (hooks) {
       />
     `);
 
+    this.set('customElement', this.div1);
+
     await this.scrollToPercentage('.external-element:nth-child(1)', 100);
 
-    this.willLoad.resolve();
-
     assert.verifySteps(['load more']);
+
+    this.willLoad.resolve();
 
     this.set('customElement', this.div2);
 
@@ -565,7 +569,7 @@ module('infinite-scroller', function (hooks) {
 
     assert.verifySteps(
       [],
-      'only fires load action once, because the scroll listeners are not' +
+      'only fires load action once, because the scroll listeners are not ' +
         'reconfigured when element changes.'
     );
   });
