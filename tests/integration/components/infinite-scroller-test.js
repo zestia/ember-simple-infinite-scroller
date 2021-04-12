@@ -524,7 +524,7 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('changing element argument', async function (assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     this.things = generateThings(1, 20);
 
@@ -568,9 +568,8 @@ module('infinite-scroller', function (hooks) {
     await this.scrollToPercentage('.external-element:nth-child(2)', 100);
 
     assert.verifySteps(
-      [],
-      'only fires load action once, because the scroll listeners are not ' +
-        'reconfigured when element changes.'
+      ['load more'],
+      'load action fires again, because scrollable element has been re-registered'
     );
   });
 });
