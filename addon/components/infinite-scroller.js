@@ -146,18 +146,10 @@ export default class InfiniteScrollerComponent extends Component {
   _loadMore() {
     this.isLoading = true;
 
-    resolve(this._invokeAction('onLoadMore')).finally(() => {
+    resolve(this.args.onLoadMore?.()).finally(() => {
       this.isLoading = false;
 
       this._scheduleCheckScrollable();
     });
-  }
-
-  _invokeAction(name, ...args) {
-    const action = this.args[name];
-
-    if (typeof action === 'function') {
-      return action(...args);
-    }
   }
 }
