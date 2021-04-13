@@ -9,12 +9,5 @@
   {{did-insert this.handleInsertElement}}
   {{will-destroy this.handleDestroyElement}}
 >
-  {{yield
-    (hash
-      setElement=this.setElement
-      isScrollable=this.isScrollable
-      isLoading=this.isLoading
-      loadMore=this.loadMore
-    )
-  }}
+  {{yield this.api}}
 </div>
