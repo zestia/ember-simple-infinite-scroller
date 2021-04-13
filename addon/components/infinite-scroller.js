@@ -36,13 +36,18 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  handleElementLifecycle = modifier((element) => {
-    this._registerScroller(this.args.element ?? element);
-    return () => this._deregisterScroller();
-  });
+  get api() {
+    return {
+      setElement: this.setElement,
+      isScrollable: this.isScrollable,
+      isLoading: this.isLoading,
+      loadMore: this.loadMore
+    };
+  }
 
-  setElement = modifier((element) => {
-    this._registerScroller(element);
+  setElement = modifier((element, [positionalElement]) => {
+    this._registerScroller(positionalElement ?? element);
+    return () => this._deregisterScroller();
   });
 
   @action

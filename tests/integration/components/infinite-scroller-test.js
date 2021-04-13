@@ -245,56 +245,6 @@ module('infinite-scroller', function (hooks) {
     assert.verifySteps(['load more']);
   });
 
-  test('custom element via argument', async function (assert) {
-    assert.expect(2);
-
-    this.things = generateThings(1, 20);
-
-    this.setElement = modifier((element) => {
-      this.set('customElement', element);
-    });
-
-    await render(hbs`
-      <div class="external-element" {{this.setElement}}>
-        {{#each this.things as |thing|}}
-          <div class="thing">{{thing.name}}</div>
-        {{/each}}
-      </div>
-
-      <InfiniteScroller
-        @element={{this.customElement}}
-        @onLoadMore={{this.handleLoadMore}}
-      />
-    `);
-
-    await this.scrollToPercentage('.external-element', 100);
-
-    assert.verifySteps(['load more']);
-  });
-
-  test('custom element via modifier registration', async function (assert) {
-    assert.expect(2);
-
-    this.things = generateThings(1, 20);
-
-    await render(hbs`
-      <InfiniteScroller
-        @onLoadMore={{this.handleLoadMore}}
-        as |scroller|
-      >
-        <div class="internal-element" {{scroller.setElement}}>
-          {{#each this.things as |thing|}}
-            <div class="thing">{{thing.name}}</div>
-          {{/each}}
-        </div>
-      </InfiniteScroller>
-    `);
-
-    await this.scrollToPercentage('.internal-element', 100);
-
-    assert.verifySteps(['load more']);
-  });
-
   test('loading class name', async function (assert) {
     assert.expect(5);
 
@@ -523,7 +473,7 @@ module('infinite-scroller', function (hooks) {
     assert.verifySteps(['load more']);
   });
 
-  test('changing element argument', async function (assert) {
+  test('custom element via element argument', async function (assert) {
     assert.expect(4);
 
     this.things = generateThings(1, 20);
@@ -537,13 +487,13 @@ module('infinite-scroller', function (hooks) {
     });
 
     await render(hbs`
-      <div class="external-element" {{this.setDiv1}}>
+      <div class="external-element one" {{this.setDiv1}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
       </div>
 
-      <div class="external-element" {{this.setDiv2}}>
+      <div class="external-element two" {{this.setDiv2}}>
         {{#each this.things as |thing|}}
           <div class="thing">{{thing.name}}</div>
         {{/each}}
@@ -557,7 +507,7 @@ module('infinite-scroller', function (hooks) {
 
     this.set('customElement', this.div1);
 
-    await this.scrollToPercentage('.external-element:nth-child(1)', 100);
+    await this.scrollToPercentage('.external-element.one', 100);
 
     assert.verifySteps(['load more']);
 
@@ -565,7 +515,51 @@ module('infinite-scroller', function (hooks) {
 
     this.set('customElement', this.div2);
 
-    await this.scrollToPercentage('.external-element:nth-child(2)', 100);
+    await this.scrollToPercentage('.external-element.two', 100);
+
+    assert.verifySteps(
+      ['load more'],
+      'load action fires again, because scrollable element has been re-registered'
+    );
+  });
+
+  test('custom element via modifier', async function (assert) {
+    assert.expect(4);
+
+    this.things = generateThings(1, 20);
+
+    await render(hbs`
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller setElement|>
+        {{#if this.showDiv1}}
+          <div class="internal-element one" {{setElement}}>
+            {{#each this.things as |thing|}}
+              <div class="thing">{{thing.name}}</div>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        {{#if this.showDiv2}}
+          <div class="internal-element two" {{setElement}}>
+            {{#each this.things as |thing|}}
+              <div class="thing">{{thing.name}}</div>
+            {{/each}}
+          </div>
+        {{/if}}
+      </InfiniteScroller>
+    `);
+
+    this.set('showDiv1', true);
+
+    await this.scrollToPercentage('.internal-element.one', 100);
+
+    assert.verifySteps(['load more']);
+
+    this.willLoad.resolve();
+
+    this.set('showDiv1', false);
+    this.set('showDiv2', true);
+
+    await this.scrollToPercentage('.internal-element.two', 100);
 
     assert.verifySteps(
       ['load more'],
