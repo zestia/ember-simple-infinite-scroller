@@ -529,9 +529,9 @@ module('infinite-scroller', function (hooks) {
     this.things = generateThings(1, 20);
 
     await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller setElement|>
+      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
         {{#if this.showDiv1}}
-          <div class="internal-element one" {{setElement}}>
+          <div class="internal-element one" {{scroller.setElement}}>
             {{#each this.things as |thing|}}
               <div class="thing">{{thing.name}}</div>
             {{/each}}
@@ -539,7 +539,7 @@ module('infinite-scroller', function (hooks) {
         {{/if}}
 
         {{#if this.showDiv2}}
-          <div class="internal-element two" {{setElement}}>
+          <div class="internal-element two" {{scroller.setElement}}>
             {{#each this.things as |thing|}}
               <div class="thing">{{thing.name}}</div>
             {{/each}}
