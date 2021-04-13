@@ -61,10 +61,6 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _registerScroller(element) {
-    if (this.scroller) {
-      this._stopListening();
-    }
-
     this.scroller = element;
 
     this._startListening();
