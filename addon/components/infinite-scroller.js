@@ -20,6 +20,15 @@ export default class InfiniteScrollerComponent extends Component {
     this._scheduleCheckScrollable();
   }
 
+  get api() {
+    return {
+      setElement: this.setElement,
+      isScrollable: this.isScrollable,
+      isLoading: this.isLoading,
+      loadMore: this.loadMore
+    };
+  }
+
   get debounce() {
     return this.args.debounce ?? 100;
   }
@@ -34,15 +43,6 @@ export default class InfiniteScrollerComponent extends Component {
     } else {
       return this.scroller;
     }
-  }
-
-  get api() {
-    return {
-      setElement: this.setElement,
-      isScrollable: this.isScrollable,
-      isLoading: this.isLoading,
-      loadMore: this.loadMore
-    };
   }
 
   setElement = modifier((element, [positionalElement]) => {
