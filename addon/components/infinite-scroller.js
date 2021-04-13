@@ -14,6 +14,12 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
+  constructor() {
+    super(...arguments);
+
+    this._scheduleCheckScrollable();
+  }
+
   get debounce() {
     return this.args.debounce ?? 100;
   }
@@ -31,8 +37,8 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   handleElementLifecycle = modifier((element) => {
-    this._handleInsertElement(element);
-    return () => this._handleDestroyElement();
+    this._registerScroller(this.args.element ?? element);
+    return () => this._deregisterScroller();
   });
 
   setElement = modifier((element) => {
@@ -47,18 +53,6 @@ export default class InfiniteScrollerComponent extends Component {
   @action
   loadMore() {
     this._loadMore();
-  }
-
-  _handleInsertElement(element) {
-    if (!this.scroller) {
-      this._registerScroller(this.args.element ?? element);
-    }
-
-    this._scheduleCheckScrollable();
-  }
-
-  _handleDestroyElement() {
-    this._deregisterScroller();
   }
 
   _registerScroller(element) {
