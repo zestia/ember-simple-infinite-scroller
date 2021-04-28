@@ -44,8 +44,8 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  setElement = modifier((element, [specificElement]) => {
-    this._registerScroller(specificElement ?? element);
+  setElement = modifier((element, [positionalElement]) => {
+    this._registerScroller(positionalElement ?? element);
     return () => this._deregisterScroller();
   });
 
