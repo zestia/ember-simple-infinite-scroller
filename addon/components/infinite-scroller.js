@@ -7,12 +7,26 @@ import { modifier } from 'ember-modifier';
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
-  debug = false;
   scroller = null;
   debounceId = null;
 
   @tracked isLoading = false;
   @tracked isScrollable = false;
+
+  constructor() {
+    super(...arguments);
+
+    this._scheduleCheckScrollable();
+  }
+
+  get api() {
+    return {
+      setElement: this.setElement,
+      isScrollable: this.isScrollable,
+      isLoading: this.isLoading,
+      loadMore: this.loadMore
+    };
+  }
 
   get debounce() {
     return this.args.debounce ?? 100;
@@ -30,13 +44,9 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  handleElementLifecycle = modifier((element) => {
-    this._handleInsertElement(element);
-    return () => this._handleDestroyElement();
-  });
-
-  setElement = modifier((element) => {
-    this._registerScroller(element);
+  setElement = modifier((element, [specificElement]) => {
+    this._registerScroller(specificElement ?? element);
+    return () => this._deregisterScroller();
   });
 
   @action
@@ -49,26 +59,11 @@ export default class InfiniteScrollerComponent extends Component {
     this._loadMore();
   }
 
-  _handleInsertElement(element) {
-    if (!this.scroller) {
-      this._registerScroller(this.args.element ?? element);
-    }
-
-    this._scheduleCheckScrollable();
-  }
-
-  _handleDestroyElement() {
-    this._deregisterScroller();
-  }
-
   _registerScroller(element) {
-    if (this.scroller) {
-      this._stopListening();
-    }
-
     this.scroller = element;
 
     this._startListening();
+    this._scheduleCheckScrollable();
   }
 
   _deregisterScroller() {
@@ -146,18 +141,10 @@ export default class InfiniteScrollerComponent extends Component {
   _loadMore() {
     this.isLoading = true;
 
-    resolve(this._invokeAction('onLoadMore')).finally(() => {
+    resolve(this.args.onLoadMore?.()).finally(() => {
       this.isLoading = false;
 
       this._scheduleCheckScrollable();
     });
-  }
-
-  _invokeAction(name, ...args) {
-    const action = this.args[name];
-
-    if (typeof action === 'function') {
-      return action(...args);
-    }
   }
 }

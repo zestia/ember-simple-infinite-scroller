@@ -6,14 +6,7 @@
     (if this.isScrollable " infinite-scroller--scrollable")
   }}
   ...attributes
-  {{this.handleElementLifecycle}}
+  {{this.setElement @element}}
 >
-  {{yield
-    (hash
-      setElement=this.setElement
-      isScrollable=this.isScrollable
-      isLoading=this.isLoading
-      loadMore=this.loadMore
-    )
-  }}
+  {{yield this.api}}
 </div>
