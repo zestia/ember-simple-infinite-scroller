@@ -4,7 +4,8 @@
 
 <InfiniteScroller
   class="example-4"
-  @onLoadMore={{this.handleLoadMore}} as |scroller|
+  @onLoadMore={{this.handleLoadMore}}
+  as |scroller|
 >
   <div class="internal-element" {{did-insert scroller.setElement}}>
     {{#each this.things as |thing|}}
