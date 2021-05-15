@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.1.0
+## 8.1.0 (not yet published)
 
 - Upgrade dependencies
 - Add Embroider support
