@@ -110,6 +110,20 @@ The component will yield a hash that provides:
   </tr>
 </table>
 
+## Testing
+
+A test helper is provided to help scrolling your element. Example:
+
+```javascript
+import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
+
+test('loading more', async function() {
+  await visit('/')
+  await scrollToPercentage('.infinite-scroller', 100);
+  // ...
+})
+```
+
 ## Performance
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
