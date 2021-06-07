@@ -1,9 +1,14 @@
 # Changelog
 
-## 8.1.0 (not yet published)
+## 8.1.1 (not yet published)
+
+-
+
+## 8.1.0
 
 - Upgrade dependencies
 - Add Embroider support
+- Expose `scrollToPercentage` test helper
 
 ## 8.0.2
 
