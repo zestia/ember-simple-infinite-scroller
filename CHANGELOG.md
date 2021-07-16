@@ -2,7 +2,7 @@
 
 ## 8.1.1 (not yet published)
 
--
+- Upgrade dependencies
 
 ## 8.1.0
 
