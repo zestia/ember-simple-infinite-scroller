@@ -2,13 +2,24 @@
   "name": "@zestia/ember-simple-infinite-scroller",
   "version": "8.1.0",
   "description": "Simple infinite scroller component for Ember apps",
+  "keywords": [
+    "ember-addon",
+    "infinite",
+    "scroll"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zestia/ember-simple-infinite-scroller.git"
+  },
+  "license": "MIT",
+  "author": "Zestia",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
     "build": "ember build --environment=production",
-    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel 'lint:!(fix)'",
+    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:fix": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*:fix",
     "lint:css": "stylelint '**/*.{css,scss}'",
     "lint:css:fix": "stylelint '**/*.{css,scss}' --fix",
@@ -24,19 +35,17 @@
     "release": "release-it",
     "deploy": "ember build --environment production && ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\" && git push origin gh-pages:gh-pages"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zestia/ember-simple-infinite-scroller.git"
+  "dependencies": {
+    "@ember/render-modifiers": "^1.0.2",
+    "ember-cli-babel": "^7.26.6",
+    "ember-cli-htmlbars": "^5.7.1"
   },
-  "engines": {
-    "node": "10.* || >= 12"
-  },
-  "author": "Zestia",
-  "license": "MIT",
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.2.6",
     "@embroider/test-setup": "^0.41.0",
+    "@glimmer/component": "^1.0.4",
+    "@glimmer/tracking": "^1.0.4",
     "@zestia/eslint-config": "^4.0.4",
     "@zestia/prettier-config": "^1.0.5",
     "@zestia/stylelint-config": "^2.0.47",
@@ -44,7 +53,7 @@
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^2.0.1",
-    "ember-cli": "^3.26.1",
+    "ember-cli": "^3.27.0",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-github-pages": "^0.2.2",
     "ember-cli-inject-live-reload": "^2.0.2",
@@ -70,28 +79,14 @@
     "stylelint": "^13.13.1",
     "webpack": "^5.38.1"
   },
-  "dependencies": {
-    "@ember/render-modifiers": "^1.0.2",
-    "@glimmer/component": "^1.0.4",
-    "@glimmer/tracking": "^1.0.4",
-    "ember-cli-babel": "^7.26.6",
-    "ember-cli-htmlbars": "^5.7.1"
+  "engines": {
+    "node": "10.* || >= 12"
   },
-  "keywords": [
-    "ember-addon",
-    "infinite",
-    "scroll"
-  ],
   "ember": {
     "edition": "octane"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://zestia.github.io/ember-simple-infinite-scroller"
-  },
-  "bugs": {
-    "url": "https://github.com/zestia/ember-simple-infinite-scroller/issues"
-  },
-  "homepage": "https://github.com/zestia/ember-simple-infinite-scroller",
-  "configPath": "tests/dummy/config"
+  }
 }
