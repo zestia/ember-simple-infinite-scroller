@@ -6,7 +6,8 @@
   class="example-3"
   @onLoadMore={{this.handleLoadMore}}
   @debounce={{10}}
-  @percent={{50}} as |scroller|
+  @percent={{50}}
+  as |scroller|
 >
   {{#each this.things as |thing|}}
     <div class="thing">

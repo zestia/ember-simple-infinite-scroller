@@ -32,13 +32,15 @@
 </LinkTo>
 
 <p>
-  Load delay:
-  <br />
-  <input
-    value={{this.loadDelay}}
-    type="number"
-    {{on "input" this.setLoadDelay}}
-  />
+  <label>
+    Load delay:
+    <br />
+    <input
+      value={{this.loadDelay}}
+      type="number"
+      {{on "input" this.setLoadDelay}}
+    />
+  </label>
 </p>
 
 {{outlet}}

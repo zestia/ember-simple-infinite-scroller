@@ -5,12 +5,11 @@ import { defer } from 'rsvp';
 import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
 import { modifier } from 'ember-modifier';
+import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
 import {
   render,
   settled,
-  find,
   click,
-  scrollTo,
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
@@ -23,12 +22,6 @@ module('infinite-scroller', function (hooks) {
       assert.step('load more');
       this.willLoad = defer();
       return this.willLoad.promise;
-    };
-
-    this.scrollToPercentage = (selector, percentage) => {
-      const el = find(selector);
-      const y = ((el.scrollHeight - el.clientHeight) / 100) * percentage;
-      return scrollTo(el, 0, y);
     };
   });
 
@@ -78,7 +71,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    const promise = this.scrollToPercentage('.infinite-scroller', 100);
+    const promise = scrollToPercentage('.infinite-scroller', 100);
 
     later(() => {
       assert.verifySteps(
@@ -119,7 +112,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    await this.scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
 
     this.willLoad.reject(example);
 
@@ -153,8 +146,8 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    await this.scrollToPercentage('.infinite-scroller', 100);
-    await this.scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
 
     assert.verifySteps(['load more'], 'does not fire if already loading');
   });
@@ -176,11 +169,11 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    await this.scrollToPercentage('.infinite-scroller', 59);
+    await scrollToPercentage('.infinite-scroller', 59);
 
     assert.verifySteps([], 'not scrolled enough');
 
-    await this.scrollToPercentage('.infinite-scroller', 60);
+    await scrollToPercentage('.infinite-scroller', 60);
 
     assert.verifySteps(['load more']);
   });
@@ -202,7 +195,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    const promise = this.scrollToPercentage('.infinite-scroller', 100);
+    const promise = scrollToPercentage('.infinite-scroller', 100);
 
     later(() => {
       assert.verifySteps([], 'not fired yet');
@@ -240,7 +233,7 @@ module('infinite-scroller', function (hooks) {
       />
     `);
 
-    await this.scrollToPercentage(document.documentElement, 100);
+    await scrollToPercentage(document.documentElement, 100);
 
     assert.verifySteps(['load more']);
   });
@@ -268,7 +261,7 @@ module('infinite-scroller', function (hooks) {
         'precondition: is not loading'
       );
 
-    await this.scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
 
     assert
       .dom('.infinite-scroller')
@@ -331,7 +324,7 @@ module('infinite-scroller', function (hooks) {
       .dom('.infinite-scroller')
       .containsText('Loading: false', 'precondition: not loading');
 
-    await this.scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
 
     assert
       .dom('.infinite-scroller')
@@ -368,7 +361,7 @@ module('infinite-scroller', function (hooks) {
       {{/if}}
     `);
 
-    await this.scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
 
     this.set('show', false);
 
@@ -393,7 +386,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    await this.scrollToPercentage('.infinite-scroller', 100);
+    await scrollToPercentage('.infinite-scroller', 100);
   });
 
   test('destroying during debounce (does not blow up)', async function (assert) {
@@ -415,7 +408,7 @@ module('infinite-scroller', function (hooks) {
       {{/if}}
     `);
 
-    const promise = this.scrollToPercentage('.infinite-scroller', 100);
+    const promise = scrollToPercentage('.infinite-scroller', 100);
 
     later(() => {
       this.set('show', false);
@@ -507,7 +500,7 @@ module('infinite-scroller', function (hooks) {
 
     this.set('customElement', this.div1);
 
-    await this.scrollToPercentage('.external-element.one', 100);
+    await scrollToPercentage('.external-element.one', 100);
 
     assert.verifySteps(['load more']);
 
@@ -515,7 +508,7 @@ module('infinite-scroller', function (hooks) {
 
     this.set('customElement', this.div2);
 
-    await this.scrollToPercentage('.external-element.two', 100);
+    await scrollToPercentage('.external-element.two', 100);
 
     assert.verifySteps(
       ['load more'],
@@ -550,7 +543,7 @@ module('infinite-scroller', function (hooks) {
 
     this.set('showDiv1', true);
 
-    await this.scrollToPercentage('.internal-element.one', 100);
+    await scrollToPercentage('.internal-element.one', 100);
 
     assert.verifySteps(['load more']);
 
@@ -559,7 +552,7 @@ module('infinite-scroller', function (hooks) {
     this.set('showDiv1', false);
     this.set('showDiv2', true);
 
-    await this.scrollToPercentage('.internal-element.two', 100);
+    await scrollToPercentage('.internal-element.two', 100);
 
     assert.verifySteps(
       ['load more'],

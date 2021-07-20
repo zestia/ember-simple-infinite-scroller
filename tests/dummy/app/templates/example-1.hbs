@@ -1,10 +1,12 @@
 <p>
-  An action is fired when infinite scroll component is scrolled to the very bottom
+  An action is fired when infinite scroll component is scrolled to the very
+  bottom
 </p>
 
 <InfiniteScroller
   class="example-1"
-  @onLoadMore={{this.handleLoadMore}} as |scroller|
+  @onLoadMore={{this.handleLoadMore}}
+  as |scroller|
 >
   {{#each this.things as |thing|}}
     <div class="thing">
