@@ -7,11 +7,17 @@ import { modifier } from 'ember-modifier';
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
+  debug = false;
   scroller = null;
   debounceId = null;
 
   @tracked isLoading = false;
   @tracked isScrollable = false;
+
+  setElement = modifier((element, [positionalElement]) => {
+    this._registerScroller(positionalElement ?? element);
+    return () => this._deregisterScroller();
+  });
 
   constructor() {
     super(...arguments);
@@ -43,11 +49,6 @@ export default class InfiniteScrollerComponent extends Component {
       return this.scroller;
     }
   }
-
-  setElement = modifier((element, [positionalElement]) => {
-    this._registerScroller(positionalElement ?? element);
-    return () => this._deregisterScroller();
-  });
 
   @action
   handleScroll() {
