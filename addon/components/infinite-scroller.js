@@ -108,8 +108,6 @@ export default class InfiniteScrollerComponent extends Component {
 
     const scrollState = this._getScrollState();
 
-    console.log(JSON.stringify(scrollState));
-
     this._debug({ ...scrollState });
 
     this.isScrollable = scrollState.isScrollable;
