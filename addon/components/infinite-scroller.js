@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { resolve } from 'rsvp';
-import { debounce, cancel, scheduleOnce } from '@ember/runloop';
+import { debounce, cancel } from '@ember/runloop';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 const { round } = Math;
@@ -12,12 +12,6 @@ export default class InfiniteScrollerComponent extends Component {
 
   @tracked isLoading = false;
   @tracked isScrollable = false;
-
-  constructor() {
-    super(...arguments);
-
-    this._scheduleCheckScrollable();
-  }
 
   get api() {
     return {
@@ -78,6 +72,7 @@ export default class InfiniteScrollerComponent extends Component {
 
     this.scroller = element;
 
+    this._checkScrollable();
     this._startListening();
   }
 
@@ -107,19 +102,17 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkScrollable() {
-    if (!this.scroller) {
+    if (this.isDestroying || this.isDestroyed) {
       return;
     }
 
     const scrollState = this._getScrollState();
 
+    console.log(JSON.stringify(scrollState));
+
     this._debug({ ...scrollState });
 
     this.isScrollable = scrollState.isScrollable;
-  }
-
-  _scheduleCheckScrollable() {
-    scheduleOnce('afterRender', this, '_checkScrollable');
   }
 
   _debug(state) {
@@ -159,7 +152,7 @@ export default class InfiniteScrollerComponent extends Component {
     resolve(this.args.onLoadMore?.()).finally(() => {
       this.isLoading = false;
 
-      this._scheduleCheckScrollable();
+      this._checkScrollable();
     });
   }
 }
