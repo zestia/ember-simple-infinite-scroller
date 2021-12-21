@@ -3,6 +3,7 @@ import { resolve } from 'rsvp';
 import { debounce, cancel } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
+import { action } from '@ember/object';
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
@@ -43,11 +44,13 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  handleScroll = () => {
+  @action
+  handleScroll() {
     this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
-  };
+  }
 
-  loadMore = () => {
+  @action
+  loadMore() {
     this.isLoading = true;
 
     resolve(this.args.onLoadMore?.()).finally(() => {
@@ -55,7 +58,7 @@ export default class InfiniteScrollerComponent extends Component {
 
       this._checkScrollable();
     });
-  };
+  }
 
   _registerScroller(element) {
     this.scroller = element;
