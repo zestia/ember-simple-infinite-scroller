@@ -5,8 +5,7 @@
     (if this.isScrollable " infinite-scroller--scrollable")
   }}
   ...attributes
-  {{did-insert this.handleInsertElement}}
-  {{will-destroy this.handleDestroyElement}}
+  {{this.defaultScroller @element}}
 >
   {{yield this.api}}
 </div>

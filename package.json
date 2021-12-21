@@ -36,9 +36,9 @@
     "deploy": "ember build --environment production && ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\" && git push origin gh-pages:gh-pages"
   },
   "dependencies": {
-    "@ember/render-modifiers": "^1.0.2",
     "ember-cli-babel": "^7.26.8",
-    "ember-cli-htmlbars": "^6.0.1"
+    "ember-cli-htmlbars": "^6.0.1",
+    "ember-modifier": "^3.0.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",

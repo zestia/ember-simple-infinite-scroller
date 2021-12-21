@@ -1,8 +1,8 @@
 import Component from '@glimmer/component';
 import { resolve } from 'rsvp';
 import { debounce, cancel } from '@ember/runloop';
-import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { modifier } from 'ember-modifier';
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
@@ -12,6 +12,11 @@ export default class InfiniteScrollerComponent extends Component {
 
   @tracked isLoading = false;
   @tracked isScrollable = false;
+
+  defaultScroller = modifier((element, [positionalElement]) => {
+    this._registerScroller(positionalElement ?? element);
+    return () => this._deregisterScroller();
+  });
 
   get api() {
     return {
@@ -38,38 +43,27 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  @action
-  handleInsertElement(element) {
-    if (!this.scroller) {
-      this._registerScroller(this.args.element ?? element);
-    }
-  }
-
-  @action
-  handleDestroyElement() {
-    this._deregisterScroller();
-  }
-
-  @action
-  handleScroll() {
+  handleScroll = () => {
     this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
-  }
+  };
 
-  @action
-  loadMore() {
-    this._loadMore();
-  }
+  loadMore = () => {
+    this.isLoading = true;
 
-  @action
-  setElement(element) {
+    resolve(this.args.onLoadMore?.()).finally(() => {
+      this.isLoading = false;
+
+      this._checkScrollable();
+    });
+  };
+
+  setElement = (element) => {
+    this._deregisterScroller();
     this._registerScroller(element);
-  }
+  };
 
   _registerScroller(element) {
-    if (this.scroller) {
-      this._stopListening();
-    }
-
+    console.log('register', element);
     this.scroller = element;
 
     this._checkScrollable();
@@ -77,6 +71,7 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _deregisterScroller() {
+    console.log('deregister', this.scroller);
     this._stopListening();
     cancel(this.debounceId);
     this.scroller = null;
@@ -97,7 +92,7 @@ export default class InfiniteScrollerComponent extends Component {
     this._debug({ ...scrollState, shouldLoadMore });
 
     if (shouldLoadMore) {
-      this._loadMore();
+      this.loadMore();
     }
   }
 
@@ -142,15 +137,5 @@ export default class InfiniteScrollerComponent extends Component {
       percentScrolled,
       reachedBottom
     };
-  }
-
-  _loadMore() {
-    this.isLoading = true;
-
-    resolve(this.args.onLoadMore?.()).finally(() => {
-      this.isLoading = false;
-
-      this._checkScrollable();
-    });
   }
 }
