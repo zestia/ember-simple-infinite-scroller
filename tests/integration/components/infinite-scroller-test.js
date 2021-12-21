@@ -1,4 +1,4 @@
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { defer } from 'rsvp';
@@ -504,50 +504,6 @@ module('infinite-scroller', function (hooks) {
     this.set('customElement', this.div2);
 
     await scrollToPercentage('.external-element.two', 100);
-
-    assert.verifySteps(
-      ['load more'],
-      'load action fires again, because scrollable element has been re-registered'
-    );
-  });
-
-  skip('custom element via modifier', async function (assert) {
-    assert.expect(4);
-
-    this.things = generateThings(1, 20);
-
-    await render(hbs`
-      <InfiniteScroller @onLoadMore={{this.handleLoadMore}} as |scroller|>
-        {{#if this.showDiv1}}
-          <div class="internal-element one" {{scroller.setElement}}>
-            {{#each this.things as |thing|}}
-              <div class="thing">{{thing.name}}</div>
-            {{/each}}
-          </div>
-        {{/if}}
-
-        {{#if this.showDiv2}}
-          <div class="internal-element two" {{scroller.setElement}}>
-            {{#each this.things as |thing|}}
-              <div class="thing">{{thing.name}}</div>
-            {{/each}}
-          </div>
-        {{/if}}
-      </InfiniteScroller>
-    `);
-
-    this.set('showDiv1', true);
-
-    await scrollToPercentage('.internal-element.one', 100);
-
-    assert.verifySteps(['load more']);
-
-    this.willLoad.resolve();
-
-    this.set('showDiv1', false);
-    this.set('showDiv2', true);
-
-    await scrollToPercentage('.internal-element.two', 100);
 
     assert.verifySteps(
       ['load more'],
