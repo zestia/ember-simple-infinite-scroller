@@ -2,21 +2,8 @@ import Component from '@glimmer/component';
 import { resolve } from 'rsvp';
 import { debounce, cancel } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
-import Modifier from 'ember-modifier';
+import { modifier } from 'ember-modifier';
 const { round } = Math;
-
-function setElement(component) {
-  return class extends Modifier {
-    didInstall() {
-      component.registerScroller(this.args.positional[0] ?? this.element);
-    }
-
-    willDestroy() {
-      super.willDestroy();
-      component.deregisterScroller();
-    }
-  };
-}
 
 export default class InfiniteScrollerComponent extends Component {
   debug = false;
@@ -26,11 +13,14 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
-  setElement = setElement(this);
+  setScroller = modifier((element, [positionalElement]) => {
+    this._registerScroller(positionalElement ?? element);
+
+    return () => this._deregisterScroller();
+  });
 
   get api() {
     return {
-      setElement: this._setElement,
       isScrollable: this.isScrollable,
       isLoading: this.isLoading,
       loadMore: this.loadMore
@@ -67,26 +57,14 @@ export default class InfiniteScrollerComponent extends Component {
     });
   };
 
-  // TODO: Expose the `setElement` modifier
-  // Issue: https://github.com/ember-modifier/ember-modifier/issues/78
-  _setElement = (element) => {
-    if (this.scroller) {
-      this.deregisterScroller();
-    }
-
-    this.registerScroller(element);
-  };
-
-  registerScroller(element) {
-    console.log('register', element);
+  _registerScroller(element) {
     this.scroller = element;
 
-    this._checkScrollable();
     this._startListening();
+    this._checkScrollable();
   }
 
-  deregisterScroller() {
-    console.log('deregister', this.scroller);
+  _deregisterScroller() {
     this._stopListening();
     cancel(this.debounceId);
     this.scroller = null;

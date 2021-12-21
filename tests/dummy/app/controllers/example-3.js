@@ -1,3 +1,3 @@
 import ThingsController from '../_controllers/things';
 
-export default ThingsController;
+export default class extends ThingsController {}

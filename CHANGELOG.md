@@ -1,8 +1,9 @@
 # Changelog
 
-## 8.1.1 (not yet published)
+## 9.0.0
 
-- Upgrade dependencies
+- Ember Auto Import 2x
+- Removed `setElement`
 
 ## 8.1.0
 

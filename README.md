@@ -42,7 +42,7 @@ https://zestia.github.io/ember-simple-infinite-scroller/
   {{#each things as |thing|}}
     ...
   {{/each}}
-  {{if scroller.isLoading "Please wait..."}}
+  {{if scroller.isLoading 'Please wait...'}}
 </InfiniteScroller>
 ```
 
@@ -93,10 +93,6 @@ The component will yield a hash that provides:
     <th>Description</th>
   </tr>
   <tr>
-    <td>setElement</td>
-    <td>Sets the element for which to monitor the scroll position of</td>
-  </tr>
-  <tr>
     <td>isLoading</td>
     <td>True when the promise for more data has not resolved yet</td>
   </tr>
@@ -117,11 +113,11 @@ A test helper is provided to help scrolling your element. Example:
 ```javascript
 import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
 
-test('loading more', async function() {
-  await visit('/')
+test('loading more', async function () {
+  await visit('/');
   await scrollToPercentage('.infinite-scroller', 100);
   // ...
-})
+});
 ```
 
 ## Performance
@@ -154,7 +150,7 @@ To account for this, you can display a button for manually loading more...
   {{/each}}
 
   {{#unless scroller.isScrollable}}
-    <button {{on "click" scroller.loadMore}}>Load more</button>
+    <button {{on 'click' scroller.loadMore}}>Load more</button>
   {{/unless}}
 </InfiniteScroller>
 ```
