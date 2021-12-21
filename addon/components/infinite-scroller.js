@@ -13,14 +13,14 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
-  defaultScroller = modifier((element, [positionalElement]) => {
+  setElement = modifier((element, [positionalElement]) => {
     this._registerScroller(positionalElement ?? element);
     return () => this._deregisterScroller();
   });
 
   get api() {
     return {
-      setElement: this.setElement,
+      setElement: this._setElement,
       isScrollable: this.isScrollable,
       isLoading: this.isLoading,
       loadMore: this.loadMore
@@ -57,7 +57,9 @@ export default class InfiniteScrollerComponent extends Component {
     });
   };
 
-  setElement = (element) => {
+  // TODO: Expose the `setElement` modifier
+  // Issue: https://github.com/ember-modifier/ember-modifier/issues/78
+  _setElement = (element) => {
     this._deregisterScroller();
     this._registerScroller(element);
   };
@@ -71,7 +73,7 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _deregisterScroller() {
-    console.log('deregister', this.scroller);
+    console.log('deregister'.this.scroller);
     this._stopListening();
     cancel(this.debounceId);
     this.scroller = null;
