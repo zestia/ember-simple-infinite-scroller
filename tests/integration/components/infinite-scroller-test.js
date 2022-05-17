@@ -471,8 +471,13 @@ module('infinite-scroller', function (hooks) {
 
     this.things = generateThings(1, 20);
 
-    this.setDiv1 = modifier((element) => this.set('div1', element));
-    this.setDiv2 = modifier((element) => this.set('div2', element));
+    this.setDiv1 = modifier((element) => this.set('div1', element), {
+      eager: false
+    });
+
+    this.setDiv2 = modifier((element) => this.set('div2', element), {
+      eager: false
+    });
 
     await render(hbs`
       <div class="external-element one" {{this.setDiv1}}>

@@ -5,5 +5,7 @@ import { tracked } from '@glimmer/tracking';
 export default class extends ThingsController {
   @tracked scroller;
 
-  setScroller = modifier((element) => (this.scroller = element));
+  setScroller = modifier((element) => (this.scroller = element), {
+    eager: false
+  });
 }

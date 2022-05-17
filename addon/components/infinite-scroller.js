@@ -14,11 +14,14 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
-  setScroller = modifier((element, [positionalElement]) => {
-    this._registerScroller(positionalElement ?? element);
+  setScroller = modifier(
+    (element, [positionalElement]) => {
+      this._registerScroller(positionalElement ?? element);
 
-    return () => this._deregisterScroller();
-  });
+      return () => this._deregisterScroller();
+    },
+    { eager: false }
+  );
 
   get api() {
     return {
