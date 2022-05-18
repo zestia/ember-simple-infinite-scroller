@@ -4,6 +4,7 @@
 
 - Ember Auto Import 2x
 - Removed `setElement`
+- Run ember-cli-update
 
 ## 8.1.0
 
