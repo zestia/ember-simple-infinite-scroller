@@ -1,9 +1,7 @@
 <div
-  class={{concat
-    "infinite-scroller"
-    (if this.isLoading " infinite-scroller--loading")
-    (if this.isScrollable " infinite-scroller--scrollable")
-  }}
+  class="infinite-scroller"
+  data-loading="{{this.isLoading}}"
+  data-scrollable="{{this.isScrollable}}"
   ...attributes
   {{this.setScroller @element}}
 >
