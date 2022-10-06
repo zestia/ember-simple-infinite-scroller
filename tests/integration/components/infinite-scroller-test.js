@@ -46,13 +46,11 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    assert.dom('.infinite-scroller').hasClass('infinite-scroller--scrollable');
+    assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'true');
 
     await render(hbs`<InfiniteScroller class="example-1" />`);
 
-    assert
-      .dom('.infinite-scroller')
-      .doesNotHaveClass('infinite-scroller--scrollable');
+    assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'false');
   });
 
   test('load more action (success)', async function (assert) {
@@ -120,8 +118,9 @@ module('infinite-scroller', function (hooks) {
 
     assert
       .dom('.infinite-scroller')
-      .doesNotHaveClass(
-        'infinite-scroller--loading',
+      .hasAttribute(
+        'data-loading',
+        'false',
         'is no longer considered loading if loading fails'
       );
 
@@ -256,17 +255,15 @@ module('infinite-scroller', function (hooks) {
 
     assert
       .dom('.infinite-scroller')
-      .doesNotHaveClass(
-        'infinite-scroller--loading',
-        'precondition: is not loading'
-      );
+      .hasAttribute('data-loading', 'false', 'precondition: is not loading');
 
     await scrollToPercentage('.infinite-scroller', 100);
 
     assert
       .dom('.infinite-scroller')
-      .hasClass(
-        'infinite-scroller--loading',
+      .hasAttribute(
+        'data-loading',
+        'true',
         'a loading class is added whilst the action is being performed'
       );
 
@@ -276,8 +273,9 @@ module('infinite-scroller', function (hooks) {
 
     assert
       .dom('.infinite-scroller')
-      .doesNotHaveClass(
-        'infinite-scroller--loading',
+      .hasAttribute(
+        'data-loading',
+        'false',
         'loading class name is removed after the action resolves'
       );
 
