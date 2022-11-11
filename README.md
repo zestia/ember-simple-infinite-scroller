@@ -1,8 +1,9 @@
 # @zestia/ember-simple-infinite-scroller
 
 [![Latest npm release][npm-badge]][npm-badge-url]
-[![GitHub Actions][github-actions-badge]][github-actions-url]
 [![Ember Observer][ember-observer-badge]][ember-observer-url]
+
+<!-- [![GitHub Actions][github-actions-badge]][github-actions-url] -->
 
 [npm-badge]: https://img.shields.io/npm/v/@zestia/ember-simple-infinite-scroller.svg
 [npm-badge-url]: https://www.npmjs.com/package/@zestia/ember-simple-infinite-scroller
@@ -12,7 +13,7 @@
 [ember-observer-url]: https://emberobserver.com/addons/@zestia/ember-simple-infinite-scroller
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
-Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
+Allowing you to load more data.
 
 ## Installation
 
@@ -22,7 +23,7 @@ ember install @zestia/ember-simple-infinite-scroller
 
 ## Demo
 
-https://zestia.github.io/ember-simple-infinite-scroller/
+https://zestia.github.io/ember-simple-infinite-scroller
 
 ## Example
 
@@ -35,65 +36,47 @@ https://zestia.github.io/ember-simple-infinite-scroller/
 </InfiniteScroller>
 ```
 
+## Features
+
+- Very simple! ✔︎
+- Not coupled to Ember Data ✔︎
+- Supports use with FastBoot ✔︎
+
 ## Notes
 
-- Does not use jQuery ✔︎
-- Ember Data Friendly ✔︎
-- Supports use with FastBoot ✔︎
-- No included styles ✔︎
+- This addon intentionally does not come with any styles.
 
-## Configuration
+##
 
-<table>
-  <tr>
-    <th>Argument</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td>onLoadMore</td>
-    <td>Action to perform when the <code>@percent</code> scrolled is reached</td>
-    <td><code>null</code></td>
-  </tr>
-  <tr>
-    <td>element</td>
-    <td>Monitors the scroll position of the given element</td>
-    <td><code>null</code></td>
-  </tr>
-  <tr>
-    <td>percent</td>
-    <td>Distance scroll from the top for when to fire the load more action</td>
-    <td><code>100</code></td>
-  </tr>
-  <tr>
-    <td>debounce</td>
-    <td>Milliseconds delay for when to check if more needs to be loaded</td>
-    <td><code>100</code></td>
-  </tr>
-</table>
+### `@onLoadMore`
 
-## Yielded API
+Required. Fired when the the element is scrolled has been scrolled to the specified `@percent`.
 
-The component will yield a hash that provides:
+### `@element`
 
-<table>
-  <tr>
-    <th>Property</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>isLoading</td>
-    <td>True when the promise for more data has not resolved yet</td>
-  </tr>
-  <tr>
-    <td>isScrollable</td>
-    <td>True when scroll element is overflowing</td>
-  </tr>
-  <tr>
-    <td>loadMore</td>
-    <td>Action for manually loading more</td>
-  </tr>
-</table>
+Optional. By default the scroll position of the component's own DOM element is monitored. You can use this argument to change the element, to monitor the document for example.
+
+### `@percent`
+
+Optional. The distance that has to be scrolled before the load more action is fired. Defaults to `100` %
+
+### `@debounce`
+
+Optional. Milliseconds delay for when to check if more needs to be loaded. Defaults to `100` ms
+
+## API
+
+### `isLoading`
+
+Whether the promise for more data has not resolved yet
+
+### `isScrollable`
+
+Whether the element is overflowing or not. If it's not, then the user will not be able to scroll to load more. In such a case, you can use this to provide a button to manually load more.
+
+### `loadMore`
+
+Call this to manually load more
 
 ## Testing
 
@@ -122,24 +105,4 @@ customEvents = {
   touchend: null,
   touchcancel: null
 };
-```
-
-## Scenario to be aware of
-
-If your scrollable element is displaying 10 things, but they don't cause the element to overflow,
-then the user won't ever be able to load more - because they won't be able to _scroll_ and therefore
-the `onLoadMore` action will never fire.
-
-To account for this, you can display a button for manually loading more...
-
-```handlebars
-<InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
-  {{#each this.things as |thing|}}
-    ...
-  {{/each}}
-
-  {{#unless scroller.isScrollable}}
-    <button {{on "click" scroller.loadMore}}>Load more</button>
-  {{/unless}}
-</InfiniteScroller>
 ```
