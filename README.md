@@ -13,7 +13,7 @@
 [ember-observer-url]: https://emberobserver.com/addons/@zestia/ember-simple-infinite-scroller
 
 This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
-Allowing you to load more data. It is not coupled to Ember-Data like some other infinite scrolling implementations.
+Allowing you to load more data.
 
 ## Installation
 
