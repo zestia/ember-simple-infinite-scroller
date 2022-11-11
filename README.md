@@ -50,7 +50,7 @@ https://zestia.github.io/ember-simple-infinite-scroller
 
 ### `@onLoadMore`
 
-Required. Fired when the the element is scrolled has been scrolled to the specified `@percent`.
+Required. Fired when the the element has been scrolled to the specified `@percent`.
 
 ### `@element`
 
