@@ -68,7 +68,7 @@ Optional. Milliseconds delay for when to check if more needs to be loaded. Defau
 
 ### `isLoading`
 
-Whether the promise for more data has not resolved yet
+Whether the promise for more data has resolved yet
 
 ### `isScrollable`
 
