@@ -46,7 +46,7 @@ https://zestia.github.io/ember-simple-infinite-scroller
 
 - This addon intentionally does not come with any styles.
 
-##
+## Arguments
 
 ### `@onLoadMore`
 
