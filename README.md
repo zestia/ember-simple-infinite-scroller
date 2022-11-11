@@ -62,7 +62,7 @@ Optional. The distance that has to be scrolled before the load more action is fi
 
 ### `@debounce`
 
-Optional. Milliseconds delay for when to check if more needs to be loaded. Defaults to `100` ms
+Optional. Milliseconds delay for when to check if more needs to be loaded. Defaults to every `100` ms
 
 ## API
 
