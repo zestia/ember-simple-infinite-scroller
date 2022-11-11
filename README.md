@@ -72,7 +72,7 @@ Whether the promise for more data has resolved yet
 
 ### `isScrollable`
 
-Whether the element is overflowing or not. If it's not, then the user will not be able to scroll to load more. In such a case, you can use this to provide a button to manually load more.
+Whether the element is overflowing or not. If it's not, then the user will not be able to scroll to load more. In such a case, you can use this boolean to provide a button to manually load more.
 
 ### `loadMore`
 
