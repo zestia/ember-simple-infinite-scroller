@@ -46,41 +46,46 @@ https://zestia.github.io/ember-simple-infinite-scroller
 
 - This addon intentionally does not come with any styles.
 
-## Arguments
+## `InfiniteScroller`
 
-### `@onLoadMore`
+### Arguments
+
+#### `@onLoadMore`
 
 Required. Fired when the the element has been scrolled to the specified `@percent`.
 
-### `@element`
+#### `@element`
 
 Optional. By default the scroll position of the component's own DOM element is monitored. You can use this argument to change the element, to monitor the document for example.
 
-### `@percent`
+#### `@percent`
 
 Optional. The distance that has to be scrolled before the load more action is fired. Defaults to `100` %
 
-### `@debounce`
+#### `@debounce`
 
 Optional. Milliseconds delay for when to check if more needs to be loaded. Defaults to every `100` ms
 
-## API
+### API
 
-### `isLoading`
+#### `isLoading`
 
 Whether the promise for more data has resolved yet
 
-### `isScrollable`
+#### `isScrollable`
 
 Whether the element is overflowing or not. If it's not, then the user will not be able to scroll to load more. In such a case, you can use this boolean to provide a button to manually load more.
 
-### `loadMore`
+#### `loadMore`
 
 Call this to manually load more
 
 ## Testing
 
-A test helper is provided to help scrolling your element. Example:
+A test helper is provided to help scrolling your element
+
+<details>
+  <summary>Example</summary>
 
 ```javascript
 import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
@@ -91,6 +96,8 @@ test('loading more', async function () {
   // ...
 });
 ```
+
+</details>
 
 ## Performance
 
