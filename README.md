@@ -105,8 +105,8 @@ Please read: https://github.com/TryGhost/Ghost/issues/7934
 
 You may need to add the below code to `app/app.js`
 
-<summary>
-  <details>View</summary>
+<details>
+  <summary>View</summary>
 
 ```javascript
 customEvents = {
