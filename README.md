@@ -103,7 +103,10 @@ test('loading more', async function () {
 
 Please read: https://github.com/TryGhost/Ghost/issues/7934
 
-You may need to add this to `app/app.js`
+You may need to add the below code to `app/app.js`
+
+<summary>
+  <details>View</summary>
 
 ```javascript
 customEvents = {
@@ -113,3 +116,5 @@ customEvents = {
   touchcancel: null
 };
 ```
+
+</details>
