@@ -60,11 +60,11 @@ Optional. By default the scroll position of the component's own DOM element is m
 
 #### `@percent`
 
-Optional. The distance that has to be scrolled before the load more action is fired. Defaults to `100` %
+Optional. The distance that has to be scrolled before the load more action is fired. Defaults to `100`%
 
 #### `@debounce`
 
-Optional. Milliseconds delay for when to check if more needs to be loaded. Defaults to every `100` ms
+Optional. Milliseconds delay for when to check if more needs to be loaded. Defaults to every `100`ms
 
 ### API
 
