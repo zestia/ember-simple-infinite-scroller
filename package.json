@@ -1,60 +1,26 @@
 {
-  "name": "@zestia/ember-simple-infinite-scroller",
-  "version": "9.1.0",
-  "description": "Simple infinite scroller component for Ember apps",
-  "keywords": [
-    "ember-addon",
-    "infinite",
-    "scroll"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zestia/ember-simple-infinite-scroller.git"
-  },
-  "license": "MIT",
   "author": "Zestia",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
-  "scripts": {
-    "build": "ember build --environment=production",
-    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
-    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
-    "lint:css": "stylelint '**/*.{css,scss}'",
-    "lint:css:fix": "stylelint '**/*.{css,scss}' --fix",
-    "lint:hbs": "ember-template-lint .",
-    "lint:hbs:fix": "ember-template-lint . --fix",
-    "lint:js": "eslint . --cache",
-    "lint:js:fix": "eslint . --fix",
-    "start": "ember serve",
-    "test": "concurrently \"npm:lint\" \"npm:test:ember\" --names \"lint,test:\"",
-    "test:ember": "ember test",
-    "test:ember-compatibility": "ember try:each",
-    "prettier": "prettier . --write",
-    "release": "release-it",
-    "deploy": "ember build --environment production && ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\" && git push origin gh-pages:gh-pages"
-  },
   "dependencies": {
+    "ember-auto-import": "^2.6.0",
     "ember-cli-babel": "^7.26.11",
     "ember-cli-htmlbars": "^6.2.0",
-    "ember-modifier": "^3.2.7"
+    "ember-modifier": "^4.0.0"
   },
+  "description": "Simple infinite scroller component for Ember apps",
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
     "@ember/string": "^3.0.1",
     "@ember/test-helpers": "^2.9.3",
-    "@embroider/test-setup": "^2.0.2",
+    "@embroider/test-setup": "^2.1.1",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
-    "@zestia/eslint-config": "^4.0.12",
-    "@zestia/prettier-config": "^1.0.8",
-    "@zestia/stylelint-config": "^4.1.2",
-    "@zestia/template-lint-config": "^5.3.0",
+    "@zestia/eslint-config": "^4.0.14",
+    "@zestia/prettier-config": "^1.0.9",
+    "@zestia/stylelint-config": "^4.1.5",
+    "@zestia/template-lint-config": "^6.0.3",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^7.6.0",
-    "ember-auto-import": "^2.5.0",
     "ember-cli": "^4.10.0",
     "ember-cli-dependency-checker": "^3.3.1",
     "ember-cli-github-pages": "^0.2.2",
@@ -66,24 +32,22 @@
     "ember-resolver": "^10.0.0",
     "ember-source": "^4.10.0",
     "ember-source-channel-url": "^3.0.0",
-    "ember-template-lint": "^5.3.1",
+    "ember-template-lint": "^5.3.2",
     "ember-try": "^2.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-n": "^15.6.1",
     "loader.js": "^4.7.0",
     "prettier": "^2.8.3",
-    "qunit": "^2.19.3",
+    "qunit": "^2.19.4",
     "qunit-dom": "^2.0.0",
-    "release-it": "^15.0.0",
-    "sass": "^1.51.0",
-    "stylelint": "^14.8.2",
+    "release-it": "^15.6.0",
+    "sass": "^1.57.1",
+    "stylelint": "^14.16.1",
     "webpack": "^5.75.0"
   },
-  "peerDependencies": {
-    "ember-source": "^3.28.0 || ^4.0.0"
-  },
-  "engines": {
-    "node": "14.* || 16.* || >= 18"
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
   },
   "ember": {
     "edition": "octane"
@@ -91,5 +55,41 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://zestia.github.io/ember-simple-infinite-scroller"
-  }
+  },
+  "engines": {
+    "node": "14.* || 16.* || >= 18"
+  },
+  "keywords": [
+    "ember-addon",
+    "infinite",
+    "scroll"
+  ],
+  "license": "MIT",
+  "name": "@zestia/ember-simple-infinite-scroller",
+  "peerDependencies": {
+    "ember-source": "^3.28.0 || ^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zestia/ember-simple-infinite-scroller.git"
+  },
+  "scripts": {
+    "build": "ember build --environment=production",
+    "deploy": "ember build --environment production && ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\" && git push origin gh-pages:gh-pages",
+    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
+    "lint:css": "stylelint '**/*.{css,scss}'",
+    "lint:css:fix": "stylelint '**/*.{css,scss}' --fix",
+    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
+    "lint:hbs": "ember-template-lint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "prettier": "prettier . --write",
+    "release": "release-it",
+    "start": "ember serve",
+    "test": "concurrently \"npm:lint\" \"npm:test:ember\" --names \"lint,test:\"",
+    "test:ember": "ember test",
+    "test:ember-compatibility": "ember try:each"
+  },
+  "version": "9.1.0"
 }

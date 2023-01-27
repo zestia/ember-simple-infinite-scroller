@@ -214,6 +214,7 @@ module('infinite-scroller', function (hooks) {
     this.document = document;
 
     await render(hbs`
+    {{! template-lint-disable no-forbidden-elements }}
     <style>
       /*
       We want to test that the scroll event fires on the document,
