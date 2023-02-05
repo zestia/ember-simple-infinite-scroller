@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
 import { action } from '@ember/object';
 const { round } = Math;
+const { freeze } = Object;
 
 export default class InfiniteScrollerComponent extends Component {
   debug = false;
@@ -24,11 +25,11 @@ export default class InfiniteScrollerComponent extends Component {
   );
 
   get api() {
-    return {
+    return freeze({
       isScrollable: this.isScrollable,
       isLoading: this.isLoading,
       loadMore: this.loadMore
-    };
+    });
   }
 
   get debounce() {

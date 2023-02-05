@@ -13,6 +13,7 @@ import {
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
+const { keys, isFrozen } = Object;
 
 module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);
@@ -513,5 +514,20 @@ module('infinite-scroller', function (hooks) {
       ['load more'],
       'load action fires again, because scrollable element has been re-registered'
     );
+  });
+
+  test('api', async function (assert) {
+    assert.expect(2);
+
+    this.capture = (api) => (this.api = api);
+
+    await render(hbs`
+      <InfiniteScroller as |scroller|>
+        {{this.capture scroller}}
+      </InfiniteScroller>
+    `);
+
+    assert.deepEqual(keys(this.api), ['isScrollable', 'isLoading', 'loadMore']);
+    assert.true(isFrozen(this.api));
   });
 });
