@@ -13,7 +13,7 @@ import {
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
-const { keys, isFrozen } = Object;
+const { keys, isSealed } = Object;
 
 module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);
@@ -528,6 +528,6 @@ module('infinite-scroller', function (hooks) {
     `);
 
     assert.deepEqual(keys(this.api), ['isScrollable', 'isLoading', 'loadMore']);
-    assert.true(isFrozen(this.api));
+    assert.true(isSealed(this.api));
   });
 });

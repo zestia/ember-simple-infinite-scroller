@@ -4,16 +4,17 @@ import { debounce, cancel } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
 import { action } from '@ember/object';
+const { seal, assign } = Object;
 const { round } = Math;
-const { freeze } = Object;
 
 export default class InfiniteScrollerComponent extends Component {
+  @tracked isLoading = false;
+  @tracked isScrollable = false;
+
+  _api = {};
   debug = false;
   scroller = null;
   debounceId = null;
-
-  @tracked isLoading = false;
-  @tracked isScrollable = false;
 
   setScroller = modifier(
     (element, [positionalElement]) => {
@@ -25,11 +26,13 @@ export default class InfiniteScrollerComponent extends Component {
   );
 
   get api() {
-    return freeze({
-      isScrollable: this.isScrollable,
-      isLoading: this.isLoading,
-      loadMore: this.loadMore
-    });
+    return seal(
+      assign(this._api, {
+        isScrollable: this.isScrollable,
+        isLoading: this.isLoading,
+        loadMore: this.loadMore
+      })
+    );
   }
 
   get debounce() {
