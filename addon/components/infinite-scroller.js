@@ -11,10 +11,9 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked isScrollable = false;
 
-  _api = {};
-  debug = false;
-  scroller = null;
-  debounceId = null;
+  debug;
+  scroller;
+  debounceId;
 
   setScroller = modifier(
     (element, [positionalElement]) => {
@@ -24,16 +23,6 @@ export default class InfiniteScrollerComponent extends Component {
     },
     { eager: false }
   );
-
-  get api() {
-    return seal(
-      assign(this._api, {
-        isScrollable: this.isScrollable,
-        isLoading: this.isLoading,
-        loadMore: this.loadMore
-      })
-    );
-  }
 
   get debounce() {
     return this.args.debounce ?? 100;
@@ -141,4 +130,19 @@ export default class InfiniteScrollerComponent extends Component {
       reachedBottom
     };
   }
+
+  get _api() {
+    return {
+      isScrollable: this.isScrollable,
+      isLoading: this.isLoading,
+      loadMore: this.loadMore
+    };
+  }
+
+  api = new Proxy(this, {
+    get(target, key) {
+      return target._api[key];
+    },
+    set() {}
+  });
 }

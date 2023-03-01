@@ -517,7 +517,7 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('api', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     this.capture = (api) => (this.api = api);
 
@@ -527,7 +527,8 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     `);
 
-    assert.deepEqual(keys(this.api), ['isScrollable', 'isLoading', 'loadMore']);
-    assert.true(isSealed(this.api));
+    assert.false(this.api.isScrollable);
+    assert.false(this.api.isLoading);
+    assert.strictEqual(typeof this.api.loadMore, 'function');
   });
 });
