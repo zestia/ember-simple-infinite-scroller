@@ -4,7 +4,6 @@ import { debounce, cancel } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
 import { action } from '@ember/object';
-const { seal, assign } = Object;
 const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {

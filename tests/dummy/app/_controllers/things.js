@@ -2,7 +2,7 @@ import { later } from '@ember/runloop';
 import { Promise } from 'rsvp';
 import { action } from '@ember/object';
 import Controller, { inject as injectController } from '@ember/controller';
-import generateThings from '../utils/generate-things';
+import generateThings from 'dummy/utils/generate-things';
 import { tracked } from '@glimmer/tracking';
 
 export default class ThingsController extends Controller {

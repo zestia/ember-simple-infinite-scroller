@@ -1,3 +1,3 @@
-import ThingsController from '../_controllers/things';
+import ThingsController from 'dummy/_controllers/things';
 
 export default class extends ThingsController {}

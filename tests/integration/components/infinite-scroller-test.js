@@ -13,7 +13,6 @@ import {
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
-const { keys, isSealed } = Object;
 
 module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);

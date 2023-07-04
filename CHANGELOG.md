@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.2.0
+
+- Run `ember-cli-update`
+
 ## 9.1.0
 
 - Remove BEM classes in favour of data attributes
