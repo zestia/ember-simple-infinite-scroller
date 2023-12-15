@@ -142,7 +142,7 @@ module('infinite-scroller', function (hooks) {
       </InfiniteScroller>
     </template>);
 
-    await scrollToPercentage('.infinite-scroller', 100);
+    scrollToPercentage('.infinite-scroller', 100);
     await scrollToPercentage('.infinite-scroller', 100);
 
     assert.verifySteps(['load more'], 'does not fire if already loading');
