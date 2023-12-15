@@ -2,8 +2,8 @@
   --red: red;
   --blue: blue;
   --green: green;
-  --space-lg: var(--space-lg);
-  --space-md: var(--space-md);
+  --space-lg: 20px;
+  --space-md: 10px;
 }
 
 /* stylelint-disable-next-line selector-max-type */
