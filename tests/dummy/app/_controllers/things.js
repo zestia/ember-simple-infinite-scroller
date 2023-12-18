@@ -1,5 +1,4 @@
 import { later } from '@ember/runloop';
-import { Promise } from 'rsvp';
 import { action } from '@ember/object';
 import Controller, { inject as injectController } from '@ember/controller';
 import generateThings from 'dummy/utils/generate-things';

@@ -93,8 +93,7 @@ module('infinite-scroller', function (hooks) {
   test('load more action (failure)', async function (assert) {
     assert.expect(3);
 
-    const example = new Error();
-    example.message = 'example failure';
+    const example = new Error('example failure');
 
     setupOnerror((error) => {
       if (error === example) {
