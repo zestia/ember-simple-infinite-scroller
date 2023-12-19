@@ -144,4 +144,16 @@ export default class InfiniteScrollerComponent extends Component {
     },
     set() {}
   });
+
+  <template>
+    <div
+      class="infinite-scroller"
+      data-loading="{{this.isLoading}}"
+      data-scrollable="{{this.isScrollable}}"
+      ...attributes
+      {{this.setScroller @element}}
+    >
+      {{yield this.api}}
+    </div>
+  </template>
 }

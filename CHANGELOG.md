@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.2.4
+
+- Convert to `.gjs`
+
 ## 9.2.3
 
 - Run ember-cli-update

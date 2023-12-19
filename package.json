@@ -5,7 +5,8 @@
     "ember-auto-import": "^2.7.1",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
-    "ember-modifier": "^4.1.0"
+    "ember-modifier": "^4.1.0",
+    "ember-template-imports": "^4.0.0"
   },
   "description": "Simple infinite scroller component for Ember apps",
   "devDependencies": {
@@ -32,7 +33,6 @@
     "ember-resolver": "^11.0.1",
     "ember-source": "^5.5.0",
     "ember-source-channel-url": "^3.0.0",
-    "ember-template-imports": "^4.0.0",
     "ember-template-lint": "^5.13.0",
     "ember-try": "^3.0.0",
     "eslint": "^8.55.0",
