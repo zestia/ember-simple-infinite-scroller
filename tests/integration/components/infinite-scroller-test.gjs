@@ -47,7 +47,7 @@ module('infinite-scroller', function (hooks) {
     assert.dom('.infinite-scroller').exists('has an appropriate class name');
   });
 
-  test('scrollable class', async function (assert) {
+  test('scrollable attr', async function (assert) {
     assert.expect(2);
 
     await render(<template>

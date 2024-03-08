@@ -8,7 +8,8 @@ const { round } = Math;
 
 export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
-  @tracked isScrollable = false;
+  @tracked scrollState = {};
+  @tracked lastScrollState = {};
 
   debug;
   scroller;
@@ -77,10 +78,14 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkShouldLoadMore() {
-    const scrollState = this._getScrollState();
-    const shouldLoadMore = scrollState.reachedBottom && !this.isLoading;
+    this.scrollState = this._getScrollState();
 
-    this._debug({ ...scrollState, shouldLoadMore });
+    const shouldLoadMore = this.scrollState.reachedBottom && !this.isLoading;
+
+    this._debug({
+      ...this.scrollState,
+      shouldLoadMore
+    });
 
     if (shouldLoadMore) {
       this.loadMore();
@@ -92,11 +97,9 @@ export default class InfiniteScrollerComponent extends Component {
       return;
     }
 
-    const scrollState = this._getScrollState();
+    this.scrollState = this._getScrollState();
 
-    this._debug({ ...scrollState });
-
-    this.isScrollable = scrollState.isScrollable;
+    this._debug(this.scrollState);
   }
 
   _debug(state) {
@@ -132,7 +135,7 @@ export default class InfiniteScrollerComponent extends Component {
 
   get _api() {
     return {
-      isScrollable: this.isScrollable,
+      isScrollable: this.scrollState.isScrollable,
       isLoading: this.isLoading,
       loadMore: this.loadMore
     };
@@ -149,7 +152,7 @@ export default class InfiniteScrollerComponent extends Component {
     <div
       class="infinite-scroller"
       data-loading="{{this.isLoading}}"
-      data-scrollable="{{this.isScrollable}}"
+      data-scrollable="{{this.scrollState.isScrollable}}"
       ...attributes
       {{this.setScroller @element}}
     >
