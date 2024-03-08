@@ -5,13 +5,15 @@ import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
 import { action } from '@ember/object';
 const { round } = Math;
+const UP = 'UP';
+const DOWN = 'DOWN';
 
 export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
   @tracked scrollState = {};
   @tracked lastScrollState = {};
 
-  debug = true;
+  debug;
   scroller;
   debounceId;
 
@@ -50,10 +52,10 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   @action
-  loadMore() {
+  loadMore(direction) {
     this.isLoading = true;
 
-    resolve(this.args.onLoadMore?.()).finally(() => {
+    resolve(this.args.onLoadMore?.(direction)).finally(() => {
       this.isLoading = false;
 
       this._checkScrollable();
@@ -88,7 +90,7 @@ export default class InfiniteScrollerComponent extends Component {
     this._debug();
 
     if (this.shouldLoadMore) {
-      this.loadMore();
+      this.loadMore(this.scrollState.direction);
     }
   }
 
@@ -126,7 +128,7 @@ export default class InfiniteScrollerComponent extends Component {
     const percentScrolled = round((scrollTop / bottom) * 100);
     const reachedBottom = percentScrolled >= percent;
     const scrollingDown = element.scrollTop > this.lastScrollState.scrollTop;
-    const direction = scrollingDown ? 'DOWN' : 'UP';
+    const direction = scrollingDown ? DOWN : UP;
 
     return {
       isScrollable,

@@ -64,9 +64,13 @@ Required. Fired when the the element has been scrolled to the specified `@percen
 
 Optional. By default the scroll position of the component's own DOM element is monitored. You can use this argument to change the element, to monitor the document for example.
 
-#### `@percent`
+#### `@down`
 
-Optional. The distance that has to be scrolled before the load more action is fired. Defaults to `100`%
+Optional. The distance that has to be scrolled down before the load more action is fired.
+
+#### `@up`
+
+Optional. The distance that has to be scrolled up before the load more action is fired.
 
 #### `@debounce`
 
