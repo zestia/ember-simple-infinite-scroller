@@ -4,6 +4,7 @@ import { debounce, cancel } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
 import { action } from '@ember/object';
+import { isPresent } from '@ember/utils';
 const { round } = Math;
 const UP = 'UP';
 const DOWN = 'DOWN';
@@ -13,7 +14,7 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked scrollState = {};
   @tracked lastScrollState = {};
 
-  debug;
+  debug = true;
   scroller;
   debounceId;
 
@@ -30,12 +31,28 @@ export default class InfiniteScrollerComponent extends Component {
     return this.args.debounce ?? 100;
   }
 
-  get percent() {
-    return this.args.percent ?? 100;
-  }
-
   get shouldLoadMore() {
-    return this.scrollState.reachedBottom && !this.isLoading;
+    if (this.isLoading) {
+      return false;
+    }
+
+    if (
+      isPresent(this.args.percentDown) &&
+      this.scrollState.direction === DOWN &&
+      this.scrollState.percentScrolled >= this.args.percentDown
+    ) {
+      return true;
+    }
+
+    if (
+      isPresent(this.args.percentUp) &&
+      this.scrollState.direction === UP &&
+      this.scrollState.percentScrolled <= this.args.percentUp
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   get normalisedScrollerElement() {
@@ -100,8 +117,6 @@ export default class InfiniteScrollerComponent extends Component {
     }
 
     this.scrollState = this._getScrollState();
-
-    this._debug();
   }
 
   _debug() {
@@ -124,11 +139,10 @@ export default class InfiniteScrollerComponent extends Component {
     const clientHeight = element.clientHeight;
     const isScrollable = scrollHeight > clientHeight;
     const bottom = scrollHeight - clientHeight;
-    const percent = this.percent;
     const percentScrolled = round((scrollTop / bottom) * 100);
-    const reachedBottom = percentScrolled >= percent;
     const scrollingDown = element.scrollTop > this.lastScrollState.scrollTop;
-    const direction = scrollingDown ? DOWN : UP;
+    const scrollingUp = element.scrollTop < this.lastScrollState.scrollTop;
+    const direction = scrollingDown ? DOWN : scrollingUp ? UP : null;
 
     return {
       isScrollable,
@@ -136,9 +150,7 @@ export default class InfiniteScrollerComponent extends Component {
       clientHeight,
       scrollTop,
       bottom,
-      percent,
       percentScrolled,
-      reachedBottom,
       direction
     };
   }

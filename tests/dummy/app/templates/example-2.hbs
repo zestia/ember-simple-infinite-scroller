@@ -8,6 +8,7 @@
 
 <InfiniteScroller
   class="example-2"
+  @percentDown={{100}}
   @onLoadMore={{this.handleLoadMore}}
   @element={{this.document}}
   as |scroller|
@@ -19,7 +20,7 @@
   {{/each}}
 
   {{#unless scroller.isScrollable}}
-    <button type="button" {{on "click" scroller.loadMore}}>
+    <button type="button" {{on "click" (fn scroller.loadMore "DOWN")}}>
       Load more
     </button>
   {{/unless}}

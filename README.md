@@ -34,7 +34,7 @@ https://zestia.github.io/ember-simple-infinite-scroller
 ## Example
 
 ```handlebars
-<InfiniteScroller @onLoadMore={{this.loadMore}} as |scroller|>
+<InfiniteScroller @onLoadMore={{this.loadMore}} @percentDown{{100}} as |scroller|>
   {{#each things as |thing|}}
     ...
   {{/each}}
@@ -64,13 +64,13 @@ Required. Fired when the the element has been scrolled to the specified `@percen
 
 Optional. By default the scroll position of the component's own DOM element is monitored. You can use this argument to change the element, to monitor the document for example.
 
-#### `@down`
+#### `@percentDown`
 
-Optional. The distance that has to be scrolled down before the load more action is fired.
+Optional. The distance that has to be scrolled down before the load more action is fired. 100% means the bottom.
 
-#### `@up`
+#### `@percentUp`
 
-Optional. The distance that has to be scrolled up before the load more action is fired.
+Optional. The distance that has to be scrolled up before the load more action is fired. 0% means the top.
 
 #### `@debounce`
 

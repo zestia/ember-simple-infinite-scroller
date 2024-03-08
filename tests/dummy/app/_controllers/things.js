@@ -8,28 +8,37 @@ export default class ThingsController extends Controller {
   @injectController('application') appController;
 
   @tracked page = 1;
-  @tracked things;
+  @tracked things = this._generateThingsForPage(1);
   perPage = 10;
 
-  constructor() {
-    super(...arguments);
-    this.things = this._generateThings();
-  }
-
   @action
-  handleLoadMore() {
+  handleLoadMore(direction) {
     return new Promise((resolve) => {
       later(() => {
-        this.page++;
-        this.things = [...this.things, ...this._generateThings()];
+        if (direction === 'DOWN' && this.page < 10) {
+          this.page++;
+          this.things = [
+            ...this.things,
+            ...this._generateThingsForPage(this.page)
+          ];
+        }
+
+        if (direction === 'UP' && this.page > 1) {
+          this.page--;
+          this.things = [
+            ...this._generateThingsForPage(this.page),
+            ...this.things
+          ];
+        }
+
         resolve();
       }, this.appController.loadDelay);
     });
   }
 
-  _generateThings() {
-    const start = this.things ? this.things.length + 1 : 0;
-    const end = this.page * this.perPage;
+  _generateThingsForPage(page) {
+    const start = (page - 1) * 10 + 1;
+    const end = page * this.perPage;
     return generateThings(start, end);
   }
 }

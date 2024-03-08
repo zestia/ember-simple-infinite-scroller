@@ -4,9 +4,9 @@
 
 <InfiniteScroller
   class="example-3"
+  @percentDown={{50}}
   @onLoadMore={{this.handleLoadMore}}
   @debounce={{10}}
-  @percent={{50}}
   as |scroller|
 >
   {{#each this.things as |thing|}}
