@@ -34,7 +34,11 @@ https://zestia.github.io/ember-simple-infinite-scroller
 ## Example
 
 ```handlebars
-<InfiniteScroller @onLoadMore={{this.loadMore}} @percentDown{{100}} as |scroller|>
+<InfiniteScroller
+  @onLoadMore={{this.loadMore}}
+  @percentDown={{100}}
+  as |scroller|
+>
   {{#each things as |thing|}}
     ...
   {{/each}}
