@@ -49,6 +49,7 @@ https://zestia.github.io/ember-simple-infinite-scroller
 ## Features
 
 - Very simple! ✔︎
+- Bidirectional ✔︎
 - Not coupled to Ember Data ✔︎
 - Supports use with FastBoot ✔︎
 
