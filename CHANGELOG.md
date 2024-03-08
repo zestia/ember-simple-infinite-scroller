@@ -1,5 +1,10 @@
 # Changelog
 
+## 10.0.0
+
+- Allow scrolling up to trigger a load more action
+- Renamed `@percent` argument to `@percentDown` and/or `@percentUp` arguments
+
 ## 9.2.4
 
 - Convert to `.gjs`
