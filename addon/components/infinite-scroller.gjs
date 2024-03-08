@@ -11,7 +11,7 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked scrollState = {};
   @tracked lastScrollState = {};
 
-  debug;
+  debug = true;
   scroller;
   debounceId;
 
@@ -30,6 +30,10 @@ export default class InfiniteScrollerComponent extends Component {
 
   get percent() {
     return this.args.percent ?? 100;
+  }
+
+  get shouldLoadMore() {
+    return this.scrollState.reachedBottom && !this.isLoading;
   }
 
   get normalisedScrollerElement() {
@@ -78,16 +82,12 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _checkShouldLoadMore() {
+    this.lastScrollState = this.scrollState;
     this.scrollState = this._getScrollState();
 
-    const shouldLoadMore = this.scrollState.reachedBottom && !this.isLoading;
+    this._debug();
 
-    this._debug({
-      ...this.scrollState,
-      shouldLoadMore
-    });
-
-    if (shouldLoadMore) {
+    if (this.shouldLoadMore) {
       this.loadMore();
     }
   }
@@ -99,13 +99,18 @@ export default class InfiniteScrollerComponent extends Component {
 
     this.scrollState = this._getScrollState();
 
-    this._debug(this.scrollState);
+    this._debug();
   }
 
-  _debug(state) {
+  _debug() {
     if (!this.debug) {
       return;
     }
+
+    const state = {
+      ...this.scrollState,
+      shouldLoadMore: this.shouldLoadMore
+    };
 
     console.table([state]); // eslint-disable-line
   }
@@ -120,6 +125,8 @@ export default class InfiniteScrollerComponent extends Component {
     const percent = this.percent;
     const percentScrolled = round((scrollTop / bottom) * 100);
     const reachedBottom = percentScrolled >= percent;
+    const scrollingDown = element.scrollTop > this.lastScrollState.scrollTop;
+    const direction = scrollingDown ? 'DOWN' : 'UP';
 
     return {
       isScrollable,
@@ -129,7 +136,8 @@ export default class InfiniteScrollerComponent extends Component {
       bottom,
       percent,
       percentScrolled,
-      reachedBottom
+      reachedBottom,
+      direction
     };
   }
 
