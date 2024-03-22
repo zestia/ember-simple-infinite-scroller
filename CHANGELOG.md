@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.1
+
+- Turn off debugging
+
 ## 10.0.0
 
 - Allow scrolling up to trigger a load more action

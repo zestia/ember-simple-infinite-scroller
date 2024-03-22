@@ -14,7 +14,7 @@ export default class InfiniteScrollerComponent extends Component {
   @tracked scrollState = {};
   @tracked lastScrollState = {};
 
-  debug = true;
+  debug = false;
   scroller;
   debounceId;
 
