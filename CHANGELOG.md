@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.2
+
+- Re-compute `isScrollable` when contents change
+
 ## 10.0.1
 
 - Turn off debugging
