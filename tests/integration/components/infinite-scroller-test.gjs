@@ -494,6 +494,28 @@ module('infinite-scroller', function (hooks) {
     assert.verifySteps(['load more: DOWN']);
   });
 
+  test('is scrollable re-computation', async function (assert) {
+    assert.expect(2);
+
+    state.things = [];
+
+    await render(<template>
+      <InfiniteScroller class="example-1">
+        {{#each state.things as |thing|}}
+          <div class="thing">{{thing.name}}</div>
+        {{/each}}
+      </InfiniteScroller>
+    </template>);
+
+    assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'false');
+
+    state.things = generateThings(1, 20);
+
+    await rerender();
+
+    assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'true');
+  });
+
   test('custom element via element argument', async function (assert) {
     assert.expect(4);
 
