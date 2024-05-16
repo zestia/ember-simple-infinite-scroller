@@ -92,7 +92,7 @@ export default class InfiniteScrollerComponent extends Component {
   _startListening() {
     this.scroller.addEventListener('scroll', this.handleScroll);
     this.observer = new MutationObserver(this._checkScrollable.bind(this));
-    this.observer.observe(this.scroller, { childList: true });
+    this.observer.observe(this.scroller, { childList: true, subtree: true });
   }
 
   _stopListening() {

@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.3
+
+- Re-compute `isScrollable` on subtree change
+
 ## 10.0.2
 
 - Re-compute `isScrollable` when contents change
