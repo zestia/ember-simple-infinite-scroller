@@ -74,14 +74,11 @@ export default class InfiniteScrollerComponent extends Component {
 
     resolve(this.args.onLoadMore?.(direction)).finally(() => {
       this.isLoading = false;
-
-      this._checkScrollable();
     });
   }
 
   _registerScroller(element) {
     this.scroller = element;
-
     this._startListening();
     this._checkScrollable();
   }
@@ -94,10 +91,13 @@ export default class InfiniteScrollerComponent extends Component {
 
   _startListening() {
     this.scroller.addEventListener('scroll', this.handleScroll);
+    this.observer = new MutationObserver(this._checkScrollable.bind(this));
+    this.observer.observe(this.scroller, { childList: true });
   }
 
   _stopListening() {
     this.scroller.removeEventListener('scroll', this.handleScroll);
+    this.observer.disconnect();
   }
 
   _checkShouldLoadMore() {
