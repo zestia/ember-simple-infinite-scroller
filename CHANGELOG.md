@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.4
+
+- Expose scroll direction on API
+
 ## 10.0.3
 
 - Re-compute `isScrollable` on subtree change

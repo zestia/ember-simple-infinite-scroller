@@ -330,7 +330,7 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('yielded loading state', async function (assert) {
-    assert.expect(5);
+    assert.expect(7);
 
     await render(<template>
       <InfiniteScroller
@@ -345,6 +345,9 @@ module('infinite-scroller', function (hooks) {
 
         Loading:
         {{scroller.isLoading}}
+
+        Direction:
+        {{if scroller.direction scroller.direction "UNKNOWN"}}
       </InfiniteScroller>
     </template>);
 
@@ -352,7 +355,11 @@ module('infinite-scroller', function (hooks) {
       .dom('.infinite-scroller')
       .containsText('Loading: false', 'precondition: not loading');
 
+    assert.dom('.infinite-scroller').containsText('Direction: UNKNOWN');
+
     await scrollToPercentage('.infinite-scroller', 100);
+
+    assert.dom('.infinite-scroller').containsText('Direction: DOWN');
 
     assert
       .dom('.infinite-scroller')
@@ -561,7 +568,7 @@ module('infinite-scroller', function (hooks) {
   });
 
   test('api', async function (assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     let api;
 
@@ -576,5 +583,6 @@ module('infinite-scroller', function (hooks) {
     assert.false(api.isScrollable);
     assert.false(api.isLoading);
     assert.strictEqual(typeof api.loadMore, 'function');
+    assert.strictEqual(api.direction, null);
   });
 });

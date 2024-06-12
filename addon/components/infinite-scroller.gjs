@@ -158,6 +158,7 @@ export default class InfiniteScrollerComponent extends Component {
   get _api() {
     return {
       isScrollable: this.scrollState.isScrollable,
+      direction: this.scrollState.direction,
       isLoading: this.isLoading,
       loadMore: this.loadMore
     };

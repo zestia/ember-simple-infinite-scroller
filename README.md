@@ -87,6 +87,10 @@ Optional. Milliseconds delay for when to check if more needs to be loaded. Defau
 
 Whether the promise for more data has resolved yet
 
+### `direction`
+
+The direction scrolled that caused `onLoadMore` to fire
+
 #### `isScrollable`
 
 Whether the element is overflowing or not. If it's not, then the user will not be able to scroll to load more. In such a case, you can use this boolean to provide a button to manually load more.
