@@ -87,7 +87,7 @@ Optional. Milliseconds delay for when to check if more needs to be loaded. Defau
 
 Whether the promise for more data has resolved yet
 
-### `direction`
+#### `direction`
 
 The direction scrolled that caused `onLoadMore` to fire
 
