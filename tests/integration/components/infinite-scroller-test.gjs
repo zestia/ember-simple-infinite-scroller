@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'dummy/tests/helpers';
 import { defer } from 'rsvp';
-import { later } from '@ember/runloop';
 import generateThings from 'dummy/utils/generate-things';
 import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
 import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
@@ -65,7 +64,7 @@ module('infinite-scroller', function (hooks) {
 
     const willScroll = scrollToPercentage('.infinite-scroller', 100);
 
-    later(() => {
+    setTimeout(() => {
       assert.verifySteps(
         [],
         'has not fired load more action due to debouncing of scroll event'
@@ -212,7 +211,7 @@ module('infinite-scroller', function (hooks) {
 
     const willScroll = scrollToPercentage('.infinite-scroller', 100);
 
-    later(() => {
+    setTimeout(() => {
       assert.verifySteps([], 'not fired yet');
     }, 50);
 
@@ -226,6 +225,8 @@ module('infinite-scroller', function (hooks) {
 
   test('load more action (document)', async function (assert) {
     assert.expect(2);
+
+    const { document } = window;
 
     await render(<template>
       {{! template-lint-disable no-forbidden-elements }}
@@ -442,7 +443,7 @@ module('infinite-scroller', function (hooks) {
 
     const willScroll = scrollToPercentage('.infinite-scroller', 100);
 
-    later(() => {
+    setTimeout(() => {
       state.show = false;
     }, 25);
 
@@ -527,8 +528,7 @@ module('infinite-scroller', function (hooks) {
     assert.expect(4);
 
     const setCustomElement = modifier(
-      (element) => (state.customElement = element),
-      { eager: false }
+      (element) => (state.customElement = element)
     );
 
     await render(<template>

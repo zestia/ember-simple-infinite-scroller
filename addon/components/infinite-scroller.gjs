@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-runloop */
+
 import Component from '@glimmer/component';
 import { resolve } from 'rsvp';
 import { debounce, cancel } from '@ember/runloop';
@@ -18,14 +20,11 @@ export default class InfiniteScrollerComponent extends Component {
   scroller;
   debounceId;
 
-  setScroller = modifier(
-    (element, [positionalElement]) => {
-      this._registerScroller(positionalElement ?? element);
+  setScroller = modifier((element, [positionalElement]) => {
+    this._registerScroller(positionalElement ?? element);
 
-      return () => this._deregisterScroller();
-    },
-    { eager: false }
-  );
+    return () => this._deregisterScroller();
+  });
 
   get debounce() {
     return this.args.debounce ?? 100;

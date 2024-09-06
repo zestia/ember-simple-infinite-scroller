@@ -1,5 +1,10 @@
 # Changelog
 
+## 10.0.5
+
+- Run ember-cli-update
+- Upgrade dependencies
+
 ## 10.0.4
 
 - Expose scroll direction on API
