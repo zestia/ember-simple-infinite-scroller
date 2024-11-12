@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'dummy/tests/helpers';
-import { defer } from 'rsvp';
 import generateThings from 'dummy/utils/generate-things';
 import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
 import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
@@ -34,7 +33,7 @@ module('infinite-scroller', function (hooks) {
 
     handleLoadMore = (direction) => {
       assert.step(`load more: ${direction}`);
-      willLoad = defer();
+      willLoad = Promise.withResolvers();
       return willLoad.promise;
     };
   });
