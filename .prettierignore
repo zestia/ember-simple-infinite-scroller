@@ -4,6 +4,7 @@
 
 # compiled output
 /dist/
+/dist-tests/
 /tmp/
 
 # dependencies
