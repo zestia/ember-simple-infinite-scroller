@@ -106,7 +106,7 @@ A test helper is provided to help scrolling your element
   <summary>Example</summary>
 
 ```javascript
-import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-support/helpers';
+import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-helpers/scroll-to-percentage';
 
 test('loading more', async function () {
   await visit('/');

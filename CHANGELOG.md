@@ -1,5 +1,10 @@
 # Changelog
 
+## 11.0.0
+
+- Convert to v2 addon
+- Change import path of `scrollToPercentage` test helper from `@zestia/ember-simple-infinite-scroller/test-support/helpers` to `@zestia/ember-simple-infinite-scroller/test-helpers/scroll-to-percentage`
+
 ## 10.0.5
 
 - Run ember-cli-update

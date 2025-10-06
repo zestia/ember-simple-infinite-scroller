@@ -11,15 +11,18 @@
 - `npm run lint`
 - `npm run lint:fix`
 
+## Building the addon
+
+- `npm build`
+
 ## Running tests
 
-- `npm run test` – Runs the test suite on the current Ember version
-- `npm run test:ember -- --server` – Runs the test suite in "watch mode"
-- `npm run test:ember-compatibility` – Runs the test suite against multiple Ember versions
+- `npm test` – Runs the test suite in the command line
+- `npm start` – Runs the test suite in "watch mode" at [http://localhost:4200/tests](http://localhost:4200/tests)
 
-## Running the dummy application
+## Running the demo application
 
-- `npm run start`
-- Visit the dummy application at [http://localhost:4200](http://localhost:4200).
+- `npm start`
+- Visit the demo application at [http://localhost:4200](http://localhost:4200).
 
 For more information on using ember-cli, visit [https://cli.emberjs.com/release/](https://cli.emberjs.com/release/).
