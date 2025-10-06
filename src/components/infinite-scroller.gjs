@@ -5,7 +5,6 @@ import { resolve } from 'rsvp';
 import { debounce, cancel } from '@ember/runloop';
 import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
-import { action } from '@ember/object';
 import { isPresent } from '@ember/utils';
 const { round } = Math;
 const UP = 'UP';
@@ -62,19 +61,17 @@ export default class InfiniteScrollerComponent extends Component {
     }
   }
 
-  @action
-  handleScroll() {
+  handleScroll = () => {
     this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
-  }
+  };
 
-  @action
-  loadMore(direction) {
+  loadMore = (direction) => {
     this.isLoading = true;
 
     resolve(this.args.onLoadMore?.(direction)).finally(() => {
       this.isLoading = false;
     });
-  }
+  };
 
   _registerScroller(element) {
     this.scroller = element;
