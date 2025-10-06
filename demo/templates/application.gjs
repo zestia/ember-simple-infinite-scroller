@@ -1,10 +1,14 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
 import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
 
 import '../styles/app.css';
 
-export default RouteTemplate(
+class ApplicationTemplate extends Component {
+  @service application;
+
   <template>
     <h1>
       @zestia/ember-simple-infinite-scroller
@@ -35,9 +39,9 @@ export default RouteTemplate(
         Load delay:
         <br />
         <input
-          value={{@controller.loadDelay}}
+          value={{this.application.loadDelay}}
           type="number"
-          {{on "input" @controller.setLoadDelay}}
+          {{on "input" this.application.setLoadDelay}}
         />
       </label>
     </p>
@@ -57,4 +61,6 @@ export default RouteTemplate(
       />
     </a>
   </template>
-);
+}
+
+export default RouteTemplate(ApplicationTemplate);

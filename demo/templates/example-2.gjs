@@ -1,9 +1,13 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
 import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
 
-export default RouteTemplate(
+class Example2Template extends Component {
+  @service application;
+
   <template>
     <p>
       An action is fired when document is scrolled to the very bottom
@@ -16,11 +20,11 @@ export default RouteTemplate(
     <InfiniteScroller
       class="example-2"
       @percentDown={{100}}
-      @onLoadMore={{@controller.handleLoadMore}}
-      @element={{@controller.document}}
+      @onLoadMore={{this.application.handleLoadMore}}
+      @element={{this.application.document}}
       as |scroller|
     >
-      {{#each @controller.things as |thing|}}
+      {{#each this.application.things as |thing|}}
         <div class="thing">
           {{thing.name}}
         </div>
@@ -39,4 +43,6 @@ export default RouteTemplate(
       {{/if}}
     </InfiniteScroller>
   </template>
-);
+}
+
+export default RouteTemplate(Example2Template);
