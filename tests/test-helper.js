@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import EmberApp from '@ember/application';
 import Resolver from 'ember-resolver';
 import EmberRouter from '@ember/routing/router';

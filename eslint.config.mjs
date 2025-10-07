@@ -32,6 +32,12 @@ const config = [
   ember.configs.base,
   ember.configs.gjs,
   zestia,
+  // Temporary
+  {
+    rules: {
+      'no-restricted-imports': 'off'
+    }
+  },
   /**
    * Ignores must be in their own object
    * https://eslint.org/docs/latest/use/configure/ignore

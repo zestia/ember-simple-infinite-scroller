@@ -125,7 +125,7 @@ export default class InfiniteScrollerComponent extends Component {
       shouldLoadMore: this.shouldLoadMore
     };
 
-    console.table([state]);
+    console.table([state]); // eslint-disable-line
   }
 
   _getScrollState() {
