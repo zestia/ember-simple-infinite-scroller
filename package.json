@@ -102,5 +102,13 @@
     "./*.css": "./dist/*.css",
     "./*": "./dist/*.js",
     "./addon-main.js": "./addon-main.cjs"
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": [
+        "npm run lint",
+        "npm test"
+      ]
+    }
   }
 }
