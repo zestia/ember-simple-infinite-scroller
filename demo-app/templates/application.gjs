@@ -4,8 +4,6 @@ import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
 
-import '../styles/app.css';
-
 class ApplicationTemplate extends Component {
   @service application;
 

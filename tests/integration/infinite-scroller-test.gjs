@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import generateThings from '../../../demo/utils/generate-things';
+import generateThings from '../../demo-app/utils/generate-things';
 import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-helpers/scroll-to-percentage';
 import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
 import { tracked } from '@glimmer/tracking';
@@ -16,8 +16,7 @@ import {
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
-
-import '../../../demo/styles/app.css';
+import '../../demo-app/styles.css';
 
 module('infinite-scroller', function (hooks) {
   setupRenderingTest(hooks);

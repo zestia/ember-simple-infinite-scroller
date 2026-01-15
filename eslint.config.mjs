@@ -14,6 +14,7 @@
  */
 import babelParser from '@babel/eslint-parser';
 import js from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import prettier from 'eslint-config-prettier';
 import ember from 'eslint-plugin-ember/recommended';
 import importPlugin from 'eslint-plugin-import';
@@ -26,7 +27,8 @@ const esmParserOptions = {
   ecmaVersion: 'latest'
 };
 
-const config = [
+export default defineConfig([
+  globalIgnores(['dist/', 'dist-*/', 'declarations/', 'coverage/', '!**/.*']),
   js.configs.recommended,
   prettier,
   ember.configs.base,
@@ -35,22 +37,9 @@ const config = [
   // Temporary
   {
     rules: {
-      'no-restricted-imports': 'off'
+      'no-restricted-imports': 'off',
+      'ember/template-no-let-reference': 'off'
     }
-  },
-  /**
-   * Ignores must be in their own object
-   * https://eslint.org/docs/latest/use/configure/ignore
-   */
-  {
-    ignores: [
-      'dist/',
-      'dist-*/',
-      'declarations/',
-      'node_modules/',
-      'coverage/',
-      '!**/.*'
-    ]
   },
   /**
    * https://eslint.org/docs/latest/use/configure/configuration-files#configuring-linter-options
@@ -76,13 +65,6 @@ const config = [
     }
   },
   {
-    files: ['tests/**/*-test.{js,gjs}'],
-    rules: {
-      // https://github.com/ember-cli/eslint-plugin-ember/issues/2078
-      'ember/template-no-let-reference': 'off'
-    }
-  },
-  {
     files: ['src/**/*'],
     plugins: {
       import: importPlugin
@@ -96,12 +78,7 @@ const config = [
    * CJS node files
    */
   {
-    files: [
-      '**/*.cjs',
-      '.prettierrc.cjs',
-      '.template-lintrc.cjs',
-      'addon-main.cjs'
-    ],
+    files: ['**/*.cjs'],
     plugins: {
       n
     },
@@ -132,6 +109,4 @@ const config = [
       }
     }
   }
-];
-
-export default config;
+]);

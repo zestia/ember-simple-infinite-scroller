@@ -28,8 +28,5 @@ export default defineConfig({
         tests: 'tests/index.html'
       }
     }
-  },
-  define: {
-    global: 'globalThis'
   }
 });
