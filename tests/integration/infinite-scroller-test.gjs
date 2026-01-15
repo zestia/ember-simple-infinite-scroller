@@ -14,7 +14,7 @@ import {
   settled,
   click,
   setupOnerror,
-  resetOnerror,
+  resetOnerror
 } from '@ember/test-helpers';
 import '../../demo-app/styles.css';
 
@@ -61,7 +61,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     const willScroll = scrollToPercentage('.infinite-scroller', 100);
@@ -69,7 +69,7 @@ module('infinite-scroller', function (hooks) {
     setTimeout(() => {
       assert.verifySteps(
         [],
-        'has not fired load more action due to debouncing of scroll event',
+        'has not fired load more action due to debouncing of scroll event'
       );
     }, 100);
 
@@ -102,7 +102,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     await scrollToPercentage('.infinite-scroller', 100);
@@ -116,7 +116,7 @@ module('infinite-scroller', function (hooks) {
       .hasAttribute(
         'data-loading',
         'false',
-        'is no longer considered loading if loading fails',
+        'is no longer considered loading if loading fails'
       );
 
     assert.verifySteps(['load more: DOWN']);
@@ -138,7 +138,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     scrollToPercentage('.infinite-scroller', 100);
@@ -161,7 +161,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     await scrollToPercentage('.infinite-scroller', 79);
@@ -187,7 +187,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     await scrollToPercentage('.infinite-scroller', 80);
@@ -218,7 +218,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     const willScroll = scrollToPercentage('.infinite-scroller', 100);
@@ -231,7 +231,7 @@ module('infinite-scroller', function (hooks) {
 
     assert.verifySteps(
       ['load more: DOWN'],
-      'fires load more action after being debounced',
+      'fires load more action after being debounced'
     );
   });
 
@@ -258,7 +258,7 @@ module('infinite-scroller', function (hooks) {
           @percentDown={{100}}
           @onLoadMore={{handleLoadMore}}
         />
-      </template>,
+      </template>
     );
 
     await scrollToPercentage(document.documentElement, 100);
@@ -276,7 +276,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'true');
@@ -300,7 +300,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     assert
@@ -314,7 +314,7 @@ module('infinite-scroller', function (hooks) {
       .hasAttribute(
         'data-loading',
         'true',
-        'a loading class is added whilst the action is being performed',
+        'a loading class is added whilst the action is being performed'
       );
 
     willLoad.resolve();
@@ -326,7 +326,7 @@ module('infinite-scroller', function (hooks) {
       .hasAttribute(
         'data-loading',
         'false',
-        'loading class name is removed after the action resolves',
+        'loading class name is removed after the action resolves'
       );
 
     assert.verifySteps(['load more: DOWN']);
@@ -342,7 +342,7 @@ module('infinite-scroller', function (hooks) {
             Load more
           </button>
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     await click('button');
@@ -371,7 +371,7 @@ module('infinite-scroller', function (hooks) {
           Direction:
           {{if scroller.direction scroller.direction "UNKNOWN"}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     assert
@@ -415,7 +415,7 @@ module('infinite-scroller', function (hooks) {
             {{/each}}
           </InfiniteScroller>
         {{/if}}
-      </template>,
+      </template>
     );
 
     await scrollToPercentage('.infinite-scroller', 100);
@@ -443,7 +443,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     await scrollToPercentage('.infinite-scroller', 100);
@@ -466,7 +466,7 @@ module('infinite-scroller', function (hooks) {
             {{/each}}
           </InfiniteScroller>
         {{/if}}
-      </template>,
+      </template>
     );
 
     const willScroll = scrollToPercentage('.infinite-scroller', 100);
@@ -503,14 +503,14 @@ module('infinite-scroller', function (hooks) {
             </button>
           {{/unless}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     assert
       .dom('button')
       .exists(
         'load more button shows because infinite scroller component ' +
-          'determined that there is no scroll movement available',
+          'determined that there is no scroll movement available'
       );
 
     await click('button');
@@ -526,7 +526,7 @@ module('infinite-scroller', function (hooks) {
     assert
       .dom('button')
       .doesNotExist(
-        'infinite scroller component re-computes whether or not there is scroll movement available',
+        'infinite scroller component re-computes whether or not there is scroll movement available'
       );
 
     assert.verifySteps(['load more: DOWN']);
@@ -544,7 +544,7 @@ module('infinite-scroller', function (hooks) {
             <div class="thing">{{thing.name}}</div>
           {{/each}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'false');
@@ -560,7 +560,7 @@ module('infinite-scroller', function (hooks) {
     assert.expect(4);
 
     const setCustomElement = modifier(
-      (element) => (state.customElement = element),
+      (element) => (state.customElement = element)
     );
 
     await render(
@@ -582,7 +582,7 @@ module('infinite-scroller', function (hooks) {
           @onLoadMore={{handleLoadMore}}
           @percentDown={{100}}
         />
-      </template>,
+      </template>
     );
 
     await scrollToPercentage('.external-element.one', 100);
@@ -597,7 +597,7 @@ module('infinite-scroller', function (hooks) {
 
     assert.verifySteps(
       ['load more: DOWN'],
-      'load action fires again, because scrollable element has been re-registered',
+      'load action fires again, because scrollable element has been re-registered'
     );
   });
 
@@ -613,7 +613,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller as |scroller|>
           {{capture scroller}}
         </InfiniteScroller>
-      </template>,
+      </template>
     );
 
     assert.false(api.isScrollable);
