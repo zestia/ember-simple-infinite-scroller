@@ -7,6 +7,14 @@ class Router extends EmberRouter {
   rootURL = '/';
 }
 
+Router.map(function () {
+  this.route('example-1');
+  this.route('example-2');
+  this.route('example-3');
+  this.route('example-4');
+  this.route('example-5');
+});
+
 export class App extends EmberApp {
   /**
    * Any services or anything from the addon that needs to be in the app-tree registry
@@ -20,6 +28,7 @@ export class App extends EmberApp {
   modules = {
     './router': Router,
     './services/page-title': PageTitleService,
+    ...import.meta.glob('./routes/**/*', { eager: true }),
     /**
      * NOTE: this glob will import everything matching the glob,
      *     and includes non-services in the services directory.
