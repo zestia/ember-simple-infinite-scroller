@@ -42,3 +42,14 @@ a {
   overflow: auto;
   max-height: 200px;
 }
+
+.example-6 {
+  overflow: auto;
+  max-width: 400px;
+  display: flex;
+}
+
+.example-6 .thing,
+.example-6 .status {
+  flex-shrink: 0;
+}

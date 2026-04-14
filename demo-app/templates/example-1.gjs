@@ -9,12 +9,12 @@ class Example1Template extends Component {
   <template>
     <p>
       An action is fired when infinite scroll component is scrolled to the very
-      bottom
+      end
     </p>
 
     <InfiniteScroller
       class="example-1"
-      @percentDown={{100}}
+      @percentEnd={{100}}
       @onLoadMore={{this.application.handleLoadMore}}
       as |scroller|
     >

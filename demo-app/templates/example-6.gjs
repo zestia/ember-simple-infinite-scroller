@@ -2,37 +2,35 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import RouteTemplate from 'ember-route-template';
 import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
-import { modifier } from 'ember-modifier';
 
-const scrollIntoView = modifier((element) => element.scrollIntoView());
-
-class Example5Template extends Component {
+class Example6Template extends Component {
   @service application;
 
   <template>
     <p>
-      An action is fired when infinite scroll component is scrolled to the very
-      start
+      An action is fired when infinite scroll component is scrolled horizontally
+      to the very end
     </p>
 
     <InfiniteScroller
-      class="example-1"
-      @percentStart={{0}}
+      class="example-6"
+      @axis="horizontal"
+      @percentEnd={{100}}
       @onLoadMore={{this.application.handleLoadMore}}
       as |scroller|
     >
+      {{#each this.application.things as |thing|}}
+        <div class="thing">
+          {{thing.name}}
+        </div>
+      {{/each}}
       {{#if scroller.isLoading}}
         <div class="status">
           Loading...
         </div>
       {{/if}}
-      {{#each this.application.things as |thing|}}
-        <div class="thing" {{scrollIntoView}}>
-          {{thing.name}}
-        </div>
-      {{/each}}
     </InfiniteScroller>
   </template>
 }
 
-export default RouteTemplate(Example5Template);
+export default RouteTemplate(Example6Template);
