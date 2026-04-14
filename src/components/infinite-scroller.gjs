@@ -7,8 +7,8 @@ import { tracked } from '@glimmer/tracking';
 import { modifier } from 'ember-modifier';
 import { isPresent } from '@ember/utils';
 const { round } = Math;
-const UP = 'UP';
-const DOWN = 'DOWN';
+const START = 'START';
+const END = 'END';
 
 export default class InfiniteScrollerComponent extends Component {
   @tracked isLoading = false;
@@ -25,6 +25,10 @@ export default class InfiniteScrollerComponent extends Component {
     return () => this._deregisterScroller();
   });
 
+  get axis() {
+    return this.args.axis ?? 'vertical';
+  }
+
   get debounce() {
     return this.args.debounce ?? 100;
   }
@@ -35,17 +39,17 @@ export default class InfiniteScrollerComponent extends Component {
     }
 
     if (
-      isPresent(this.args.percentDown) &&
-      this.scrollState.direction === DOWN &&
-      this.scrollState.percentScrolled >= this.args.percentDown
+      isPresent(this.args.percentEnd) &&
+      this.scrollState.direction === END &&
+      this.scrollState.percentScrolled >= this.args.percentEnd
     ) {
       return true;
     }
 
     if (
-      isPresent(this.args.percentUp) &&
-      this.scrollState.direction === UP &&
-      this.scrollState.percentScrolled <= this.args.percentUp
+      isPresent(this.args.percentStart) &&
+      this.scrollState.direction === START &&
+      this.scrollState.percentScrolled <= this.args.percentStart
     ) {
       return true;
     }
@@ -130,22 +134,25 @@ export default class InfiniteScrollerComponent extends Component {
 
   _getScrollState() {
     const element = this.normalisedScrollerElement;
-    const scrollHeight = element.scrollHeight;
-    const scrollTop = element.scrollTop;
-    const clientHeight = element.clientHeight;
-    const isScrollable = scrollHeight > clientHeight;
-    const bottom = scrollHeight - clientHeight;
-    const percentScrolled = round((scrollTop / bottom) * 100);
-    const scrollingDown = element.scrollTop > this.lastScrollState.scrollTop;
-    const scrollingUp = element.scrollTop < this.lastScrollState.scrollTop;
-    const direction = scrollingDown ? DOWN : scrollingUp ? UP : null;
+    const horizontal = this.axis === 'horizontal';
+    const scrollOffset = horizontal ? element.scrollLeft : element.scrollTop;
+    const scrollSize = horizontal ? element.scrollWidth : element.scrollHeight;
+    const clientSize = horizontal ? element.clientWidth : element.clientHeight;
+    const isScrollable = scrollSize > clientSize;
+    const maxScroll = scrollSize - clientSize;
+    const scrollRatio = maxScroll === 0 ? 0 : scrollOffset / maxScroll;
+    const percentScrolled = round(scrollRatio * 100);
+    const lastScrollOffset = this.lastScrollState.scrollOffset ?? 0;
+    const scrollingEnd = scrollOffset > lastScrollOffset;
+    const scrollingStart = scrollOffset < lastScrollOffset;
+    const direction = scrollingEnd ? END : scrollingStart ? START : null;
 
     return {
       isScrollable,
-      scrollHeight,
-      clientHeight,
-      scrollTop,
-      bottom,
+      scrollSize,
+      clientSize,
+      scrollOffset,
+      maxScroll,
       percentScrolled,
       direction
     };

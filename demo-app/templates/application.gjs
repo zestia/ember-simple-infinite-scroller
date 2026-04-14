@@ -31,6 +31,10 @@ class ApplicationTemplate extends Component {
     <LinkTo @route="example-5">
       Example 5
     </LinkTo>
+    |
+    <LinkTo @route="example-6">
+      Example 6
+    </LinkTo>
 
     <p>
       <label>

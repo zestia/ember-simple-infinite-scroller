@@ -10,8 +10,7 @@
 [ember-observer-badge]: https://emberobserver.com/badges/-zestia-ember-simple-infinite-scroller.svg
 [ember-observer-url]: https://emberobserver.com/addons/@zestia/ember-simple-infinite-scroller
 
-This Ember addon provides a simple component that fires an action whenever it is scrolled to the bottom.
-Allowing you to load more data.
+This Ember addon provides a simple component that fires an action whenever it is scrolled to a specified percentage. Supports both vertical and horizontal scrolling, allowing you to load more data.
 
 ## Installation
 
@@ -34,8 +33,9 @@ https://zestia.github.io/ember-simple-infinite-scroller
 
 ```handlebars
 <InfiniteScroller
+  @axis='vertical'
+  @percentEnd={{100}}
   @onLoadMore={{this.loadMore}}
-  @percentDown={{100}}
   as |scroller|
 >
   {{#each things as |thing|}}
@@ -49,6 +49,7 @@ https://zestia.github.io/ember-simple-infinite-scroller
 
 - Very simple! ✔︎
 - Bidirectional ✔︎
+- Vertical and horizontal ✔︎
 - Not coupled to Ember Data ✔︎
 - Supports use with FastBoot ✔︎
 
@@ -62,19 +63,23 @@ https://zestia.github.io/ember-simple-infinite-scroller
 
 #### `@onLoadMore`
 
-Required. Fired when the the element has been scrolled to the specified `@percent`.
+Required. Fired when the element has been scrolled to the specified percentage.
 
 #### `@element`
 
 Optional. By default the scroll position of the component's own DOM element is monitored. You can use this argument to change the element, to monitor the document for example.
 
-#### `@percentDown`
+#### `@axis`
 
-Optional. The distance that has to be scrolled down before the load more action is fired. 100% means the bottom.
+Optional. The scroll axis to monitor. `"vertical"` (default) or `"horizontal"`.
 
-#### `@percentUp`
+#### `@percentEnd`
 
-Optional. The distance that has to be scrolled up before the load more action is fired. 0% means the top.
+Optional. The distance that has to be scrolled toward the end before the load more action is fired. 100% means the very end (bottom for vertical, right for horizontal).
+
+#### `@percentStart`
+
+Optional. The distance that has to be scrolled toward the start before the load more action is fired. 0% means the very start (top for vertical, left for horizontal).
 
 #### `@debounce`
 
@@ -88,7 +93,7 @@ Whether the promise for more data has resolved yet
 
 #### `direction`
 
-The direction scrolled that caused `onLoadMore` to fire
+The direction scrolled that caused `onLoadMore` to fire. Either `"START"` or `"END"`.
 
 #### `isScrollable`
 
@@ -111,7 +116,6 @@ import { scrollToPercentage } from '@zestia/ember-simple-infinite-scroller/test-
 test('loading more', async function () {
   await visit('/');
   await scrollToPercentage('.infinite-scroller', 100);
-  // ...
 });
 ```
 

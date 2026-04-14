@@ -10,7 +10,7 @@ class Example2Template extends Component {
 
   <template>
     <p>
-      An action is fired when document is scrolled to the very bottom
+      An action is fired when document is scrolled to the very end
     </p>
     <p>
       Note that if there is no scroll movement available (due to lack of enough
@@ -19,7 +19,7 @@ class Example2Template extends Component {
 
     <InfiniteScroller
       class="example-2"
-      @percentDown={{100}}
+      @percentEnd={{100}}
       @onLoadMore={{this.application.handleLoadMore}}
       @element={{this.application.document}}
       as |scroller|
@@ -31,7 +31,7 @@ class Example2Template extends Component {
       {{/each}}
 
       {{#unless scroller.isScrollable}}
-        <button type="button" {{on "click" (fn scroller.loadMore "DOWN")}}>
+        <button type="button" {{on "click" (fn scroller.loadMore "END")}}>
           Load more
         </button>
       {{/unless}}
