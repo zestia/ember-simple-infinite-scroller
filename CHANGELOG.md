@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.0.0
+
+- Add horizontal support
+
 ## 11.0.0
 
 - Convert to v2 addon

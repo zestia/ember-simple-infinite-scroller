@@ -13,7 +13,7 @@ class Example3Template extends Component {
 
     <InfiniteScroller
       class="example-3"
-      @percentDown={{50}}
+      @percentEnd={{50}}
       @onLoadMore={{this.application.handleLoadMore}}
       @debounce={{10}}
       as |scroller|

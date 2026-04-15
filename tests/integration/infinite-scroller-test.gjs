@@ -55,7 +55,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
         >
           {{#each state.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
@@ -75,7 +75,7 @@ module('infinite-scroller', function (hooks) {
 
     await willScroll;
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('load more action (failure)', async function (assert) {
@@ -96,7 +96,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
         >
           {{#each state.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
@@ -119,7 +119,7 @@ module('infinite-scroller', function (hooks) {
         'is no longer considered loading if loading fails'
       );
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
 
     resetOnerror();
   });
@@ -132,7 +132,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
         >
           {{#each state.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
@@ -144,7 +144,7 @@ module('infinite-scroller', function (hooks) {
     scrollToPercentage('.infinite-scroller', 100);
     await scrollToPercentage('.infinite-scroller', 100);
 
-    assert.verifySteps(['load more: DOWN'], 'does not fire if already loading');
+    assert.verifySteps(['load more: END'], 'does not fire if already loading');
   });
 
   test('load more action (percent down)', async function (assert) {
@@ -154,7 +154,7 @@ module('infinite-scroller', function (hooks) {
       <template>
         <InfiniteScroller
           class="example-1"
-          @percentDown={{80}}
+          @percentEnd={{80}}
           @onLoadMore={{handleLoadMore}}
         >
           {{#each state.things as |thing|}}
@@ -170,7 +170,7 @@ module('infinite-scroller', function (hooks) {
 
     await scrollToPercentage('.infinite-scroller', 80);
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('load more action (percent up)', async function (assert) {
@@ -180,7 +180,7 @@ module('infinite-scroller', function (hooks) {
       <template>
         <InfiniteScroller
           class="example-1"
-          @percentUp={{20}}
+          @percentStart={{20}}
           @onLoadMore={{handleLoadMore}}
         >
           {{#each state.things as |thing|}}
@@ -200,7 +200,65 @@ module('infinite-scroller', function (hooks) {
 
     await scrollToPercentage('.infinite-scroller', 20);
 
-    assert.verifySteps(['load more: UP']);
+    assert.verifySteps(['load more: START']);
+  });
+
+  test('load more action (percent right)', async function (assert) {
+    assert.expect(3);
+
+    await render(
+      <template>
+        <InfiniteScroller
+          class="example-6"
+          @axis="horizontal"
+          @percentEnd={{80}}
+          @onLoadMore={{handleLoadMore}}
+        >
+          {{#each state.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+        </InfiniteScroller>
+      </template>
+    );
+
+    await scrollToPercentage('.infinite-scroller', 79, 'horizontal');
+
+    assert.verifySteps([], 'not scrolled enough');
+
+    await scrollToPercentage('.infinite-scroller', 80, 'horizontal');
+
+    assert.verifySteps(['load more: END']);
+  });
+
+  test('load more action (percent left)', async function (assert) {
+    assert.expect(4);
+
+    await render(
+      <template>
+        <InfiniteScroller
+          class="example-6"
+          @axis="horizontal"
+          @percentStart={{20}}
+          @onLoadMore={{handleLoadMore}}
+        >
+          {{#each state.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+        </InfiniteScroller>
+      </template>
+    );
+
+    await scrollToPercentage('.infinite-scroller', 80, 'horizontal');
+
+    assert.verifySteps([]);
+
+    await scrollToPercentage('.infinite-scroller', 21, 'horizontal');
+
+    assert.verifySteps([]);
+
+    await scrollToPercentage('.infinite-scroller', 20, 'horizontal');
+
+    assert.verifySteps(['load more: START']);
   });
 
   test('load more action (debounce)', async function (assert) {
@@ -211,7 +269,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @debounce={{50}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
           @onLoadMore={{handleLoadMore}}
         >
           {{#each state.things as |thing|}}
@@ -230,7 +288,7 @@ module('infinite-scroller', function (hooks) {
     await willScroll;
 
     assert.verifySteps(
-      ['load more: DOWN'],
+      ['load more: END'],
       'fires load more action after being debounced'
     );
   });
@@ -255,7 +313,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-2"
           @element={{document}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
           @onLoadMore={{handleLoadMore}}
         />
       </template>
@@ -263,7 +321,7 @@ module('infinite-scroller', function (hooks) {
 
     await scrollToPercentage(document.documentElement, 100);
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('scrollable attr', async function (assert) {
@@ -294,7 +352,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
         >
           {{#each state.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
@@ -329,7 +387,7 @@ module('infinite-scroller', function (hooks) {
         'loading class name is removed after the action resolves'
       );
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('yielded loadMore action', async function (assert) {
@@ -338,7 +396,7 @@ module('infinite-scroller', function (hooks) {
     await render(
       <template>
         <InfiniteScroller @onLoadMore={{handleLoadMore}} as |scroller|>
-          <button type="button" {{on "click" (fn scroller.loadMore "DOWN")}}>
+          <button type="button" {{on "click" (fn scroller.loadMore "END")}}>
             Load more
           </button>
         </InfiniteScroller>
@@ -347,7 +405,7 @@ module('infinite-scroller', function (hooks) {
 
     await click('button');
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('yielded loading state', async function (assert) {
@@ -358,7 +416,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
           as |scroller|
         >
           {{#each state.things as |thing|}}
@@ -382,7 +440,7 @@ module('infinite-scroller', function (hooks) {
 
     await scrollToPercentage('.infinite-scroller', 100);
 
-    assert.dom('.infinite-scroller').containsText('Direction: DOWN');
+    assert.dom('.infinite-scroller').containsText('Direction: END');
 
     assert
       .dom('.infinite-scroller')
@@ -396,7 +454,7 @@ module('infinite-scroller', function (hooks) {
       .dom('.infinite-scroller')
       .containsText('Loading: false', 'loading state is updated');
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('destroying (does not blow up)', async function (assert) {
@@ -408,7 +466,7 @@ module('infinite-scroller', function (hooks) {
           <InfiniteScroller
             class="example-1"
             @onLoadMore={{handleLoadMore}}
-            @percentDown={{100}}
+            @percentEnd={{100}}
           >
             {{#each state.things as |thing|}}
               <div class="thing">{{thing.name}}</div>
@@ -424,7 +482,7 @@ module('infinite-scroller', function (hooks) {
 
     willLoad.resolve();
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('no promise (does not blow up)', async function (assert) {
@@ -437,7 +495,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
         >
           {{#each state.things as |thing|}}
             <div class="thing">{{thing.name}}</div>
@@ -459,7 +517,7 @@ module('infinite-scroller', function (hooks) {
             class="example-1"
             @debounce={{50}}
             @onLoadMore={{handleLoadMore}}
-            @percentDown={{100}}
+            @percentEnd={{100}}
           >
             {{#each state.things as |thing|}}
               <div class="thing">{{thing.name}}</div>
@@ -490,7 +548,7 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           class="example-1"
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
           as |scroller|
         >
           {{#each state.things as |thing|}}
@@ -498,7 +556,7 @@ module('infinite-scroller', function (hooks) {
           {{/each}}
 
           {{#unless scroller.isScrollable}}
-            <button type="button" {{on "click" (fn scroller.loadMore "DOWN")}}>
+            <button type="button" {{on "click" (fn scroller.loadMore "END")}}>
               Load more
             </button>
           {{/unless}}
@@ -529,7 +587,7 @@ module('infinite-scroller', function (hooks) {
         'infinite scroller component re-computes whether or not there is scroll movement available'
       );
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
   });
 
   test('is scrollable re-computation', async function (assert) {
@@ -580,14 +638,14 @@ module('infinite-scroller', function (hooks) {
         <InfiniteScroller
           @element={{state.customElement}}
           @onLoadMore={{handleLoadMore}}
-          @percentDown={{100}}
+          @percentEnd={{100}}
         />
       </template>
     );
 
     await scrollToPercentage('.external-element.one', 100);
 
-    assert.verifySteps(['load more: DOWN']);
+    assert.verifySteps(['load more: END']);
 
     willLoad.resolve();
 
@@ -596,7 +654,7 @@ module('infinite-scroller', function (hooks) {
     await scrollToPercentage('.external-element.two', 100);
 
     assert.verifySteps(
-      ['load more: DOWN'],
+      ['load more: END'],
       'load action fires again, because scrollable element has been re-registered'
     );
   });

@@ -18,7 +18,7 @@ export default class ApplicationService extends Service {
   handleLoadMore = (direction) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        if (direction === 'DOWN' && this.page < 10) {
+        if (direction === 'END' && this.page < 10) {
           this.page++;
           this.things = [
             ...this.things,
@@ -26,7 +26,7 @@ export default class ApplicationService extends Service {
           ];
         }
 
-        if (direction === 'UP' && this.page > 1) {
+        if (direction === 'START' && this.page > 1) {
           this.page--;
           this.things = [
             ...this.#generateThingsForPage(this.page),
