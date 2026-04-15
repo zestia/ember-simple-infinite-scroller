@@ -54,8 +54,7 @@
   },
   "ember-addon": {
     "app-js": {
-      "./components/infinite-scroller.js": "./dist/_app_/components/infinite-scroller.js",
-      "./test-helpers/scroll-to-percentage.js": "./dist/_app_/test-helpers/scroll-to-percentage.js"
+      "./components/infinite-scroller.js": "./dist/_app_/components/infinite-scroller.js"
     },
     "main": "addon-main.cjs",
     "type": "addon",
