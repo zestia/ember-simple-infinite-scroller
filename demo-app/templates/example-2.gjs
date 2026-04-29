@@ -3,7 +3,7 @@ import { service } from '@ember/service';
 import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
+import InfiniteScroller from '#src/components/infinite-scroller';
 
 class Example2Template extends Component {
   @service application;

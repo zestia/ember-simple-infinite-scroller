@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import RouteTemplate from 'ember-route-template';
-import InfiniteScroller from '@zestia/ember-simple-infinite-scroller/components/infinite-scroller';
+import InfiniteScroller from '#src/components/infinite-scroller';
 import { modifier } from 'ember-modifier';
 
 class Example4Template extends Component {
