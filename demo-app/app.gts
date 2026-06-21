@@ -3,7 +3,7 @@ import EmberRouter from '@ember/routing/router';
 import PageTitleService from 'ember-page-title/services/page-title';
 
 class Router extends EmberRouter {
-  location = 'history';
+  location = 'hash';
   rootURL = '/';
 }
 

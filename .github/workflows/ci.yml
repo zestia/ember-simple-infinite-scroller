@@ -7,29 +7,60 @@ on:
       - master
   pull_request: {}
 
+permissions:
+  contents: read
+  packages: read
+
+env:
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 concurrency:
   group: ci-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: 'Tests'
+  lint:
+    name: 'Lints'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@zestia'
       - name: Install Dependencies
         run: npm ci
       - name: Lint
         run: npm run lint
+
+  test:
+    name: 'Tests'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@zestia'
+      - name: Install Dependencies
+        run: npm ci
       - name: Run Tests
         run: npm run test
+      # For the Try Scenarios
+      - id: set-matrix
+        run: |
+
+          echo "matrix=$(npx @embroider/try list)" >> $GITHUB_OUTPUT
 
   floating:
     name: 'Floating Dependencies'
@@ -37,42 +68,43 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@zestia'
       - name: Install Dependencies
-        run: npm install --no-shrinkwrap
+        run: npm install --no-package-lock
       - name: Run Tests
-        run: npm run test:ember
+        run: npm run test
 
   try-scenarios:
-    name: ${{ matrix.try-scenario }}
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     needs: 'test'
     timeout-minutes: 10
-
     strategy:
       fail-fast: false
-      matrix:
-        try-scenario:
-          - ember-lts-4.12
-          - ember-lts-5.4
-          - ember-release
-          - ember-beta
-          - ember-canary
-          - embroider-safe
-          - embroider-optimized
+      matrix: ${{fromJson(needs.test.outputs.matrix)}}
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: '@zestia'
+      - name: Apply Scenario
+        run: |
+
+          npx @embroider/try apply ${{ matrix.name }}
       - name: Install Dependencies
-        run: npm ci
+        run: npm install --no-package-lock
       - name: Run Tests
-        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        run: |
+
+          npm test
+        env: ${{ matrix.env }}
