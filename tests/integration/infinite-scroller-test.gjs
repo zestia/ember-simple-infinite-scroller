@@ -312,7 +312,7 @@ module('infinite-scroller', function (hooks) {
 
         <InfiniteScroller
           class="example-2"
-          @element={{document}}
+          @element={{document.scrollingElement}}
           @percentEnd={{100}}
           @onLoadMore={{handleLoadMore}}
         />

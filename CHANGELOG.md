@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.1.0
+
+- Removes normalising of document. Pass in the scrollable element directly instead.
+
 ## 12.0.0
 
 - Add horizontal support

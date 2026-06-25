@@ -21,7 +21,7 @@ class Example2Template extends Component {
       class="example-2"
       @percentEnd={{100}}
       @onLoadMore={{this.application.handleLoadMore}}
-      @element={{this.application.document}}
+      @element={{this.application.document.scrollingElement}}
       as |scroller|
     >
       {{#each this.application.things as |thing|}}

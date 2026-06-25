@@ -57,14 +57,6 @@ export default class InfiniteScrollerComponent extends Component {
     return false;
   }
 
-  get normalisedScrollerElement() {
-    if (this.scroller instanceof Document) {
-      return this.scroller.documentElement;
-    } else {
-      return this.scroller;
-    }
-  }
-
   handleScroll = () => {
     this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
   };
@@ -133,7 +125,7 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   _getScrollState() {
-    const element = this.normalisedScrollerElement;
+    const element = this.scroller;
     const horizontal = this.axis === 'horizontal';
     const scrollOffset = horizontal ? element.scrollLeft : element.scrollTop;
     const scrollSize = horizontal ? element.scrollWidth : element.scrollHeight;
