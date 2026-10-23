@@ -17,7 +17,8 @@ export default class InfiniteScrollerComponent extends Component {
 
   debug = false;
   scroller;
-  debounceId;
+  scrollId;
+  resizeId;
 
   setScroller = modifier((element, [positionalElement]) => {
     this._registerScroller(positionalElement ?? element);
@@ -58,7 +59,15 @@ export default class InfiniteScrollerComponent extends Component {
   }
 
   handleScroll = () => {
-    this.debounceId = debounce(this, '_checkShouldLoadMore', this.debounce);
+    this.scrollId = debounce(this, '_checkShouldLoadMore', this.debounce);
+  };
+
+  handleMutate = () => {
+    this._checkScrollable();
+  };
+
+  handleResize = () => {
+    this.resizeId = debounce(this, '_checkScrollable', this.debounce);
   };
 
   loadMore = (direction) => {
@@ -77,19 +86,26 @@ export default class InfiniteScrollerComponent extends Component {
 
   _deregisterScroller() {
     this._stopListening();
-    cancel(this.debounceId);
+    cancel(this.scrollId);
+    cancel(this.resizeId);
     this.scroller = null;
   }
 
   _startListening() {
     this.scroller.addEventListener('scroll', this.handleScroll);
-    this.observer = new MutationObserver(this._checkScrollable.bind(this));
-    this.observer.observe(this.scroller, { childList: true, subtree: true });
+    this.mutationObserver = new MutationObserver(this.handleMutate);
+    this.mutationObserver.observe(this.scroller, {
+      childList: true,
+      subtree: true
+    });
+    this.resizeObserver = new ResizeObserver(this.handleResize);
+    this.resizeObserver.observe(this.scroller);
   }
 
   _stopListening() {
     this.scroller.removeEventListener('scroll', this.handleScroll);
-    this.observer.disconnect();
+    this.mutationObserver.disconnect();
+    this.resizeObserver.disconnect();
   }
 
   _checkShouldLoadMore() {
@@ -137,7 +153,8 @@ export default class InfiniteScrollerComponent extends Component {
     const lastScrollOffset = this.lastScrollState.scrollOffset ?? 0;
     const scrollingEnd = scrollOffset > lastScrollOffset;
     const scrollingStart = scrollOffset < lastScrollOffset;
-    const direction = scrollingEnd ? END : scrollingStart ? START : null;
+    const unchanged = this.lastScrollState.direction ?? null;
+    const direction = scrollingEnd ? END : scrollingStart ? START : unchanged;
 
     return {
       isScrollable,

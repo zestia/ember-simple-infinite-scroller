@@ -13,6 +13,7 @@ import {
   rerender,
   settled,
   click,
+  waitFor,
   setupOnerror,
   resetOnerror
 } from '@ember/test-helpers';
@@ -290,6 +291,37 @@ module('infinite-scroller', function (hooks) {
     assert.verifySteps(
       ['load more: END'],
       'fires load more action after being debounced'
+    );
+  });
+
+  test('load more action (mutation during debounce)', async function (assert) {
+    assert.expect(2);
+
+    await render(
+      <template>
+        <InfiniteScroller
+          class="example-1"
+          @percentEnd={{100}}
+          @onLoadMore={{handleLoadMore}}
+        >
+          {{#each state.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+        </InfiniteScroller>
+      </template>
+    );
+
+    const willScroll = scrollToPercentage('.infinite-scroller', 100);
+
+    setTimeout(() => {
+      find('.thing').append(document.createElement('span'));
+    }, 50);
+
+    await willScroll;
+
+    assert.verifySteps(
+      ['load more: END'],
+      'a mutation whilst debouncing does not lose the scroll direction'
     );
   });
 
@@ -612,6 +644,37 @@ module('infinite-scroller', function (hooks) {
     await rerender();
 
     assert.dom('.infinite-scroller').hasAttribute('data-scrollable', 'true');
+  });
+
+  test('is scrollable re-computation (resize)', async function (assert) {
+    assert.expect(2);
+
+    await render(
+      <template>
+        <InfiniteScroller class="example-1" as |scroller|>
+          {{#each state.things as |thing|}}
+            <div class="thing">{{thing.name}}</div>
+          {{/each}}
+
+          {{#unless scroller.isScrollable}}
+            <button type="button">Load more</button>
+          {{/unless}}
+        </InfiniteScroller>
+      </template>
+    );
+
+    assert.dom('button').doesNotExist('precondition: is scrollable');
+
+    find('.infinite-scroller').style.maxHeight = 'none';
+
+    await waitFor('button');
+
+    assert
+      .dom('button')
+      .exists(
+        're-computes whether or not there is scroll movement available ' +
+          'when the element is resized'
+      );
   });
 
   test('custom element via element argument', async function (assert) {

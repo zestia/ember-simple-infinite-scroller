@@ -1,5 +1,10 @@
 # Changelog
 
+## 12.1.1
+
+- Fix a DOM mutation during the scroll debounce losing the scroll direction, which prevented loading more
+- Re-compute `isScrollable` when the scrollable element is resized
+
 ## 12.1.0
 
 - Removes normalising of document. Pass in the scrollable element directly instead.
