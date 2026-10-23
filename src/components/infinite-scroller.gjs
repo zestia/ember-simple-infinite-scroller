@@ -21,9 +21,9 @@ export default class InfiniteScrollerComponent extends Component {
   resizeId;
 
   setScroller = modifier((element, [positionalElement]) => {
-    this._registerScroller(positionalElement ?? element);
+    this.#registerScroller(positionalElement ?? element);
 
-    return () => this._deregisterScroller();
+    return () => this.#deregisterScroller();
   });
 
   get axis() {
@@ -58,16 +58,16 @@ export default class InfiniteScrollerComponent extends Component {
     return false;
   }
 
-  handleScroll = () => {
-    this.scrollId = debounce(this, '_checkShouldLoadMore', this.debounce);
+  #handleScroll = () => {
+    this.scrollId = debounce(this, this.#checkShouldLoadMore, this.debounce);
   };
 
-  handleMutate = () => {
-    this._checkScrollable();
+  #handleMutate = () => {
+    this.#checkScrollable();
   };
 
-  handleResize = () => {
-    this.resizeId = debounce(this, '_checkScrollable', this.debounce);
+  #handleResize = () => {
+    this.resizeId = debounce(this, this.#checkScrollable, this.debounce);
   };
 
   loadMore = (direction) => {
@@ -78,56 +78,56 @@ export default class InfiniteScrollerComponent extends Component {
     });
   };
 
-  _registerScroller(element) {
+  #registerScroller(element) {
     this.scroller = element;
-    this._startListening();
-    this._checkScrollable();
+    this.#startListening();
+    this.#checkScrollable();
   }
 
-  _deregisterScroller() {
-    this._stopListening();
+  #deregisterScroller() {
+    this.#stopListening();
     cancel(this.scrollId);
     cancel(this.resizeId);
     this.scroller = null;
   }
 
-  _startListening() {
-    this.scroller.addEventListener('scroll', this.handleScroll);
-    this.mutationObserver = new MutationObserver(this.handleMutate);
+  #startListening() {
+    this.scroller.addEventListener('scroll', this.#handleScroll);
+    this.mutationObserver = new MutationObserver(this.#handleMutate);
     this.mutationObserver.observe(this.scroller, {
       childList: true,
       subtree: true
     });
-    this.resizeObserver = new ResizeObserver(this.handleResize);
+    this.resizeObserver = new ResizeObserver(this.#handleResize);
     this.resizeObserver.observe(this.scroller);
   }
 
-  _stopListening() {
-    this.scroller.removeEventListener('scroll', this.handleScroll);
+  #stopListening() {
+    this.scroller.removeEventListener('scroll', this.#handleScroll);
     this.mutationObserver.disconnect();
     this.resizeObserver.disconnect();
   }
 
-  _checkShouldLoadMore() {
+  #checkShouldLoadMore() {
     this.lastScrollState = this.scrollState;
-    this.scrollState = this._getScrollState();
+    this.scrollState = this.#getScrollState();
 
-    this._debug();
+    this.#debug();
 
     if (this.shouldLoadMore) {
       this.loadMore(this.scrollState.direction);
     }
   }
 
-  _checkScrollable() {
+  #checkScrollable() {
     if (this.isDestroying || this.isDestroyed) {
       return;
     }
 
-    this.scrollState = this._getScrollState();
+    this.scrollState = this.#getScrollState();
   }
 
-  _debug() {
+  #debug() {
     if (!this.debug) {
       return;
     }
@@ -140,7 +140,7 @@ export default class InfiniteScrollerComponent extends Component {
     console.table([state]); // eslint-disable-line
   }
 
-  _getScrollState() {
+  #getScrollState() {
     const element = this.scroller;
     const horizontal = this.axis === 'horizontal';
     const scrollOffset = horizontal ? element.scrollLeft : element.scrollTop;
@@ -167,7 +167,7 @@ export default class InfiniteScrollerComponent extends Component {
     };
   }
 
-  get _api() {
+  get #api() {
     return {
       isScrollable: this.scrollState.isScrollable,
       direction: this.scrollState.direction,
@@ -178,7 +178,7 @@ export default class InfiniteScrollerComponent extends Component {
 
   api = new Proxy(this, {
     get(target, key) {
-      return target._api[key];
+      return target.#api[key];
     },
     set() {}
   });
